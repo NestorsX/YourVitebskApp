@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyVitebskApp.Views.NewsPage"
+             Title="Новости"
+             >
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Страница с новостями" TextColor="Black" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
