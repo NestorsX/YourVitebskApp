@@ -12,8 +12,6 @@ namespace MyVitebskApp
         {
             InitializeComponent();
             Routing.RegisterRoute("//LoginPage", typeof(LoginPage));
-            //Routing.RegisterRoute(nameof(ItemDetailPage), typeof(ItemDetailPage));
-            //Routing.RegisterRoute(nameof(NewItemPage), typeof(NewItemPage));
         }
 
     }
