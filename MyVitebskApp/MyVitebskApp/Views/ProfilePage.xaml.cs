@@ -16,7 +16,12 @@ namespace MyVitebskApp.Views
         public ProfilePage()
         {
             InitializeComponent();
-            this.BindingContext = new LoginViewModel();
+            Email.Text = App.Current.Properties["id"].ToString();
+        }
+
+        private async void LoginButton_Clicked(object sender, EventArgs e)
+        {
+            await Shell.Current.GoToAsync("//Login");
         }
     }
 }

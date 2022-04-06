@@ -5,8 +5,39 @@
              Title="Вход"
              Shell.TabBarIsVisible="False">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!" TextColor="Black" />
+        <StackLayout Padding="40" VerticalOptions="Fill" HorizontalOptions="FillAndExpand">
+            <StackLayout VerticalOptions="Center">
+                <Image Source="icon_services.png" WidthRequest="150" HeightRequest="150"/>
+                <Entry x:Name="Email" 
+                   Placeholder="Логин"
+                   HeightRequest="50" 
+                   Keyboard="Email"
+                   TextColor="Black"
+                   PlaceholderColor="Gray"/>
+                <Entry x:Name="Password" 
+                    Placeholder="Пароль"
+                    HeightRequest="50" 
+                    IsPassword="True"
+                    TextColor="Black"
+                    PlaceholderColor="Gray"/>
+                <Button x:Name="LoginButton"
+                    Text="Войти"
+                    TextColor="White"
+                    BackgroundColor="Black"
+                    BorderColor="Black"
+                    BorderWidth="2"
+                    CornerRadius="20"
+                    Clicked="LoginButton_Clicked"/>
+            </StackLayout>
+            <Button x:Name="RegisterButton"
+                    Text="Зарегистрироваться"
+                    VerticalOptions="EndAndExpand"
+                    TextColor="White"
+                    BackgroundColor="Black"
+                    BorderColor="Black"
+                    BorderWidth="2"
+                    CornerRadius="20"
+                    Clicked="RegisterButton_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

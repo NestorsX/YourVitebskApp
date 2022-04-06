@@ -22,10 +22,14 @@
         </ResourceDictionary>
     </Shell.Resources>
 
-    <TabBar>
-        <ShellContent Title="Новости" Route="NewsPage" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:NewsPage}" />
-        <ShellContent Title="Сервисы" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ServicesPage}" />
-        <ShellContent Title="Закладки" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:BookmarksPage}" />
-        <ShellContent Title="Профиль" Icon="icon_feed.png" ContentTemplate="{DataTemplate local:ProfilePage}" />
+    <TabBar Route="Login">
+        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}"/>
+    </TabBar>
+
+    <TabBar Route="Main">
+        <ShellContent Title="Новости" Route="NewsPage" Icon="icon_news.png" ContentTemplate="{DataTemplate local:NewsPage}" />
+        <ShellContent Title="Сервисы" Icon="icon_services.png" ContentTemplate="{DataTemplate local:ServicesPage}" />
+        <ShellContent Title="Закладки" Icon="icon_bookmarks.png" ContentTemplate="{DataTemplate local:BookmarksPage}" />
+        <ShellContent Title="Профиль" Icon="icon_profile.png" ContentTemplate="{DataTemplate local:ProfilePage}" />
     </TabBar>
 </Shell>

@@ -6,7 +6,8 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Страница с профилем" TextColor="Black" />
-            <Button VerticalOptions="Center" Text="Login" Command="{Binding LoginCommand}"/>
+            <Label x:Name="Email" TextColor="Black"/>
+            <Button VerticalOptions="Center" Text="Выйти" Clicked="LoginButton_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -11,8 +11,6 @@ namespace MyVitebskApp
         public AppShell()
         {
             InitializeComponent();
-            Routing.RegisterRoute("//LoginPage", typeof(LoginPage));
         }
-
     }
 }
