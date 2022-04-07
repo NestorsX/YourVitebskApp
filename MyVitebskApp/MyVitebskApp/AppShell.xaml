@@ -22,7 +22,8 @@
     </Shell.Resources>
 
     <TabBar Route="Login">
-        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}"/>
+        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:RegisterPage}" />
     </TabBar>
 
     <TabBar Route="Main">

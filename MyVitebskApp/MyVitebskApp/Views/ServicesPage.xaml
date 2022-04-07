@@ -7,31 +7,29 @@
         <Style  x:Key="ServicesButtonStyle" TargetType="Button">
             <Setter Property="WidthRequest" Value="120" />
             <Setter Property="HeightRequest" Value="120" />
-            <Setter Property="Background" Value="Gray" />
             <Setter Property="TextColor" Value="Black" />
-            <Setter Property="CornerRadius" Value="20" />
         </Style>
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Страница с сервисами" TextColor="Black" />
-            <Grid Padding="20">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-                <Button Text="Люди" Grid.Column="0" Grid.Row="0" Style="{StaticResource Key=ServicesButtonStyle}"/>
-                <Button Text="Кафе" Grid.Column="1" Grid.Row="0" Style="{StaticResource Key=ServicesButtonStyle}"/>
-                <Button Text="Новости" Grid.Column="2" Grid.Row="0" Style="{StaticResource Key=ServicesButtonStyle}"/>
-                <Button Text="Афиша" Grid.Column="0" Grid.Row="1" Style="{StaticResource Key=ServicesButtonStyle}"/>
-                <Button Text="Расписание" Grid.Column="1" Grid.Row="1" Style="{StaticResource Key=ServicesButtonStyle}"/>
-            </Grid>
+            <Label Text="Страница с сервисами" TextColor="Black"  />
+            <FlexLayout Wrap="Wrap" JustifyContent="SpaceBetween" Direction="Row">
+                <Frame Padding="0" CornerRadius="20">
+                    <Button Text="Люди" BackgroundColor="{DynamicResource FrameBackgroudColor}" Style="{DynamicResource Key=ServicesButtonStyle}"/>
+                </Frame>
+                <Frame Padding="0" CornerRadius="20">
+                    <Button Text="Кафе" BackgroundColor="{DynamicResource FrameBackgroudColor}" Style="{StaticResource Key=ServicesButtonStyle}"/>
+                </Frame>
+                <Frame Padding="0" CornerRadius="20">
+                    <Button Text="Новости" BackgroundColor="{DynamicResource FrameBackgroudColor}" Style="{StaticResource Key=ServicesButtonStyle}"/>
+                </Frame>
+                <Frame Padding="0" CornerRadius="20">
+                    <Button Text="Афиша" BackgroundColor="{DynamicResource FrameBackgroudColor}" Style="{StaticResource Key=ServicesButtonStyle}"/>
+                </Frame>
+                <Frame Padding="0" CornerRadius="20">
+                    <Button Text="Расписание" BackgroundColor="{DynamicResource FrameBackgroudColor}" Style="{StaticResource Key=ServicesButtonStyle}"/>
+                </Frame>
+            </FlexLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

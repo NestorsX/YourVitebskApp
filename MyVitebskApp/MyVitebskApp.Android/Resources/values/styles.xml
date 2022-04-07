@@ -3,6 +3,7 @@
 
   <style name="MainTheme" parent="MainTheme.Base">
     <item name="colorPrimaryDark">@android:color/transparent</item>
+    <item name = "colorAccent">#DF212C</item>
   </style>
 
 </resources>

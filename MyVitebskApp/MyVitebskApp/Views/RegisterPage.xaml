@@ -5,33 +5,25 @@
              Title="Регистрация"
              Shell.TabBarIsVisible="False">
     <ContentPage.Content>
-        <StackLayout Padding="40" VerticalOptions="Start" HorizontalOptions="FillAndExpand">
+        <StackLayout Padding="40" VerticalOptions="Fill" HorizontalOptions="Fill">
             <Image Source="icon_services.png" WidthRequest="150" HeightRequest="150"/>
-            <Entry x:Name="Email" 
+            <Frame Margin="0,50,0,0">
+                <Entry x:Name="Email" 
                 Placeholder="Логин"
-                HeightRequest="50" 
-                Keyboard="Email"
-                TextColor="Black"
-                PlaceholderColor="Gray"/>
-            <Entry x:Name="Password" 
+                Keyboard="Email" />
+            </Frame>
+            <Frame Margin="0,10,0,0">
+                <Entry x:Name="Password" 
                 Placeholder="Пароль"
-                HeightRequest="50" 
-                IsPassword="True"
-                TextColor="Black"
-                PlaceholderColor="Gray"/>
-            <Entry x:Name="RepeatedPassword" 
+                IsPassword="True" />
+            </Frame>
+            <Frame Margin="0,10,0,10">
+                <Entry x:Name="RepeatedPassword" 
                 Placeholder="Повторите пароль"
-                HeightRequest="50" 
-                IsPassword="True"
-                TextColor="Black"
-                PlaceholderColor="Gray"/>
+                IsPassword="True"/>
+            </Frame>
             <Button x:Name="RegisterButton"
                 Text="Зарегистрироваться"
-                TextColor="White"
-                BackgroundColor="Black"
-                BorderColor="Black"
-                BorderWidth="2"
-                CornerRadius="20"
                 Clicked="RegisterButton_Clicked"/>
         </StackLayout>
     </ContentPage.Content>

@@ -7,6 +7,7 @@
 
         <Style TargetType="Button">
             <Setter Property="TextColor" Value="{DynamicResource ButtonTextColor}" />
+            <Setter Property="CornerRadius" Value="20" />
             <Setter Property="VisualStateManager.VisualStateGroups">
                 <VisualStateGroupList>
                     <VisualStateGroup x:Name="CommonStates">
@@ -31,6 +32,17 @@
         
         <Style TargetType="StackLayout">
             <Setter Property="BackgroundColor" Value="{DynamicResource BackgroundColor}" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{DynamicResource FrameBackgroudColor}" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="{DynamicResource PlaceholderColor}" />
+            <Setter Property="TextColor" Value="{DynamicResource TextColor}" />
         </Style>
 
     </Application.Resources>
