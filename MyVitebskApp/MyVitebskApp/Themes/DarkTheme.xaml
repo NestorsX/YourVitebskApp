@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MyVitebskApp.Themes.DarkTheme">
+
+    <Color x:Key="BackgroundColor">#111111</Color>
+    <Color x:Key="TextColor">#ffffff</Color>
+    <Color x:Key="HeaderBarBackgroundColor">#111111</Color>
+    <Color x:Key="HeaderBarTextColor">#FFFFFF</Color>
+    <Color x:Key="ButtonBackgroundColor">#ffffff</Color>
+    <Color x:Key="ButtonBackgroundDisabledColor">#332196F3</Color>
+    <Color x:Key="ButtonTextColor">#FFFFFF</Color>
+    <Color x:Key="AccentColor">#111111</Color>
+    <Color x:Key="PrimaryBackground">#111111</Color>
+    <Color x:Key="PrimaryText">#ffffff</Color>
+    
+</ResourceDictionary>
