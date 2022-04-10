@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YourVitebskApp.Views.SettingsPage"
+             Title="Настройки">
+    <ContentPage.Content>
+        <StackLayout>
+            <Label Text="Тема приложения" />
+            <Frame CornerRadius="20">
+                <StackLayout BackgroundColor="Transparent">
+                    <RadioButton Content="Системная" IsChecked="{Binding UseDeviceThemeSettings}" />
+                    <RadioButton Content="Темная" IsChecked="{Binding UseDarkMode}" VerticalOptions="Center"/>
+                    <RadioButton Content="Светлая" IsChecked="{Binding UseLightMode}" VerticalOptions="Center"/>
+                </StackLayout>
+            </Frame>
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

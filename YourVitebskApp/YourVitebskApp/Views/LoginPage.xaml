@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YourVitebskApp.Views.LoginPage"
+             Title="Вход"
+             Shell.TabBarIsVisible="False">
+    <ContentPage.Content>
+        <StackLayout VerticalOptions="Fill" HorizontalOptions="Fill">
+            <StackLayout VerticalOptions="Center">
+                <Image Source="icon_services.png" WidthRequest="150" HeightRequest="150"/>
+                <Frame Margin="0,50,0,0">
+                    <Entry x:Name="Email" 
+                        Placeholder="Логин"
+                        Keyboard="Email" />
+                </Frame>
+                <Frame Margin="0,10,0,10">
+                    <Entry x:Name="Password" 
+                        Placeholder="Пароль"
+                        IsPassword="True" />
+                </Frame>
+                <Label x:Name="ErrorLabel" Text="Неверный логин или пароль!" TextColor="Red" IsVisible="False" />
+                <Button x:Name="LoginButton"
+                    Text="Войти"
+                    Clicked="LoginButton_Clicked"/>
+            </StackLayout>
+            <ActivityIndicator x:Name="LoadingWheel" IsRunning="False" AbsoluteLayout.LayoutFlags="PositionProportional" />
+            <Button x:Name="RegisterButton"
+                Text="Зарегистрироваться"
+                VerticalOptions="EndAndExpand"
+                Clicked="RegisterButton_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

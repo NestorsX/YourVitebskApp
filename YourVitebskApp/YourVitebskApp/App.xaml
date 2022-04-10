@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YourVitebskApp.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <!-- Light theme colors -->
+            <Color x:Key="BackgroundColorLight">#fafafa</Color>
+            <Color x:Key="TextColorLight">#000000</Color>
+            <Color x:Key="HeaderBackgroundColorLight">#fafafa</Color>
+            <Color x:Key="HeaderTextColorLight">#DF212C</Color>
+            <Color x:Key="ButtonTextColorLight">#ffffff</Color>
+            <Color x:Key="ButtonBackgroundColorLight">#DF212C</Color>
+            <Color x:Key="ButtonBackgroundDisabledColorLight">gray</Color>
+            <Color x:Key="AccentColorLight">#DF212C</Color>
+            <Color x:Key="PlaceholderColorLight">gray</Color>
+            <Color x:Key="FrameBackgroudColorLight">#eeeff1</Color>
+
+            <!-- Dark theme colors -->
+            <Color x:Key="BackgroundColorDark">#373737</Color>
+            <Color x:Key="TextColorDark">#ffffff</Color>
+            <Color x:Key="HeaderBackgroundColorDark">#373737</Color>
+            <Color x:Key="HeaderTextColorDark">#DF212C</Color>
+            <Color x:Key="ButtonTextColorDark">#ffffff</Color>
+            <Color x:Key="ButtonBackgroundColorDark">#DF212C</Color>
+            <Color x:Key="ButtonBackgroundDisabledColorDark">gray</Color>
+            <Color x:Key="AccentColorDark">#DF212C</Color>
+            <Color x:Key="PlaceholderColorDark">gray</Color>
+            <Color x:Key="FrameBackgroudColorDark">#404040</Color>
+        </ResourceDictionary>
+
+        <Style TargetType="Button">
+            <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource ButtonTextColorDark}, Light={StaticResource ButtonTextColorLight}}" />
+            <Setter Property="CornerRadius" Value="20" />
+            <Setter Property="VisualStateManager.VisualStateGroups">
+                <VisualStateGroupList>
+                    <VisualStateGroup x:Name="CommonStates">
+                        <VisualState x:Name="Normal">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundColorDark}, Light={StaticResource ButtonBackgroundColorLight}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                        <VisualState x:Name="Disabled">
+                            <VisualState.Setters>
+                                <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundDisabledColorDark}, Light={StaticResource ButtonBackgroundDisabledColorLight}}" />
+                            </VisualState.Setters>
+                        </VisualState>
+                    </VisualStateGroup>
+                </VisualStateGroupList>
+            </Setter>
+        </Style>
+
+        <Style TargetType="ContentPage">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColorLight}}" />
+        </Style>
+        
+        <Style TargetType="StackLayout">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColorLight}}" />
+            <Setter Property="Padding" Value="20" />
+        </Style>
+
+        <Style TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}" />
+            <Setter Property="Padding" Value="10" />
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" />
+            <Setter Property="FontSize" Value="Medium" />
+        </Style>
+
+        <Style TargetType="Entry">
+            <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" />
+        </Style>
+
+    </Application.Resources>
+</Application>

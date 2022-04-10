@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Shell xmlns="http://xamarin.com/schemas/2014/forms" 
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:local="clr-namespace:YourVitebskApp.Views"
+       Title="MyVitebskApp"
+       x:Class="YourVitebskApp.AppShell">
+    <Shell.Resources>
+        <ResourceDictionary>
+            <Style x:Key="BaseStyle" TargetType="Element">
+                <Setter Property="Shell.BackgroundColor" Value="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColorLight}}" />
+                <Setter Property="Shell.ForegroundColor" Value="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
+                <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
+                <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundDisabledColorDark}, Light={StaticResource ButtonBackgroundDisabledColorLight}}" />
+                <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundDisabledColorDark}, Light={StaticResource ButtonBackgroundDisabledColorLight}}" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource HeaderBackgroundColorDark}, Light={StaticResource HeaderBackgroundColorLight}}" />
+                <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
+                <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundDisabledColorDark}, Light={StaticResource ButtonBackgroundDisabledColorLight}}"/>
+                <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
+            </Style>
+            <Style TargetType="TabBar" BasedOn="{StaticResource BaseStyle}" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <TabBar Route="Login">
+        <ShellContent ContentTemplate="{DataTemplate local:LoginPage}" />
+        <ShellContent ContentTemplate="{DataTemplate local:RegisterPage}" />
+    </TabBar>
+
+    <TabBar Route="Main">
+        <ShellContent Title="Новости" Route="NewsPage" Icon="icon_news.png" ContentTemplate="{DataTemplate local:NewsPage}" />
+        <ShellContent Title="Сервисы" Icon="icon_services.png" ContentTemplate="{DataTemplate local:ServicesPage}" />
+        <ShellContent Title="Закладки" Icon="icon_bookmarks.png" ContentTemplate="{DataTemplate local:BookmarksPage}" />
+        <ShellContent Title="Профиль" Icon="icon_profile.png" ContentTemplate="{DataTemplate local:ProfilePage}" />
+    </TabBar>
+</Shell>

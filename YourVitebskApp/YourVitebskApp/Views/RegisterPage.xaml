@@ -1,0 +1,30 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="YourVitebskApp.Views.RegisterPage"
+             Title="Регистрация"
+             Shell.TabBarIsVisible="False">
+    <ContentPage.Content>
+        <StackLayout Padding="40" VerticalOptions="Fill" HorizontalOptions="Fill">
+            <Image Source="icon_services.png" WidthRequest="150" HeightRequest="150"/>
+            <Frame Margin="0,50,0,0">
+                <Entry x:Name="Email" 
+                Placeholder="Логин"
+                Keyboard="Email" />
+            </Frame>
+            <Frame Margin="0,10,0,0">
+                <Entry x:Name="Password" 
+                Placeholder="Пароль"
+                IsPassword="True" />
+            </Frame>
+            <Frame Margin="0,10,0,10">
+                <Entry x:Name="RepeatedPassword" 
+                Placeholder="Повторите пароль"
+                IsPassword="True"/>
+            </Frame>
+            <Button x:Name="RegisterButton"
+                Text="Зарегистрироваться"
+                Clicked="RegisterButton_Clicked"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
