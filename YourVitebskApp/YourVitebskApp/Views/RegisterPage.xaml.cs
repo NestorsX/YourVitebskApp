@@ -1,12 +1,5 @@
 ﻿using YourVitebskApp.Services;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
-
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using YourVitebskApp.Models;
@@ -35,7 +28,6 @@ namespace YourVitebskApp.Views
                 };
 
                 User currentUser = await userService.Add(user);
-                await DisplayAlert("Alert", $"{currentUser.UserId} | {currentUser.Email}", "OK");
                 Application.Current.Properties["id"] = currentUser.UserId;
                 await Shell.Current.GoToAsync("//Main");
             }

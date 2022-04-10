@@ -1,14 +1,6 @@
-﻿using YourVitebskApp.Themes;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Xamarin.Essentials;
+﻿using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using YourVitebskApp.Models;
-using YourVitebskApp.Services;
 
 namespace YourVitebskApp.Views
 {
