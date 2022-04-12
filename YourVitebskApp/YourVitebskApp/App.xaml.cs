@@ -10,6 +10,22 @@ namespace YourVitebskApp
         public App()
         {
             InitializeComponent();
+            switch (Preferences.Get("CurrentAppTheme", "Default"))
+            {
+                case "Default":
+                    App.Current.UserAppTheme = OSAppTheme.Unspecified;
+                    break;
+                case "Dark":
+                    App.Current.UserAppTheme = OSAppTheme.Dark;
+                    break;
+                case "Light":
+                    App.Current.UserAppTheme = OSAppTheme.Light;
+                    break;
+                default:
+                    App.Current.UserAppTheme = OSAppTheme.Unspecified;
+                    break;
+            }
+
             MainPage = new AppShell();
         }
 

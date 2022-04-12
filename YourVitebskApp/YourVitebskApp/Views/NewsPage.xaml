@@ -4,13 +4,13 @@
              x:Class="YourVitebskApp.Views.NewsPage"
              Title="Новости">
     <ContentPage.Content>
-        <StackLayout>
-            <ListView x:Name="NewsListView" ItemsSource="{Binding NewsList}" ItemTapped="OnItemTapped" HasUnevenRows="True" SeparatorVisibility="None" >
+        <StackLayout Padding="0">
+            <ListView x:Name="NewsListView" ItemsSource="{Binding NewsList}" ItemTapped="OnItemTapped" SeparatorColor="Transparent" HasUnevenRows="True" SeparatorVisibility="None" >
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <ViewCell>
                             <ViewCell.View>
-                                <StackLayout Padding="0">
+                                <StackLayout Padding="0" BackgroundColor="Transparent" Margin="20,10,20,10">
                                     <Grid>
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="*"/>

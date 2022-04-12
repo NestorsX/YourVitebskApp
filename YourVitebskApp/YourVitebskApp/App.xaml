@@ -4,10 +4,13 @@
              x:Class="YourVitebskApp.App">
     <Application.Resources>
         <ResourceDictionary>
+            <Color x:Key="Primary">Yellow</Color>
+            <Color x:Key="PrimaryDark">Green</Color>
+            <Color x:Key="Accent">Blue</Color>
             <!-- Light theme colors -->
             <Color x:Key="BackgroundColorLight">#fafafa</Color>
             <Color x:Key="TextColorLight">#000000</Color>
-            <Color x:Key="HeaderBackgroundColorLight">#fafafa</Color>
+            <Color x:Key="TabBarBackgroundColorLight">#fafafa</Color>
             <Color x:Key="HeaderTextColorLight">#DF212C</Color>
             <Color x:Key="ButtonTextColorLight">#ffffff</Color>
             <Color x:Key="ButtonBackgroundColorLight">#DF212C</Color>
@@ -19,7 +22,7 @@
             <!-- Dark theme colors -->
             <Color x:Key="BackgroundColorDark">#373737</Color>
             <Color x:Key="TextColorDark">#ffffff</Color>
-            <Color x:Key="HeaderBackgroundColorDark">#373737</Color>
+            <Color x:Key="TabBarBackgroundColorDark">#373737</Color>
             <Color x:Key="HeaderTextColorDark">#DF212C</Color>
             <Color x:Key="ButtonTextColorDark">#ffffff</Color>
             <Color x:Key="ButtonBackgroundColorDark">#DF212C</Color>
@@ -53,7 +56,7 @@
         <Style TargetType="ContentPage">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColorLight}}" />
         </Style>
-        
+
         <Style TargetType="StackLayout">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColorLight}}" />
             <Setter Property="Padding" Value="20" />
@@ -71,6 +74,10 @@
 
         <Style TargetType="Entry">
             <Setter Property="PlaceholderColor" Value="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}" />
+            <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" />
+        </Style>
+
+        <Style TargetType="RadioButton">
             <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" />
         </Style>
 

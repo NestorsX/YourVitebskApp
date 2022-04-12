@@ -12,7 +12,7 @@
                 <Setter Property="Shell.TitleColor" Value="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
                 <Setter Property="Shell.DisabledColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundDisabledColorDark}, Light={StaticResource ButtonBackgroundDisabledColorLight}}" />
                 <Setter Property="Shell.UnselectedColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundDisabledColorDark}, Light={StaticResource ButtonBackgroundDisabledColorLight}}" />
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource HeaderBackgroundColorDark}, Light={StaticResource HeaderBackgroundColorLight}}" />
+                <Setter Property="Shell.TabBarBackgroundColor" Value="{AppThemeBinding Dark={StaticResource TabBarBackgroundColorDark}, Light={StaticResource TabBarBackgroundColorLight}}" />
                 <Setter Property="Shell.TabBarForegroundColor" Value="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
                 <Setter Property="Shell.TabBarUnselectedColor" Value="{AppThemeBinding Dark={StaticResource ButtonBackgroundDisabledColorDark}, Light={StaticResource ButtonBackgroundDisabledColorLight}}"/>
                 <Setter Property="Shell.TabBarTitleColor" Value="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
