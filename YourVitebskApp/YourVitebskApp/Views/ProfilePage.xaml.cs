@@ -1,6 +1,6 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using YourVitebskApp.ViewModels;
 
 namespace YourVitebskApp.Views
 {
@@ -11,17 +11,13 @@ namespace YourVitebskApp.Views
         {
             InitializeComponent();
             Routing.RegisterRoute("//SettingsPage", typeof(SettingsPage));
-            Email.Text = App.Current.Properties["id"].ToString();
+            Routing.RegisterRoute("//EditProfilePage", typeof(EditProfilePage));
         }
 
-        private async void LoginButton_Clicked(object sender, EventArgs e)
+        protected override void OnAppearing()
         {
-            await Shell.Current.GoToAsync("//Login");
-        }
-
-        private async void Settings_Clicked(object sender, EventArgs e)
-        {
-            await Shell.Current.GoToAsync($"//{nameof(SettingsPage)}");
+            base.OnAppearing();
+            BindingContext = new ProfileViewModel();
         }
     }
 }

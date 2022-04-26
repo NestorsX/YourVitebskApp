@@ -4,9 +4,6 @@
              x:Class="YourVitebskApp.App">
     <Application.Resources>
         <ResourceDictionary>
-            <Color x:Key="Primary">Yellow</Color>
-            <Color x:Key="PrimaryDark">Green</Color>
-            <Color x:Key="Accent">Blue</Color>
             <!-- Light theme colors -->
             <Color x:Key="BackgroundColorLight">#fafafa</Color>
             <Color x:Key="TextColorLight">#000000</Color>
@@ -59,7 +56,7 @@
 
         <Style TargetType="StackLayout">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource BackgroundColorDark}, Light={StaticResource BackgroundColorLight}}" />
-            <Setter Property="Padding" Value="20" />
+            <Setter Property="Padding" Value="10" />
         </Style>
 
         <Style TargetType="Frame">

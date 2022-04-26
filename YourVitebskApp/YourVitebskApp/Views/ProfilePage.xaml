@@ -1,16 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:ProfileViewModel"
              x:Class="YourVitebskApp.Views.ProfilePage"
              Title="Профиль">
     <ContentPage.ToolbarItems>
-        <ToolbarItem Icon="icon_settings.png" Text="Настройки" Clicked="Settings_Clicked"/>
+        <ToolbarItem Icon="icon_logout.png" Text="Выход" Command="{Binding ExitCommand}"/>
+        <ToolbarItem Icon="icon_settings.png" Text="Настройки" Command="{Binding SettingsCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Страница с профилем" TextColor="Black" />
-            <Label x:Name="Email" TextColor="Black"/>
-            <Button VerticalOptions="Center" Text="Выйти" Clicked="LoginButton_Clicked"/>
-        </StackLayout>
+        <AbsoluteLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" BackgroundColor="Gray" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <ActivityIndicator IsRunning="{Binding IsBusy}" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" />
+            </StackLayout>
+            <StackLayout AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <Frame CornerRadius="20">
+                    <StackLayout BackgroundColor="Transparent" Padding="0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Frame Padding="0" CornerRadius="100" WidthRequest="100" HeightRequest="100" Grid.Column="0">
+                                <Image Source="logo.png" Aspect="AspectFill" />
+                            </Frame>
+                            <StackLayout Grid.Column="2" BackgroundColor="Transparent">
+                                <Label Text="{Binding FullName}" />
+                                <Button Text="Изменить" BackgroundColor="Gray" Command="{Binding UpdateCommand}"/>
+                            </StackLayout>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -27,6 +27,15 @@ namespace YourVitebskApp
             }
 
             MainPage = new AppShell();
+            Authorize();
+        }
+
+        private async void Authorize()
+        {
+            if (Application.Current.Properties.ContainsKey("CurrentUserID"))
+            {
+                await Shell.Current.GoToAsync("//Main");
+            }
         }
 
         protected override void OnStart()
