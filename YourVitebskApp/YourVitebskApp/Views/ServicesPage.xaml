@@ -1,52 +1,45 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:ServicesViewModel"
              x:Class="YourVitebskApp.Views.ServicesPage"
              Title="Сервисы">
     <ContentPage.Content>
-        <StackLayout>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-            </Grid>
-            <Frame x:Name="People" Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Grid.Column="0" Grid.Row="0" >
-                <StackLayout BackgroundColor="Transparent">
-                    <Label Text="Люди" />
-                </StackLayout>
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped" />
-                </Frame.GestureRecognizers>
-            </Frame>
-            <Frame x:Name="Cafe" Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Grid.Row="0" Grid.Column="1">
-                <StackLayout BackgroundColor="Transparent">
-                    <Label Text="Кафе" />
-                </StackLayout>
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped_1" />
-                </Frame.GestureRecognizers>
-            </Frame>
-            <Frame Padding="0" CornerRadius="20" >
-                <StackLayout BackgroundColor="Transparent">
-                    <Label Text="Новости" />
-                </StackLayout>
-            </Frame>
-            <Frame Padding="0" CornerRadius="20" Grid.Row="1" Grid.Column="0">
-                <StackLayout BackgroundColor="Transparent">
-                    <Label Text="Афиша" />
-                </StackLayout>
-            </Frame>
-            <Frame Padding="0" CornerRadius="20" Grid.Row="1" Grid.Column="1">
-                <StackLayout BackgroundColor="Transparent">
-                    <Label Text="Расписание" />
-                </StackLayout>
-            </Frame>
+        <StackLayout Padding="0">
+            <FlexLayout Wrap="Wrap" Direction="Row" JustifyContent="Start" AlignContent="Start" AlignItems="Start">
+                <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
+                    <StackLayout BackgroundColor="Transparent">
+                        <Label Text="Транспорт" />
+                    </StackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToTransportSheduleCommand}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+                <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
+                    <StackLayout BackgroundColor="Transparent">
+                        <Label Text="Афиша" />
+                    </StackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToPostersCommand}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+                <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
+                    <StackLayout BackgroundColor="Transparent">
+                        <Label Text="Кафе" />
+                    </StackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToCafesCommand}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+                <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
+                    <StackLayout BackgroundColor="Transparent">
+                        <Label Text="Вакансии" />
+                    </StackLayout>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding GoToVacanciesCommand}" />
+                    </Frame.GestureRecognizers>
+                </Frame>
+            </FlexLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

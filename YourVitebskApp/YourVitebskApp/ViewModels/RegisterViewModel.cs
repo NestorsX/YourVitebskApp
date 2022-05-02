@@ -13,7 +13,9 @@ namespace YourVitebskApp.ViewModels
         private string _password;
         private string _repeatedPassword;
         private string _firstName;
+        private string _secondName;
         private string _lastName;
+        private string _phoneNumber;
         private bool _isBusy;
         private bool _isError;
         private bool _isUnconfirmedPassword;
@@ -75,12 +77,32 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public string SecondName
+        {
+            get { return _secondName; }
+            set
+            {
+                _secondName = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string LastName
         {
             get { return _lastName; }
             set
             {
                 _lastName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string PhoneNumber
+        {
+            get { return _phoneNumber; }
+            set
+            {
+                _phoneNumber = value;
                 OnPropertyChanged();
             }
         }
@@ -164,9 +186,9 @@ namespace YourVitebskApp.ViewModels
                         UserDataId = null,
                         UserId = null,
                         FirstName = FirstName,
-                        SecondName = null,
+                        SecondName = SecondName ?? null,
                         LastName = LastName,
-                        PhoneNumber = null
+                        PhoneNumber = PhoneNumber ?? null
                     }
                 };
 

@@ -12,19 +12,25 @@
             </StackLayout>
             <StackLayout IsVisible="{Binding isMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Padding="40" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <Frame Margin="0,20,0,0">
-                    <Entry Text="{Binding Email}" Placeholder="Логин" Keyboard="Email" />
+                    <Entry Text="{Binding Email}" Placeholder="Email* example@mail.com" Keyboard="Email" />
                 </Frame>
                 <Frame Margin="0,10,0,0">
-                    <Entry Text="{Binding FirstName}" Placeholder="Имя" />
+                    <Entry Text="{Binding FirstName}" Placeholder="Имя*" />
                 </Frame>
                 <Frame Margin="0,10,0,0">
-                    <Entry Text="{Binding LastName}" Placeholder="Фамилия" />
+                    <Entry Text="{Binding LastName}" Placeholder="Фамилия*" />
                 </Frame>
                 <Frame Margin="0,10,0,0">
-                    <Entry Text="{Binding Password}" Placeholder="Пароль" IsPassword="True" />
+                    <Entry Text="{Binding SecondName}" Placeholder="Отчество" />
+                </Frame>
+                <Frame Margin="0,10,0,0">
+                    <Entry Text="{Binding PhoneNumber}" Placeholder="Телефон +375(__)___-__-__" />
+                </Frame>
+                <Frame Margin="0,10,0,0">
+                    <Entry Text="{Binding Password}" Placeholder="Пароль*" IsPassword="True" />
                 </Frame>
                 <Frame Margin="0,10,0,10">
-                    <Entry Text="{Binding RepeatedPassword}" Placeholder="Повторите пароль" IsPassword="True"/>
+                    <Entry Text="{Binding RepeatedPassword}" Placeholder="Повторите пароль*" IsPassword="True"/>
                 </Frame>
                 <Label Text="{Binding DisplayMessage}" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="{Binding IsError}" />
                 <Button Text="Зарегистрироваться" Command="{Binding RegisterCommand}"/>

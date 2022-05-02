@@ -1,6 +1,6 @@
-﻿using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using YourVitebskApp.ViewModels;
 
 namespace YourVitebskApp.Views
 {
@@ -10,21 +10,11 @@ namespace YourVitebskApp.Views
         public ServicesPage()
         {
             InitializeComponent();
-        }
-
-        private async void TapGestureRecognizer_Tapped(object sender, EventArgs e)
-        {
-            await DisplayAlert("Выбрано:", $"{nameof(People)}", "OK");
-        }
-
-        private async void TapGestureRecognizer_Tapped_1(object sender, EventArgs e)
-        {
-            await DisplayAlert("Выбрано:", $"{nameof(Cafe)}", "OK");
-        }
-
-        private void TapGestureRecognizer_Tapped_2(object sender, EventArgs e)
-        {
-
+            Routing.RegisterRoute($"//{nameof(TransportShedulePage)}", typeof(TransportShedulePage));
+            Routing.RegisterRoute($"//{nameof(PostersPage)}", typeof(PostersPage));
+            Routing.RegisterRoute($"//{nameof(CafesPage)}", typeof(CafesPage));
+            Routing.RegisterRoute($"//{nameof(VacanciesPage)}", typeof(VacanciesPage));
+            BindingContext = new ServicesViewModel();
         }
     }
 }

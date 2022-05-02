@@ -49,14 +49,9 @@ namespace YourVitebskApp.Services
         }
 
         // Обновление пользователя
-        public async Task<User> Update(User user)
+        public async Task Update(User user)
         {
             var response = await _client.PutAsync(_url, new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json"));
-
-            if (response.StatusCode != HttpStatusCode.OK)
-                return null;
-
-            return JsonSerializer.Deserialize<User>(await response.Content.ReadAsStringAsync(), _options);
         }
     }
 }
