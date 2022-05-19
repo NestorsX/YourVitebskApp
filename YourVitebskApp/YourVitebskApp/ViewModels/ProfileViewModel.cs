@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
-using YourVitebskApp.Models;
 using YourVitebskApp.Services;
 using YourVitebskApp.Views;
 
@@ -107,13 +104,8 @@ namespace YourVitebskApp.ViewModels
             UpdateCommand = new Command(async () => await Update());
             SettingsCommand = new Command(async () => await Settings());
             ExitCommand = new Command(async () => await Exit());
-            _userService = new UserService();
-            User currentUser = Task.Run(async () => await _userService.Get((int)Application.Current.Properties["CurrentUserID"])).Result;
-            Email = currentUser.Email;
-            FirstName = currentUser.UserDatum.FirstName;
-            SecondName = currentUser.UserDatum.SecondName;
-            LastName = currentUser.UserDatum.LastName;
-            PhoneNumber = currentUser.UserDatum.PhoneNumber;
+            FirstName = Task.Run(async () => await SecureStorage.GetAsync("FirstName")).Result;
+            LastName = Task.Run(async () => await SecureStorage.GetAsync("LastName")).Result;
             IsBusy = false;
         }
 
@@ -139,7 +131,7 @@ namespace YourVitebskApp.ViewModels
         private async Task Exit()
         {
             IsBusy = true;
-            Application.Current.Properties.Remove("CurrentUserID");
+            SecureStorage.RemoveAll();
             Application.Current.MainPage = new AppShell();
             await Shell.Current.GoToAsync("//Login");
             IsBusy = false;

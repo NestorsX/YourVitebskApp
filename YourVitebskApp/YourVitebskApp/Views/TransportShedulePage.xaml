@@ -4,10 +4,6 @@
              x:Class="YourVitebskApp.Views.TransportShedulePage"
              Title="Транспорт">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
+        <WebView Source="https://raspisanie.in/vitebsk/raspisanie-avtobusov" />
     </ContentPage.Content>
 </ContentPage>

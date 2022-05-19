@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -13,12 +14,11 @@ namespace YourVitebskApp.ViewModels
         private string _password;
         private string _repeatedPassword;
         private string _firstName;
-        private string _secondName;
         private string _lastName;
-        private string _phoneNumber;
+        private string _error;
         private bool _isBusy;
         private bool _isError;
-        private bool _isUnconfirmedPassword;
+        private AuthService _authService;
         public event PropertyChangedEventHandler PropertyChanged;
         public Command RegisterCommand { get; }
 
@@ -40,10 +40,9 @@ namespace YourVitebskApp.ViewModels
             {
                 _password = value;
                 IsError = false;
-                IsUnconfirmedPassword = false;
-                if (Password != RepeatedPassword)
+                if (!Password.Equals(RepeatedPassword))
                 {
-                    IsUnconfirmedPassword = true;
+                    Error = "Пароли не совпадают";
                 }
 
                 OnPropertyChanged();
@@ -57,10 +56,9 @@ namespace YourVitebskApp.ViewModels
             {
                 _repeatedPassword = value;
                 IsError = false;
-                IsUnconfirmedPassword = false;
                 if (!Password.Equals(RepeatedPassword))
                 {
-                    IsUnconfirmedPassword = true;
+                    Error = "Пароли не совпадают";
                 }
 
                 OnPropertyChanged();
@@ -77,16 +75,6 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public string SecondName
-        {
-            get { return _secondName; }
-            set
-            {
-                _secondName = value;
-                OnPropertyChanged();
-            }
-        }
-
         public string LastName
         {
             get { return _lastName; }
@@ -97,22 +85,20 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public string PhoneNumber
+        public string Error
         {
-            get { return _phoneNumber; }
+            get { return _error; }
             set
             {
-                _phoneNumber = value;
+                _error = value;
+                IsError = true;
                 OnPropertyChanged();
             }
         }
 
         public bool IsBusy
         {
-            get
-            {
-                return _isBusy;
-            }
+            get { return _isBusy; }
             set
             {
                 _isBusy = value;
@@ -125,40 +111,27 @@ namespace YourVitebskApp.ViewModels
 
         public bool IsError
         {
-            get
-            {
-                return _isError;
-            }
+            get { return _isError; }
             set
             {
                 _isError = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public bool IsUnconfirmedPassword
-        {
-            get
-            {
-                return _isUnconfirmedPassword;
-            }
-            set
-            {
-                _isUnconfirmedPassword = value;
-                OnPropertyChanged();
+                if (IsError)
+                {
+                    OnPropertyChanged(nameof(DisplayMessage));
+                }
             }
         }
 
         public string DisplayMessage
         {
-            get
-            {
-                return "Неверные данные!";
-            }
+            get { return _error; }
         }
 
         public RegisterViewModel()
         {
+            IsBusy = true;
+            _authService = new AuthService();
             RegisterCommand = new Command(async () => await Register());
             IsError = false;
             IsBusy = false;
@@ -172,33 +145,25 @@ namespace YourVitebskApp.ViewModels
         private async Task Register()
         {
             IsBusy = true;
-            var userService = new UserService();
             try
             {
-                User user = new User
+                var user = new UserRegisterDTO
                 {
-                    UserId = null,
                     Email = Email,
                     Password = Password,
-                    RoleId = 1,
-                    UserDatum = new UserDatum
-                    {
-                        UserDataId = null,
-                        UserId = null,
-                        FirstName = FirstName,
-                        SecondName = SecondName ?? null,
-                        LastName = LastName,
-                        PhoneNumber = PhoneNumber ?? null
-                    }
+                    FirstName = FirstName,
+                    SecondName = null,
+                    LastName = LastName,
+                    PhoneNumber = null
                 };
 
-                User currentUser = await userService.Add(user);
-                Application.Current.Properties["CurrentUserID"] = currentUser.UserId;
+                string token = await _authService.Register(user);
+                _authService.SaveUserCreds(token);
                 await Shell.Current.GoToAsync("//Main");
             }
-            catch
+            catch (ArgumentException e)
             {
-                IsError = true;
+                Error = e.Message;
             }
 
             IsBusy = false;

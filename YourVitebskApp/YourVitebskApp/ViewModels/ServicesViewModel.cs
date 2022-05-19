@@ -42,22 +42,30 @@ namespace YourVitebskApp.ViewModels
 
         private async Task GoToCafes()
         {
+            IsBusy = true;
             await Shell.Current.GoToAsync($"//{nameof(CafesPage)}");
+            IsBusy = false;
         }
 
         private async Task GoToTransportShedule()
         {
+            IsBusy = true;
             await Shell.Current.GoToAsync($"//{nameof(TransportShedulePage)}");
+            IsBusy = false;
         }
 
         private async Task GoToPosters()
         {
+            IsBusy = true;
             await Shell.Current.GoToAsync($"//{nameof(PostersPage)}");
+            IsBusy = false;
         }
 
         private async Task GoToVacancies()
         {
+            IsBusy = true;
             await Shell.Current.GoToAsync($"//{nameof(VacanciesPage)}");
+            IsBusy = false;
         }
     }
 }

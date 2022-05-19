@@ -32,7 +32,7 @@ namespace YourVitebskApp
 
         private async void Authorize()
         {
-            if (Application.Current.Properties.ContainsKey("CurrentUserID"))
+            if (!string.IsNullOrWhiteSpace(await SecureStorage.GetAsync("Token")))
             {
                 await Shell.Current.GoToAsync("//Main");
             }

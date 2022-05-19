@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.Forms;
@@ -12,8 +13,10 @@ namespace YourVitebskApp.ViewModels
     {
         private string _email;
         private string _password;
+        private string _error;
         private bool _isBusy;
         private bool _isError;
+        private AuthService _authService;
         public event PropertyChangedEventHandler PropertyChanged;
         public Command LogInCommand { get; }
         public Command RegisterCommand { get; }
@@ -40,14 +43,22 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public string Error
+        {
+            get { return _error; }
+            set
+            {
+                _error = value;
+                IsError = true;
+                OnPropertyChanged();
+            }
+        }
+
         public bool isMainLayoutVisible { get; set; }
 
         public bool IsBusy
         {
-            get
-            {
-                return _isBusy;
-            }
+            get { return _isBusy; }
             set 
             { 
                 _isBusy = value;
@@ -58,27 +69,27 @@ namespace YourVitebskApp.ViewModels
 
         public bool IsError
         {
-            get
-            {
-                return _isError;
-            }
+            get { return _isError; }
             set 
             {
                 _isError = value;
                 OnPropertyChanged();
+                if (IsError)
+                {
+                    OnPropertyChanged(nameof(DisplayMessage));
+                }
             }
         }
 
         public string DisplayMessage
         {
-            get
-            {
-                return "Неверные логин и/или пароль!";
-            }
+            get { return _error; }
         }
 
         public LoginViewModel()
         {
+            IsBusy = true;
+            _authService = new AuthService();
             LogInCommand = new Command(async () => await LogIn());
             RegisterCommand = new Command(async () => await Register());
             IsError = false;
@@ -100,16 +111,20 @@ namespace YourVitebskApp.ViewModels
         private async Task LogIn()
         {
             IsBusy = true;
-            var userService = new UserService();
             try
             {
-                User currentUser = await userService.Get(Email, Password);
-                Application.Current.Properties["CurrentUserID"] = currentUser.UserId;
+                string token = await _authService.Login(new UserLoginDTO
+                {
+                    Email = Email,
+                    Password = Password,
+                });
+
+                _authService.SaveUserCreds(token);
                 await Shell.Current.GoToAsync("//Main");
             }
-            catch
+            catch (ArgumentException e)
             {
-                IsError = true;
+                Error = e.Message;
             }
 
             IsBusy = false;

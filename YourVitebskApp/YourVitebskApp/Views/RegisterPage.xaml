@@ -21,12 +21,6 @@
                     <Entry Text="{Binding LastName}" Placeholder="Фамилия*" />
                 </Frame>
                 <Frame Margin="0,10,0,0">
-                    <Entry Text="{Binding SecondName}" Placeholder="Отчество" />
-                </Frame>
-                <Frame Margin="0,10,0,0">
-                    <Entry Text="{Binding PhoneNumber}" Placeholder="Телефон +375(__)___-__-__" />
-                </Frame>
-                <Frame Margin="0,10,0,0">
                     <Entry Text="{Binding Password}" Placeholder="Пароль*" IsPassword="True" />
                 </Frame>
                 <Frame Margin="0,10,0,10">
