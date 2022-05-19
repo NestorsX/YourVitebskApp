@@ -17,7 +17,6 @@ namespace YourVitebskApp.ViewModels
         private string _lastName;
         private string _phoneNumber;
         private bool _isBusy;
-        private UserService _userService;
         public Command UpdateCommand { get; }
         public Command SettingsCommand { get; }
         public Command ExitCommand { get; }

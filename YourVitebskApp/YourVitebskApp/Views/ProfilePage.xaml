@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
-xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:ProfileViewModel"
-x:Class="YourVitebskApp.Views.ProfilePage"
-Title="Профиль">
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:ProfileViewModel"
+             x:Class="YourVitebskApp.Views.ProfilePage"
+             Title="Профиль">    
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_logout.png" Text="Выход" Command="{Binding ExitCommand}"/>
         <ToolbarItem Icon="icon_settings.png" Text="Настройки" Command="{Binding SettingsCommand}"/>

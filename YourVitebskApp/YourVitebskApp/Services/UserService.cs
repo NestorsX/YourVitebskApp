@@ -30,13 +30,6 @@ namespace YourVitebskApp.Services
             return JsonSerializer.Deserialize<User>(result, _options);
         }
 
-        // Получаем пользователя по логину и паролю
-        public async Task<User> Get(string login, string password)
-        {
-            string result = await _client.GetStringAsync(_url + $"auth/{login}/{password}");
-            return JsonSerializer.Deserialize<User>(result, _options);
-        }
-
         // Добавление пользователя
         public async Task<User> Add(User user)
         {

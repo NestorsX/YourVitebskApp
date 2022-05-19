@@ -10,14 +10,9 @@ namespace YourVitebskApp.Views
         public ProfilePage()
         {
             InitializeComponent();
+            BindingContext = new ProfileViewModel();
             Routing.RegisterRoute("//SettingsPage", typeof(SettingsPage));
             Routing.RegisterRoute("//EditProfilePage", typeof(EditProfilePage));
-        }
-
-        protected override void OnAppearing()
-        {
-            base.OnAppearing();
-            BindingContext = new ProfileViewModel();
         }
     }
 }

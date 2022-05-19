@@ -1,32 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:NewsViewModel"
+             xmlns:model="clr-namespace:YourVitebskApp.Models"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="YourVitebskApp.Views.NewsPage"
              Title="Новости">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout Padding="0">
-            <ListView x:Name="NewsListView" ItemsSource="{Binding NewsList}" ItemTapped="OnItemTapped" SeparatorColor="Transparent" HasUnevenRows="True" SeparatorVisibility="None" >
+            <ListView 
+                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                ItemsSource="{Binding NewsList}"
+                RefreshCommand="{Binding RefreshCommand}"
+                SeparatorVisibility="None"
+                HasUnevenRows="True"
+                CachingStrategy="RecycleElement"
+                IsPullToRefreshEnabled="True">
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior 
+                        EventName="ItemTapped" 
+                        Command="{Binding ItemTappedCommand}" 
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                </ListView.Behaviors>
                 <ListView.ItemTemplate>
-                    <DataTemplate>
+                    <DataTemplate x:DataType="model:News">
                         <ViewCell>
-                            <ViewCell.View>
-                                <StackLayout Padding="0" BackgroundColor="Transparent" Margin="20,10,20,10">
-                                    <Grid>
-                                        <Grid.RowDefinitions>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                            <RowDefinition Height="*"/>
-                                        </Grid.RowDefinitions>
-                                    </Grid>
-                                    <Frame CornerRadius="20" HasShadow="False">
-                                        <StackLayout BackgroundColor="Transparent">
-                                            <Image Source="{Binding Image}" Grid.Row="0" HeightRequest="250" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
-                                            <Label Text="{Binding Title}" Grid.Row="1" FontSize="Title" />
-                                            <Label Text="{Binding Description}" Grid.Row="2" FontSize="Subtitle" />
-                                        </StackLayout>
-                                    </Frame>
-                                </StackLayout>
-                            </ViewCell.View>
+                            <StackLayout Padding="0" BackgroundColor="Transparent" Margin="20,10,20,10">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                        <RowDefinition Height="*"/>
+                                    </Grid.RowDefinitions>
+                                </Grid>
+                                <Frame CornerRadius="20" HasShadow="False">
+                                    <StackLayout BackgroundColor="Transparent">
+                                        <Image Source="logo.png" Grid.Row="0" HeightRequest="250" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                                        <Label Text="{Binding Title}" Grid.Row="1" FontSize="Title" />
+                                        <Label Text="{Binding Description}" Grid.Row="2" FontSize="Subtitle" />
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
                         </ViewCell>
                     </DataTemplate>
                 </ListView.ItemTemplate>
