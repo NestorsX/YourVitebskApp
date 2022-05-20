@@ -5,7 +5,7 @@
              xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              x:Class="YourVitebskApp.Views.CafesPage"
-             Title="Рестораны">
+             Title="Заведения">
     <ContentPage.Resources>
         <ResourceDictionary>
             <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
@@ -31,21 +31,23 @@
                         <ViewCell>
                             <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
                                 <Frame CornerRadius="20">
-                                    <StackLayout Padding="5" BackgroundColor="Transparent">
+                                    <StackLayout Padding="0" BackgroundColor="Transparent">
                                         <Grid>
                                             <Grid.RowDefinitions>
                                                 <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="*"/>
-                                                <RowDefinition Height="*"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="Auto" />
                                                 <ColumnDefinition Width="*" />
                                             </Grid.ColumnDefinitions>
-                                            <Image Source="logo.png" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" HeightRequest="120" WidthRequest="120" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit" />
-                                            <Label Text="{Binding Title}" Grid.Column="1" Grid.Row="0" FontSize="Title" />
-                                            <Label Text="{Binding Rating}" Grid.Column="1" Grid.Row="1" FontSize="Subtitle" />
-                                            <Label Text="{Binding Address}" Grid.Column="1" Grid.Row="2" FontSize="Subtitle" />
+                                            <Image Source="logo.png" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" HeightRequest="130" WidthRequest="130" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit" />
+                                            <Label Text="{Binding CafeType}" Grid.Column="1" Grid.Row="0" FontSize="Medium" FontAttributes="Bold" />
+                                            <Label Text="{Binding Title}" Grid.Column="1" Grid.Row="1" FontSize="Medium" FontAttributes="Bold" />
+                                            <Label Text="{Binding Rating}" Grid.Column="1" Grid.Row="2" FontSize="Medium" />
+                                            <Label Text="{Binding Address}" Grid.Column="1" Grid.Row="3" FontSize="Medium" />
                                         </Grid>
                                     </StackLayout>
                                 </Frame>

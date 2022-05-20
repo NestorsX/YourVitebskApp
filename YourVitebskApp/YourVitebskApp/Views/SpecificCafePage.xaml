@@ -7,26 +7,27 @@
     <ContentPage.Content>
         <ScrollView>
             <StackLayout>
-                <StackLayout Orientation="Horizontal" Padding="0" HorizontalOptions="Center">
-                    <Label Text="{Binding CafeType}" FontSize="28"/>
-                    <Label Text="{Binding Title}" FontSize="28"/>
-                </StackLayout>
+                <Label Text="{Binding CafeType}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <Label Text="{Binding Title}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
                 <StackLayout Orientation="Horizontal" Padding="0">
-                    <Label Text="Рейтинг: " FontSize="Title"/>
+                    <Label Text="Рейтинг: " TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
                     <Label Text="{Binding Rating}" FontSize="Title"/>
                 </StackLayout>
-                <Label Text="О заведении:" FontSize="Title"/>
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="О заведении:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
                 <Label Text="{Binding Description}" />
-                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="2" HorizontalOptions="Fill" Margin="20" />
-                <Label Text="Время работы:" FontSize="Title" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Время работы:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
                 <Label Text="{Binding WorkingTime}" />
-                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="2" HorizontalOptions="Fill" Margin="20" />
-                <Label Text="Узнать больше:" FontSize="Title" />
-                <Label Text="{Binding ExternalLink}" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline" >
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Подробнее:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="Источник" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline" >
                     <Label.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="{Binding ExternalLink}" />
                     </Label.GestureRecognizers>
                 </Label>
+                <BoxView Margin="0,0,0,50" />
             </StackLayout>
         </ScrollView>
     </ContentPage.Content>

@@ -11,7 +11,7 @@ namespace YourVitebskApp.Services
 {
     public class CafeService
     {
-        private const string _url = "http://yourvitebsk.somee.com/api/cafes/cafes/";
+        private const string _url = "http://yourvitebsk.somee.com/api/cafes/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 
@@ -28,14 +28,14 @@ namespace YourVitebskApp.Services
             _client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
         }
 
-        // Получаем список новостей
+        // Получаем список заведений
         public async Task<IEnumerable<Cafe>> Get()
         {
             string response = await _client.GetStringAsync(_url + "all");
             return JsonSerializer.Deserialize<IEnumerable<Cafe>>(response, _options);
         }
 
-        // Получаем новость по id
+        // Получаем заведение по id
         public async Task<Cafe> Get(int id)
         {
             var response = await _client.GetAsync(_url + id);
