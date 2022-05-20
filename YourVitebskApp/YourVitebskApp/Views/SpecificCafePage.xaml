@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:YourVitebskApp.Models" x:DataType="model:Cafe"
+             x:Class="YourVitebskApp.Views.SpecificCafePage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <StackLayout Orientation="Horizontal" Padding="0" HorizontalOptions="Center">
+                    <Label Text="{Binding CafeType}" FontSize="28"/>
+                    <Label Text="{Binding Title}" FontSize="28"/>
+                </StackLayout>
+                <StackLayout Orientation="Horizontal" Padding="0">
+                    <Label Text="Рейтинг: " FontSize="Title"/>
+                    <Label Text="{Binding Rating}" FontSize="Title"/>
+                </StackLayout>
+                <Label Text="О заведении:" FontSize="Title"/>
+                <Label Text="{Binding Description}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="2" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Время работы:" FontSize="Title" />
+                <Label Text="{Binding WorkingTime}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="2" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Узнать больше:" FontSize="Title" />
+                <Label Text="{Binding ExternalLink}" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="{Binding ExternalLink}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
