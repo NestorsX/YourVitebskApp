@@ -30,11 +30,24 @@
                     <DataTemplate x:DataType="model:News">
                         <ViewCell>
                             <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
-                                <Frame CornerRadius="20" HasShadow="False">
-                                    <StackLayout BackgroundColor="Transparent">
-                                        <Image Source="logo.png" HeightRequest="250" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
-                                        <Label Text="{Binding Title}" FontSize="Title" />
-                                        <Label Text="{Binding Description}" FontSize="Subtitle" />
+                                <Frame CornerRadius="20" HasShadow="False" Padding="0">
+                                    <StackLayout Padding="0" BackgroundColor="Transparent">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="auto"/>
+                                                <RowDefinition Height="auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Image Source="news_example.png" Grid.Row="0" Grid.RowSpan="2" HeightRequest="300" HorizontalOptions="Fill" VerticalOptions="Fill" Aspect="AspectFill" />
+                                            <StackLayout BackgroundColor="Transparent" Grid.Row="1" HeightRequest="300">
+                                                <Label Text="{Binding Title}" TextColor="{StaticResource TextColorDark}" FontSize="Medium" FontAttributes="Bold" VerticalOptions="EndAndExpand" />
+                                                <StackLayout.Background>
+                                                    <LinearGradientBrush EndPoint="0,1">
+                                                        <GradientStop Color="#00000080" Offset="0.1" />
+                                                        <GradientStop Color="#000000" Offset="1.0" />
+                                                    </LinearGradientBrush>
+                                                </StackLayout.Background>
+                                            </StackLayout>
+                                        </Grid>
                                     </StackLayout>
                                 </Frame>
                             </StackLayout>
