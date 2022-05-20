@@ -10,10 +10,6 @@ namespace YourVitebskApp.Views
         public ServicesPage()
         {
             InitializeComponent();
-            Routing.RegisterRoute($"//{nameof(TransportShedulePage)}", typeof(TransportShedulePage));
-            Routing.RegisterRoute($"//{nameof(PostersPage)}", typeof(PostersPage));
-            Routing.RegisterRoute($"//{nameof(CafesPage)}", typeof(CafesPage));
-            Routing.RegisterRoute($"//{nameof(VacanciesPage)}", typeof(VacanciesPage));
             BindingContext = new ServicesViewModel();
         }
     }

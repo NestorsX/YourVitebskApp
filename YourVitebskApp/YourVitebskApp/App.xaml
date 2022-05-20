@@ -62,6 +62,7 @@
         <Style TargetType="Frame">
             <Setter Property="BackgroundColor" Value="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}" />
             <Setter Property="Padding" Value="10" />
+            <Setter Property="HasShadow" Value="False" />
         </Style>
 
         <Style TargetType="Label">

@@ -25,7 +25,7 @@
                 </Frame>
                 <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
                     <StackLayout BackgroundColor="Transparent">
-                        <Label Text="Кафе" />
+                        <Label Text="Рестораны" />
                     </StackLayout>
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding GoToCafesCommand}" />
