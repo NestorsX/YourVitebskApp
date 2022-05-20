@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using YourVitebskApp.ViewModels;
 
 namespace YourVitebskApp.Views
 {
@@ -15,6 +16,7 @@ namespace YourVitebskApp.Views
         public PostersPage()
         {
             InitializeComponent();
+            BindingContext = new PostersViewModel();
         }
     }
 }

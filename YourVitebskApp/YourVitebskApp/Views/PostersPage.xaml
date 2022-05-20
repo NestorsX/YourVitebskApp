@@ -1,12 +1,59 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="YourVitebskApp.Views.PostersPage">
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:PostersViewModel"
+             xmlns:model="clr-namespace:YourVitebskApp.Models"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="YourVitebskApp.Views.PostersPage"
+             Title="Афиша">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="0">
+            <ListView 
+                IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                ItemsSource="{Binding PostersList}"
+                RefreshCommand="{Binding RefreshCommand}"
+                SeparatorVisibility="None"
+                HasUnevenRows="True"
+                IsPullToRefreshEnabled="True">
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior 
+                        EventName="ItemTapped" 
+                        Command="{Binding ItemTappedCommand}" 
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Poster">
+                        <ViewCell>
+                            <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
+                                <Frame CornerRadius="20">
+                                    <StackLayout Padding="0" BackgroundColor="Transparent">
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                                <RowDefinition Height="Auto"/>
+                                            </Grid.RowDefinitions>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="Auto" />
+                                                <ColumnDefinition Width="*" />
+                                            </Grid.ColumnDefinitions>
+                                            <Image Source="logo.png" Grid.Column="0" Grid.Row="0" Grid.RowSpan="3" HeightRequest="130" WidthRequest="130" HorizontalOptions="Center" VerticalOptions="Center" Aspect="AspectFit" />
+                                            <Label Text="{Binding Title}" Grid.Column="1" Grid.Row="0" FontSize="Medium" FontAttributes="Bold" />
+                                            <Label Text="{Binding PosterType}" Grid.Column="1" Grid.Row="1" FontSize="Medium" />
+                                            <Label Text="{Binding Address}" Grid.Column="1" Grid.Row="2" FontSize="Medium" />
+                                        </Grid>
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

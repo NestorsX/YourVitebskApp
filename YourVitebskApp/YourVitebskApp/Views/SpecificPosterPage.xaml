@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:YourVitebskApp.Models" x:DataType="model:Poster"
+             x:Class="YourVitebskApp.Views.SpecificPosterPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="{Binding PosterType}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <Label Text="{Binding Title}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Содержание:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
+                <Label Text="{Binding Description}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Когда:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="{Binding DateTime}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Место:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="{Binding Address}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Подробнее:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="Источник" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline" >
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="{Binding ExternalLink}" />
+                    </Label.GestureRecognizers>
+                </Label>
+                <BoxView Margin="0,0,0,50" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
