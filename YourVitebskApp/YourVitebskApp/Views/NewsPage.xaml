@@ -14,12 +14,11 @@
     <ContentPage.Content>
         <StackLayout Padding="0">
             <ListView 
-                IsRefreshing="{Binding IsBusy, Mode=OneWay}"
+                IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
                 ItemsSource="{Binding NewsList}"
                 RefreshCommand="{Binding RefreshCommand}"
                 SeparatorVisibility="None"
                 HasUnevenRows="True"
-                CachingStrategy="RecycleElement"
                 IsPullToRefreshEnabled="True">
                 <ListView.Behaviors>
                     <xct:EventToCommandBehavior 
@@ -30,19 +29,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate x:DataType="model:News">
                         <ViewCell>
-                            <StackLayout Padding="0" BackgroundColor="Transparent" Margin="20,10,20,10">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                        <RowDefinition Height="*"/>
-                                    </Grid.RowDefinitions>
-                                </Grid>
+                            <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
                                 <Frame CornerRadius="20" HasShadow="False">
                                     <StackLayout BackgroundColor="Transparent">
-                                        <Image Source="logo.png" Grid.Row="0" HeightRequest="250" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
-                                        <Label Text="{Binding Title}" Grid.Row="1" FontSize="Title" />
-                                        <Label Text="{Binding Description}" Grid.Row="2" FontSize="Subtitle" />
+                                        <Image Source="logo.png" HeightRequest="250" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                                        <Label Text="{Binding Title}" FontSize="Title" />
+                                        <Label Text="{Binding Description}" FontSize="Subtitle" />
                                     </StackLayout>
                                 </Frame>
                             </StackLayout>

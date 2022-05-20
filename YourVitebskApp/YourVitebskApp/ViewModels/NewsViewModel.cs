@@ -6,6 +6,7 @@ using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
 using YourVitebskApp.Services;
+using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
@@ -13,7 +14,8 @@ namespace YourVitebskApp.ViewModels
     {
         private IEnumerable<News> _newsList;
         private bool _isBusy;
-        private NewsService _newsService;
+        private bool _isRefreshing;
+        private readonly NewsService _newsService;
         public AsyncCommand<News> ItemTappedCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -34,6 +36,16 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _isBusy = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
                 OnPropertyChanged();
             }
         }
@@ -61,15 +73,15 @@ namespace YourVitebskApp.ViewModels
         private async Task ItemTapped(News news)
         {
             IsBusy = true;
-            await Application.Current.MainPage.DisplayAlert("WOW!", news.NewsId.ToString(), "OK");
+            await Shell.Current.GoToAsync($"{nameof(SpecificNewsPage)}?NewsId={news.NewsId}");
             IsBusy = false;
         }
 
         private void Refresh()
         {
-            IsBusy = true;
+            IsRefreshing = true;
             AddData();
-            IsBusy = false;
+            IsRefreshing = false;
         }
     }
 }

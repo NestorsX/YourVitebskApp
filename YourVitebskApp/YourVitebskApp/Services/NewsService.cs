@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -30,15 +31,26 @@ namespace YourVitebskApp.Services
         // Получаем список новостей
         public async Task<IEnumerable<News>> Get()
         {
-            string result = await _client.GetStringAsync(_url + "all");
-            return JsonSerializer.Deserialize<IEnumerable<News>>(result, _options);
+            string response = await _client.GetStringAsync(_url + "all");
+            return JsonSerializer.Deserialize<IEnumerable<News>>(response, _options);
         }
 
         // Получаем новость по id
         public async Task<News> Get(int id)
         {
-            string result = await _client.GetStringAsync(_url + id);
-            return JsonSerializer.Deserialize<News>(result, _options);
+            var response = await _client.GetAsync(_url + id);
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonSerializer.Deserialize<News>(
+                    JsonSerializer.Deserialize<ResponseModel>(
+                        await response.Content.ReadAsStringAsync(),
+                        _options).Content.ToString(), 
+                    _options);
+            }
+            else
+            {
+                throw new ArgumentException(JsonSerializer.Deserialize<ResponseModel>(await response.Content.ReadAsStringAsync(), _options).ErrorMessage);
+            }
         }
     }
 }
