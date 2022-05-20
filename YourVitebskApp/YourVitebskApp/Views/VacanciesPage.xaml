@@ -1,12 +1,51 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="YourVitebskApp.Views.VacanciesPage">
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:VacanciesViewModel"
+             xmlns:model="clr-namespace:YourVitebskApp.Models"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             x:Class="YourVitebskApp.Views.VacanciesPage"
+             Title="Вакансии">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="0">
+            <ListView 
+                IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                ItemsSource="{Binding VacanciesList}"
+                RefreshCommand="{Binding RefreshCommand}"
+                SeparatorVisibility="None"
+                HasUnevenRows="True"
+                IsPullToRefreshEnabled="True">
+                <ListView.Behaviors>
+                    <xct:EventToCommandBehavior 
+                        EventName="ItemTapped" 
+                        Command="{Binding ItemTappedCommand}" 
+                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                </ListView.Behaviors>
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Vacancy">
+                        <ViewCell>
+                            <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
+                                <Frame CornerRadius="20">
+                                    <StackLayout Padding="5" BackgroundColor="Transparent">
+                                        <Label Text="{Binding Title}" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Medium" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="50,10,50,10" />
+                                        <Label Text="{Binding CompanyName}" FontSize="Medium" />
+                                        <Label Text="{Binding Salary}" FontSize="Medium"/>
+                                        <Label Text="{Binding Address}" FontSize="Medium" />
+                                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="50,10,50,10" />
+                                        <Label Text="{Binding PublishDate}" FontSize="Small" HorizontalTextAlignment="Center" />
+                                    </StackLayout>
+                                </Frame>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:YourVitebskApp.Models" x:DataType="model:Vacancy"
+             x:Class="YourVitebskApp.Views.SpecificVacancyPage"
+             Title="{Binding Title}">
+    <ContentPage.Content>
+        <ScrollView>
+            <StackLayout>
+                <Label Text="{Binding Title}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center"/>
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="{Binding CompanyName}" />
+                <Label Text="{Binding Salary}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="{Binding Description}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Требования:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="{Binding Requirements}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Условия:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="{Binding Conditions}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Контакты:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="{Binding Contacts}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Адрес:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="{Binding Address}" />
+                <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                <Label Text="Дата публикации:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                <Label Text="{Binding PublishDate}" />
+                <BoxView Margin="0,0,0,50" />
+            </StackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>
