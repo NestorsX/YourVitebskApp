@@ -16,6 +16,7 @@ namespace YourVitebskApp.Droid
 
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
+            Android.Glide.Forms.Init(this);
             FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
             LoadApplication(new App());
         }

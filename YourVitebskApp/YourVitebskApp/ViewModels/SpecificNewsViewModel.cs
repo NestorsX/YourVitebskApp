@@ -1,34 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
 using YourVitebskApp.Services;
-using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class CafesViewModel : INotifyPropertyChanged
+    internal class SpecificNewsViewModel : INotifyPropertyChanged, IQueryAttributable
     {
-        private IEnumerable<Cafe> _cafesList;
+        private News _news;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
-        private bool _isRefreshing;
-        private readonly CafeService _cafesService;
-        public AsyncCommand<Cafe> ItemTappedCommand { get; }
-        public Command RefreshCommand { get; }
+        private readonly NewsService _newsService;
         public event PropertyChangedEventHandler PropertyChanged;
+        public Command TapCommand { get; set; }
+        public int NewsId { get; set; }
 
-        public IEnumerable<Cafe> CafesList
+        public News News
         {
-            get { return _cafesList; }
+            get { return _news; }
             set
             {
-                _cafesList = value;
+                _news = value;
                 OnPropertyChanged();
             }
         }
@@ -64,31 +60,19 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                _isRefreshing = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public CafesViewModel()
+        public SpecificNewsViewModel()
         {
             IsBusy = true;
-            _cafesService = new CafeService();
-            ItemTappedCommand = new AsyncCommand<Cafe>(ItemTapped);
-            RefreshCommand = new Command(Refresh);
+            _newsService = new NewsService();
+            TapCommand = new Command<string>(async (url) => await Launcher.OpenAsync(url));
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
             IsBusy = false;
         }
 
-        private async void AddData()
+        private async void LoadData()
         {
-            CafesList = await _cafesService.Get();
+            News = await _newsService.Get(NewsId);
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -101,18 +85,14 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async Task ItemTapped(Cafe cafe)
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
-            IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(CafesPage)}/{nameof(SpecificCafePage)}?CafeId={cafe.CafeId}");
-            IsBusy = false;
-        }
-
-        private void Refresh()
-        {
-            IsRefreshing = true;
-            AddData();
-            IsRefreshing = false;
+            if (query.TryGetValue("NewsId", out string param))
+            {
+                int.TryParse(param, out int id);
+                NewsId = id;
+                LoadData();
+            }
         }
     }
 }

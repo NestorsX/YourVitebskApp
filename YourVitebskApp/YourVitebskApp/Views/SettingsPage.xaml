@@ -13,7 +13,6 @@
                     <RadioButton Content="Светлая" IsChecked="{Binding UseLightMode}" VerticalOptions="Center"/>
                 </StackLayout>
             </Frame>
-
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
 using YourVitebskApp.Services;
@@ -15,11 +16,13 @@ namespace YourVitebskApp.ViewModels
         private string _password;
         private string _error;
         private bool _isBusy;
+        private bool _isMainLayoutVisible;
+        private bool _isInternetNotConnected;
         private bool _isError;
         private AuthService _authService;
-        public event PropertyChangedEventHandler PropertyChanged;
         public Command LogInCommand { get; }
         public Command RegisterCommand { get; }
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public string Email
         {
@@ -54,7 +57,26 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public bool isMainLayoutVisible { get; set; }
+        public bool IsMainLayoutVisible 
+        {
+            get { return _isMainLayoutVisible; }
+            set
+            {
+                _isMainLayoutVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsInternetNotConnected
+        {
+            get { return _isInternetNotConnected; }
+            set
+            {
+                _isInternetNotConnected = value;
+                OnPropertyChanged();
+                IsMainLayoutVisible = !IsInternetNotConnected;
+            }
+        }
 
         public bool IsBusy
         {
@@ -62,7 +84,7 @@ namespace YourVitebskApp.ViewModels
             set 
             { 
                 _isBusy = value;
-                isMainLayoutVisible = !_isBusy;
+                IsMainLayoutVisible = !_isBusy;
                 OnPropertyChanged();
             }
         }
@@ -92,13 +114,19 @@ namespace YourVitebskApp.ViewModels
             _authService = new AuthService();
             LogInCommand = new Command(async () => await LogIn());
             RegisterCommand = new Command(async () => await Register());
-            IsError = false;
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             IsBusy = false;
         }
 
-        private void OnPropertyChanged([CallerMemberName]string property = "")
+        private void OnPropertyChanged([CallerMemberName] string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
         private async Task Register()
@@ -110,24 +138,28 @@ namespace YourVitebskApp.ViewModels
 
         private async Task LogIn()
         {
-            IsBusy = true;
-            try
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                string token = await _authService.Login(new UserLoginDTO
+                IsBusy = true;
+                try
                 {
-                    Email = Email,
-                    Password = Password,
-                });
+                    string token = await _authService.Login(new UserLoginDTO
+                    {
+                        Email = Email,
+                        Password = Password,
+                    });
 
-                _authService.SaveUserCreds(token);
-                await Shell.Current.GoToAsync("//Main");
-            }
-            catch (ArgumentException e)
-            {
-                Error = e.Message;
-            }
+                    _authService.SaveUserCreds(token);
+                    await Shell.Current.GoToAsync("//Main");
+                    IsBusy = false;
+                }
+                catch (ArgumentException e)
+                {
+                    Error = e.Message;
+                }
 
-            IsBusy = false;
+                IsBusy = false;
+            }
         }
     }
 }

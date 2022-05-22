@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
 using YourVitebskApp.Services;
@@ -17,6 +18,8 @@ namespace YourVitebskApp.ViewModels
         private string _lastName;
         private string _error;
         private bool _isBusy;
+        private bool _isMainLayoutVisible;
+        private bool _isInternetNotConnected;
         private bool _isError;
         private AuthService _authService;
         public event PropertyChangedEventHandler PropertyChanged;
@@ -102,12 +105,31 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _isBusy = value;
-                isMainLayoutVisible = !_isBusy;
+                IsMainLayoutVisible = !_isBusy;
                 OnPropertyChanged();
             }
         }
 
-        public bool isMainLayoutVisible { get; set; }
+        public bool IsMainLayoutVisible
+        {
+            get { return _isMainLayoutVisible; }
+            set
+            {
+                _isMainLayoutVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsInternetNotConnected
+        {
+            get { return _isInternetNotConnected; }
+            set
+            {
+                _isInternetNotConnected = value;
+                OnPropertyChanged();
+                IsMainLayoutVisible = !IsInternetNotConnected;
+            }
+        }
 
         public bool IsError
         {
@@ -133,13 +155,19 @@ namespace YourVitebskApp.ViewModels
             IsBusy = true;
             _authService = new AuthService();
             RegisterCommand = new Command(async () => await Register());
-            IsError = false;
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             IsBusy = false;
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
         private async Task Register()

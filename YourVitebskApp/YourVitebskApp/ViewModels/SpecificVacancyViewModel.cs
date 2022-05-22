@@ -1,34 +1,29 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
 using YourVitebskApp.Services;
-using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class CafesViewModel : INotifyPropertyChanged
+    public class SpecificVacancyViewModel : INotifyPropertyChanged, IQueryAttributable
     {
-        private IEnumerable<Cafe> _cafesList;
+        private Vacancy _vacancy;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
-        private bool _isRefreshing;
-        private readonly CafeService _cafesService;
-        public AsyncCommand<Cafe> ItemTappedCommand { get; }
-        public Command RefreshCommand { get; }
+        private readonly VacancyService _vacancyService;
         public event PropertyChangedEventHandler PropertyChanged;
+        public int VacancyId { get; set; }
 
-        public IEnumerable<Cafe> CafesList
+        public Vacancy Vacancy
         {
-            get { return _cafesList; }
+            get { return _vacancy; }
             set
             {
-                _cafesList = value;
+                _vacancy = value;
                 OnPropertyChanged();
             }
         }
@@ -64,31 +59,18 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                _isRefreshing = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public CafesViewModel()
+        public SpecificVacancyViewModel()
         {
             IsBusy = true;
-            _cafesService = new CafeService();
-            ItemTappedCommand = new AsyncCommand<Cafe>(ItemTapped);
-            RefreshCommand = new Command(Refresh);
+            _vacancyService = new VacancyService();
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
             IsBusy = false;
         }
 
-        private async void AddData()
+        private async void LoadData()
         {
-            CafesList = await _cafesService.Get();
+            Vacancy = await _vacancyService.Get(VacancyId);
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -101,18 +83,14 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async Task ItemTapped(Cafe cafe)
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
-            IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(CafesPage)}/{nameof(SpecificCafePage)}?CafeId={cafe.CafeId}");
-            IsBusy = false;
-        }
-
-        private void Refresh()
-        {
-            IsRefreshing = true;
-            AddData();
-            IsRefreshing = false;
+            if (query.TryGetValue("VacancyId", out string param))
+            {
+                int.TryParse(param, out int id);
+                VacancyId = id;
+                LoadData();
+            }
         }
     }
 }

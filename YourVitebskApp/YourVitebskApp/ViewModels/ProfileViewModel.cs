@@ -17,6 +17,8 @@ namespace YourVitebskApp.ViewModels
         private string _lastName;
         private string _phoneNumber;
         private bool _isBusy;
+        private bool _isMainLayoutVisible;
+        private bool _isInternetNotConnected;
         public Command UpdateCommand { get; }
         public Command SettingsCommand { get; }
         public Command ExitCommand { get; }
@@ -97,6 +99,27 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public bool IsMainLayoutVisible
+        {
+            get { return _isMainLayoutVisible; }
+            set
+            {
+                _isMainLayoutVisible = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsInternetNotConnected
+        {
+            get { return _isInternetNotConnected; }
+            set
+            {
+                _isInternetNotConnected = value;
+                OnPropertyChanged();
+                IsMainLayoutVisible = !IsInternetNotConnected;
+            }
+        }
+
         public ProfileViewModel()
         {
             IsBusy = true;
@@ -105,12 +128,19 @@ namespace YourVitebskApp.ViewModels
             ExitCommand = new Command(async () => await Exit());
             FirstName = Task.Run(async () => await SecureStorage.GetAsync("FirstName")).Result;
             LastName = Task.Run(async () => await SecureStorage.GetAsync("LastName")).Result;
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
+            IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             IsBusy = false;
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
+        }
+
+        private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
+        {
+            IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
         private async Task Update()

@@ -1,4 +1,5 @@
-﻿using Xamarin.Essentials;
+﻿using System.Collections.Generic;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace YourVitebskApp.Models
@@ -12,7 +13,7 @@ namespace YourVitebskApp.Models
         public string DateTime { get; set; }
         public string Address { get; set; }
         public string ExternalLink { get; set; }
-
-        public Command TapCommand => new Command<string>(async (url) => await Launcher.OpenAsync(url));
+        public string TitleImage { get; set; }
+        public IEnumerable<string> Images { get; set; }
     }
 }

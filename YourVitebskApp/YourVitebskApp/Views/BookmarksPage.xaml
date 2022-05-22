@@ -1,11 +1,37 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="YourVitebskApp.Views.BookmarksPage"
              Title="Закладки">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Страница с закладками" TextColor="Black" />
-        </StackLayout>
+        <AbsoluteLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <forms:AnimationView
+                    Animation="resource://Resources.loading.json?assembly=YourVitebskApp"
+                    AnimationSource="EmbeddedResource"
+                    AutoPlay="True"
+                    RepeatMode="Infinite"
+                    WidthRequest="150"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <StackLayout Padding="0" IsVisible="{Binding IsInternetNotConnected}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <forms:AnimationView
+                    Animation="resource://Resources.disconnect.json?assembly=YourVitebskApp"
+                    AnimationSource="EmbeddedResource"
+                    AutoPlay="True"
+                    RepeatMode="Infinite"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+                <Label Text="Нет интернета" VerticalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="Large" />
+                <Label Text="Проверьте интернет-соединение или перезапустите приложение." FontSize="Medium"  VerticalOptions="Center" HorizontalTextAlignment="Center" />
+            </StackLayout>
+
+            <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
+                <Label Text="Страница с закладками" TextColor="Black" />
+            </StackLayout>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>
