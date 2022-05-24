@@ -1,8 +1,12 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using YourVitebskApp.Models;
 using YourVitebskApp.Services;
 using YourVitebskApp.Views;
 
@@ -10,37 +14,28 @@ namespace YourVitebskApp.ViewModels
 {
     public class ProfileViewModel : INotifyPropertyChanged
     {
-        private string _email;
-        private string _newPassword;
+        private IEnumerable<UsersListItem> _usersList;
         private string _firstName;
-        private string _secondName;
         private string _lastName;
         private string _phoneNumber;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
-        public Command UpdateCommand { get; }
-        public Command SettingsCommand { get; }
-        public Command ExitCommand { get; }
+        private bool _isRefreshing;
+        private UserService _userService;
+        public AsyncCommand UpdateCommand { get; }
+        public AsyncCommand SettingsCommand { get; }
+        public AsyncCommand ExitCommand { get; }
+        public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public string Email
+        public IEnumerable<UsersListItem> UsersList
         {
-            get { return _email; }
+            get { return _usersList; }
             set
             {
-                _email = value;
+                _usersList = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public string NewPassword
-        {
-            get { return _newPassword; }
-            set 
-            { 
-                _newPassword = value; 
-                OnPropertyChanged(); 
             }
         }
 
@@ -51,16 +46,6 @@ namespace YourVitebskApp.ViewModels
             { 
                 _firstName = value; 
                 OnPropertyChanged(); 
-            }
-        }
-
-        public string SecondName
-        {
-            get { return _secondName; }
-            set 
-            {
-                _secondName = value;
-                OnPropertyChanged();
             }
         }
 
@@ -84,18 +69,14 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public string FullName
-        {
-            get { return $"{FirstName} {LastName}"; }
-        }
-
         public bool IsBusy
         {
             get { return _isBusy; }
-            set 
-            { 
-                _isBusy = value; 
-                OnPropertyChanged(); 
+            set
+            {
+                _isBusy = value;
+                IsMainLayoutVisible = !_isBusy;
+                OnPropertyChanged();
             }
         }
 
@@ -120,17 +101,41 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged();
+            }
+        }
+
         public ProfileViewModel()
         {
             IsBusy = true;
-            UpdateCommand = new Command(async () => await Update());
-            SettingsCommand = new Command(async () => await Settings());
-            ExitCommand = new Command(async () => await Exit());
-            FirstName = Task.Run(async () => await SecureStorage.GetAsync("FirstName")).Result;
-            LastName = Task.Run(async () => await SecureStorage.GetAsync("LastName")).Result;
+            _userService = new UserService();
+            UpdateCommand = new AsyncCommand(Update);
+            SettingsCommand = new AsyncCommand(Settings);
+            ExitCommand = new AsyncCommand(Exit);
+            RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
+            AddData();
             IsBusy = false;
+        }
+
+        private async void AddData()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                IsBusy = true;
+                FirstName = await SecureStorage.GetAsync("FirstName");
+                LastName = await SecureStorage.GetAsync("LastName");
+                PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
+                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
+                IsBusy = false;
+            }
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -146,14 +151,14 @@ namespace YourVitebskApp.ViewModels
         private async Task Update()
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"//{nameof(EditProfilePage)}");
+            await Shell.Current.GoToAsync($"{nameof(EditProfilePage)}");
             IsBusy = false;
         }
 
         private async Task Settings()
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"//{nameof(SettingsPage)}");
+            await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
             IsBusy = false;
         }
 
@@ -164,6 +169,13 @@ namespace YourVitebskApp.ViewModels
             Application.Current.MainPage = new AppShell();
             await Shell.Current.GoToAsync("//Login");
             IsBusy = false;
+        }
+
+        private void Refresh()
+        {
+            IsRefreshing = true;
+            AddData();
+            IsRefreshing = false;
         }
     }
 }

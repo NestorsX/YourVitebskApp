@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:ProfileViewModel"
              x:Class="YourVitebskApp.Views.ProfilePage"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
@@ -38,20 +39,63 @@
                 <Frame CornerRadius="20">
                     <StackLayout BackgroundColor="Transparent" Padding="0">
                         <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Frame Padding="0" CornerRadius="100" WidthRequest="100" HeightRequest="100" Grid.Column="0">
-                                <Image Source="logo.png" Aspect="AspectFill" />
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Frame Grid.Row="0" Padding="0" CornerRadius="100" WidthRequest="130" HeightRequest="130" HorizontalOptions="Center">
+                                <Image Source="icon_noavatar.png" Aspect="AspectFill" />
                             </Frame>
-                            <StackLayout Grid.Column="2" BackgroundColor="Transparent">
-                                <Label Text="{Binding FullName}" />
-                                <Button Text="Изменить" BackgroundColor="Gray" Command="{Binding UpdateCommand}"/>
+                            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="0" Grid.Row="1">
+                                <Label Text="{Binding FirstName}" HorizontalOptions="Center" />
+                                <Label Text="{Binding LastName}" HorizontalOptions="Center" />
                             </StackLayout>
+                            <Label Text="{Binding PhoneNumber}" Grid.Row="2" HorizontalOptions="Center" />
+                            <Button Text="Изменить" Grid.Row="3" BackgroundColor="Gray" Command="{Binding UpdateCommand}"/>
                         </Grid>
                     </StackLayout>
                 </Frame>
+                <Label Text="Люди:" FontSize="Large" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" />
+                <StackLayout BackgroundColor="Transparent" Padding="0">
+                    <ListView 
+                                IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                                ItemsSource="{Binding UsersList}"
+                                RefreshCommand="{Binding RefreshCommand}"
+                                SeparatorVisibility="None"
+                                HasUnevenRows="True"
+                                IsPullToRefreshEnabled="True">
+                        <ListView.ItemTemplate>
+                            <DataTemplate x:DataType="model:UsersListItem">
+                                <ViewCell>
+                                    <StackLayout Padding="0" Margin="5">
+                                        <Frame CornerRadius="20">
+                                            <StackLayout Padding="0">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                        <RowDefinition Height="Auto" />
+                                                    </Grid.RowDefinitions>
+                                                    <Frame Grid.Row="0" Padding="0" CornerRadius="100" WidthRequest="130" HeightRequest="130" HorizontalOptions="Center">
+                                                        <Image Source="icon_noavatar.png" Aspect="AspectFill" />
+                                                    </Frame>
+                                                    <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="0" Grid.Row="1">
+                                                        <Label Text="{Binding FirstName}" HorizontalOptions="Center" />
+                                                        <Label Text="{Binding LastName}" HorizontalOptions="Center" />
+                                                    </StackLayout>
+                                                    <Label Text="{Binding PhoneNumber}" Grid.Row="2" HorizontalOptions="Center" />
+                                                </Grid>
+                                            </StackLayout>
+                                        </Frame>
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
             </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>

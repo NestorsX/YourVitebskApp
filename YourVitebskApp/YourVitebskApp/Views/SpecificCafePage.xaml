@@ -36,11 +36,6 @@
                     <StackLayout Padding="0">
                         <Label Text="{Binding Cafe.CafeType}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                         <Label Text="{Binding Cafe.Title}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
-                        <StackLayout Orientation="Horizontal" Padding="0">
-                            <Label Text="Рейтинг: " TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
-                            <Label Text="{Binding Cafe.Rating}" FontSize="Title"/>
-                        </StackLayout>
                         <CarouselView ItemsSource="{Binding Cafe.Images}" HeightRequest="350" IndicatorView="indicatorview" >
                             <CarouselView.ItemTemplate>
                                 <DataTemplate x:DataType="x:String">
@@ -49,11 +44,15 @@
                             </CarouselView.ItemTemplate>
                         </CarouselView>
                         <IndicatorView x:Name="indicatorview" IndicatorColor="Gray" IndicatorSize="10" SelectedIndicatorColor="Black" />
+                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
                         <Label Text="Время работы:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
                         <Label Text="{Binding Cafe.WorkingTime}" />
                         <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
                         <Label Text="О заведении:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
                         <Label Text="{Binding Cafe.Description}" />
+                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                        <Label Text="Адрес:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
+                        <Label Text="{Binding Cafe.Address}" />
                         <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
                         <Label Text="Подробнее:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
                         <Label Text="Источник" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline" >

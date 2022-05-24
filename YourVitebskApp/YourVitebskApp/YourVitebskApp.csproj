@@ -8,11 +8,13 @@
   <ItemGroup>
     <None Remove="Resources\disconnect.json" />
     <None Remove="Resources\loading.json" />
+    <None Remove="Resources\success.json" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="Resources\disconnect.json" />
     <EmbeddedResource Include="Resources\loading.json" />
+    <EmbeddedResource Include="Resources\success.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -41,7 +43,7 @@
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\EditProfilePage.xaml">
-      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+      <Generator>MSBuild:Compile</Generator>
     </EmbeddedResource>
     <EmbeddedResource Update="Views\LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>

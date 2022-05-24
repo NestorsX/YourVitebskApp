@@ -13,7 +13,6 @@ namespace YourVitebskApp.ViewModels
     {
         private string _email;
         private string _password;
-        private string _repeatedPassword;
         private string _firstName;
         private string _lastName;
         private string _error;
@@ -21,7 +20,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isError;
-        private AuthService _authService;
+        private readonly AuthService _authService;
         public event PropertyChangedEventHandler PropertyChanged;
         public Command RegisterCommand { get; }
 
@@ -42,26 +41,10 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _password = value;
-                IsError = false;
-                if (!Password.Equals(RepeatedPassword))
+                Error = "Пароль не должен быть короче 6 символов";
+                if (Password.Length >= 6)
                 {
-                    Error = "Пароли не совпадают";
-                }
-
-                OnPropertyChanged();
-            }
-        }
-
-        public string RepeatedPassword
-        {
-            get { return _repeatedPassword; }
-            set
-            {
-                _repeatedPassword = value;
-                IsError = false;
-                if (!Password.Equals(RepeatedPassword))
-                {
-                    Error = "Пароли не совпадают";
+                    IsError = false;
                 }
 
                 OnPropertyChanged();
@@ -155,8 +138,8 @@ namespace YourVitebskApp.ViewModels
             IsBusy = true;
             _authService = new AuthService();
             RegisterCommand = new Command(async () => await Register());
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsBusy = false;
         }
 
@@ -172,29 +155,32 @@ namespace YourVitebskApp.ViewModels
 
         private async Task Register()
         {
-            IsBusy = true;
-            try
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                var user = new UserRegisterDTO
+                IsBusy = true;
+                try
                 {
-                    Email = Email,
-                    Password = Password,
-                    FirstName = FirstName,
-                    SecondName = null,
-                    LastName = LastName,
-                    PhoneNumber = null
-                };
+                    var user = new UserRegisterDTO
+                    {
+                        Email = Email,
+                        Password = Password,
+                        FirstName = FirstName,
+                        SecondName = null,
+                        LastName = LastName,
+                        PhoneNumber = null
+                    };
 
-                string token = await _authService.Register(user);
-                _authService.SaveUserCreds(token);
-                await Shell.Current.GoToAsync("//Main");
-            }
-            catch (ArgumentException e)
-            {
-                Error = e.Message;
-            }
+                    string token = await _authService.Register(user);
+                    _authService.SaveUserCreds(token);
+                    await Shell.Current.GoToAsync("//Main");
+                }
+                catch (ArgumentException e)
+                {
+                    Error = e.Message;
+                }
 
-            IsBusy = false;
+                IsBusy = false;
+            }
         }
     }
 }

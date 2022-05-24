@@ -63,7 +63,6 @@
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
@@ -72,8 +71,7 @@
                                                 <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" WidthRequest="130" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit" />
                                                 <Label Text="{Binding CafeType}" Grid.Column="1" Grid.Row="0" FontSize="Medium" FontAttributes="Bold" />
                                                 <Label Text="{Binding Title}" Grid.Column="1" Grid.Row="1" FontSize="Medium" FontAttributes="Bold" />
-                                                <Label Text="{Binding Rating}" Grid.Column="1" Grid.Row="2" FontSize="Medium" />
-                                                <Label Text="{Binding Address}" Grid.Column="1" Grid.Row="3" FontSize="Medium" />
+                                                <Label Text="{Binding Address}" Grid.Column="1" Grid.Row="2" FontSize="Medium" />
                                             </Grid>
                                         </StackLayout>
                                     </Frame>

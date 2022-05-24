@@ -11,8 +11,6 @@ namespace YourVitebskApp.Views
         {
             InitializeComponent();
             BindingContext = new ProfileViewModel();
-            Routing.RegisterRoute("//SettingsPage", typeof(SettingsPage));
-            Routing.RegisterRoute("//EditProfilePage", typeof(EditProfilePage));
         }
     }
 }

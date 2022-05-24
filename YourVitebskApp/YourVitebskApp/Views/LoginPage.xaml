@@ -31,7 +31,7 @@
                 <Label Text="Проверьте интернет-соединение или перезапустите приложение." FontSize="Medium"  VerticalOptions="Center" HorizontalTextAlignment="Center" />
             </StackLayout>
 
-            <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
+            <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" Padding="20" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand">
                 <StackLayout VerticalOptions="Center">
                     <Image Source="logo.png" WidthRequest="150" HeightRequest="150"/>
                     <Frame Margin="0,50,0,0">

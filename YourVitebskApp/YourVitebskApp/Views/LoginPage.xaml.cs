@@ -1,8 +1,5 @@
-﻿using YourVitebskApp.Services;
-using System;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using YourVitebskApp.Models;
 using YourVitebskApp.ViewModels;
 
 namespace YourVitebskApp.Views
@@ -13,7 +10,6 @@ namespace YourVitebskApp.Views
         public LoginPage()
         {
             InitializeComponent();
-            Routing.RegisterRoute("//RegisterPage", typeof(RegisterPage));
             BindingContext = new LoginViewModel();
         }
     }

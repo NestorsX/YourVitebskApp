@@ -19,7 +19,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isError;
-        private AuthService _authService;
+        private readonly AuthService _authService;
         public Command LogInCommand { get; }
         public Command RegisterCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -114,8 +114,8 @@ namespace YourVitebskApp.ViewModels
             _authService = new AuthService();
             LogInCommand = new Command(async () => await LogIn());
             RegisterCommand = new Command(async () => await Register());
-            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
+            Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsBusy = false;
         }
 
@@ -132,7 +132,7 @@ namespace YourVitebskApp.ViewModels
         private async Task Register()
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"//{nameof(RegisterPage)}");
+            await Shell.Current.GoToAsync($"{nameof(RegisterPage)}");
             IsBusy = false;
         }
 

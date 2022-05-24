@@ -24,6 +24,7 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _isBusy = value;
+                IsMainLayoutVisible = !_isBusy;
                 OnPropertyChanged();
             }
         }

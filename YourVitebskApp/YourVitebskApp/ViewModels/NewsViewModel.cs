@@ -39,6 +39,7 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _isBusy = value;
+                IsMainLayoutVisible = !_isBusy;
                 OnPropertyChanged();
             }
         }
@@ -88,9 +89,12 @@ namespace YourVitebskApp.ViewModels
 
         private async void AddData()
         {
-            IsBusy = true;
-            NewsList = await _newsService.Get();
-            IsBusy = false;
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                IsBusy = true;
+                NewsList = await _newsService.Get();
+                IsBusy = false;
+            }
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")

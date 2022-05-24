@@ -8,6 +8,9 @@ namespace YourVitebskApp
         public AppShell()
         {
             InitializeComponent();
+            Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(EditProfilePage), typeof(EditProfilePage));
+            Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute(nameof(SpecificNewsPage), typeof(SpecificNewsPage));
             Routing.RegisterRoute($"{nameof(ServicesPage)}/{nameof(TransportShedulePage)}", typeof(TransportShedulePage));
             Routing.RegisterRoute($"{nameof(ServicesPage)}/{nameof(PostersPage)}", typeof(PostersPage));

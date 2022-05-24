@@ -1,8 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:EditProfileViewModel"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
-             x:Class="YourVitebskApp.Views.EditProfilePage">
+             x:Class="YourVitebskApp.Views.EditProfilePage"
+             Title="Редактирование профиля">
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
@@ -28,10 +30,61 @@
                 <Label Text="Проверьте интернет-соединение или перезапустите приложение." FontSize="Medium"  VerticalOptions="Center" HorizontalTextAlignment="Center" />
             </StackLayout>
 
+            <StackLayout Padding="0" IsVisible="{Binding IsSuccess}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <forms:AnimationView
+                    Animation="resource://Resources.success.json?assembly=YourVitebskApp"
+                    AnimationSource="EmbeddedResource"
+                    AutoPlay="True"
+                    RepeatMode="Infinite"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+                <Label Text="Отлично!" VerticalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="Large" />
+                <Label Text="Данные вашего профиля обновлены." FontSize="Medium"  VerticalOptions="Center" HorizontalTextAlignment="Center" />
+            </StackLayout>
+
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
-                <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+                <ScrollView>
+                    <StackLayout Padding="0">
+                        <Frame Padding="0" CornerRadius="100" WidthRequest="130" HeightRequest="130" HorizontalOptions="Center" Margin="0,0,0,30">
+                            <Image Source="icon_noavatar.png" Aspect="AspectFill" />
+                        </Frame>
+                        <Label Text="{Binding DisplayMessage}" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="{Binding IsError}" />
+                        <Label Text="Личные данные:" HorizontalTextAlignment="Center" FontSize="Large" />
+                        <Frame CornerRadius="20">
+                            <StackLayout>
+                                <Label Text="Email*" FontSize="Medium"/>
+                                <Entry Text="{Binding Email}" Placeholder="Email" Keyboard="Email" />
+                                <Label Text="Имя*" FontSize="Medium"/>
+                                <Entry Text="{Binding FirstName}" Placeholder="Имя" />
+                                <Label Text="Фамилия*" FontSize="Medium"/>
+                                <Entry Text="{Binding LastName}" Placeholder="Фамилия" />
+                                <Label Text="Номер телефона" FontSize="Medium"/>
+                                <Entry Text="{Binding PhoneNumber}" Placeholder="+375(##)###-##-##" />
+                            </StackLayout>
+                        </Frame>
+                        <Label Text="Смена пароля:" HorizontalTextAlignment="Center" FontSize="Large" />
+                        <Frame CornerRadius="20">
+                            <StackLayout>
+                                <Label Text="Старый пароль" FontSize="Medium"/>
+                                <Entry Text="{Binding OldPassword}" Placeholder="Старый пароль" IsPassword="True" />
+                                <Label Text="Новый пароль" FontSize="Medium"/>
+                                <Entry Text="{Binding NewPassword}" Placeholder="Новый пароль" IsPassword="True" />
+                            </StackLayout>
+                        </Frame>
+                        <Label Text="Видимость для других пользователей:" HorizontalTextAlignment="Center" FontSize="Large" />
+                        <Frame CornerRadius="20">
+                            <StackLayout>
+                                <Picker Title="Выберите" SelectedItem="{Binding IsVisible}">
+                                    <Picker.Items>
+                                        <x:String>Да</x:String>
+                                        <x:String>Нет</x:String>
+                                    </Picker.Items>
+                                </Picker>
+                            </StackLayout>
+                        </Frame>
+                        <Button Text="Обновить" Command="{Binding UpdateCommand}"/>
+                    </StackLayout>
+                </ScrollView>
             </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>

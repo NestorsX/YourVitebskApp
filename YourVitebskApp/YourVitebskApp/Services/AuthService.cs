@@ -35,9 +35,9 @@ namespace YourVitebskApp.Services
             await SecureStorage.SetAsync("UserId", jwtSecurityToken.Claims.First(x => x.Type == "UserId").Value);
             await SecureStorage.SetAsync("Email", jwtSecurityToken.Claims.First(x => x.Type == "Email").Value);
             await SecureStorage.SetAsync("FirstName", jwtSecurityToken.Claims.First(x => x.Type == "FirstName").Value);
-            await SecureStorage.SetAsync("SecondName", jwtSecurityToken.Claims.First(x => x.Type == "SecondName").Value);
             await SecureStorage.SetAsync("LastName", jwtSecurityToken.Claims.First(x => x.Type == "LastName").Value);
             await SecureStorage.SetAsync("PhoneNumber", jwtSecurityToken.Claims.First(x => x.Type == "PhoneNumber").Value);
+            await SecureStorage.SetAsync("IsVisible", jwtSecurityToken.Claims.First(x => x.Type == "IsVisible").Value);
             await SecureStorage.SetAsync("Expires", jwtSecurityToken.Claims.First(x => x.Type == "exp").Value);
         }
 
@@ -59,6 +59,20 @@ namespace YourVitebskApp.Services
         public async Task<string> Register(UserRegisterDTO registerCreds)
         {
             var response = await _client.PostAsync(_url + "register/", new StringContent(JsonSerializer.Serialize(registerCreds), Encoding.UTF8, "application/json"));
+            if (response.IsSuccessStatusCode)
+            {
+                return JsonSerializer.Deserialize<ResponseModel>(await response.Content.ReadAsStringAsync(), _options).Content.ToString();
+            }
+            else
+            {
+                throw new ArgumentException(JsonSerializer.Deserialize<ResponseModel>(await response.Content.ReadAsStringAsync(), _options).ErrorMessage);
+            }
+        }
+
+        // Редактирование данных пользователя и получение актуального токена
+        public async Task<string> Update(User user)
+        {
+            var response = await _client.PostAsync(_url + "update/", new StringContent(JsonSerializer.Serialize(user), Encoding.UTF8, "application/json"));
             if (response.IsSuccessStatusCode)
             {
                 return JsonSerializer.Deserialize<ResponseModel>(await response.Content.ReadAsStringAsync(), _options).Content.ToString();
