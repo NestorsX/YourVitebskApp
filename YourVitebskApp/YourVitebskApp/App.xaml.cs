@@ -6,7 +6,6 @@ namespace YourVitebskApp
 {
     public partial class App : Application
     {
-
         public App()
         {
             InitializeComponent();

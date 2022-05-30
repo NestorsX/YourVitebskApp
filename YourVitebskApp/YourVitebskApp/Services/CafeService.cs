@@ -11,7 +11,7 @@ namespace YourVitebskApp.Services
 {
     public class CafeService
     {
-        private const string _url = "http://yourvitebsk.somee.com/api/cafes/";
+        private const string _url = AppSettings.BaseApiUrl + "cafes/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 

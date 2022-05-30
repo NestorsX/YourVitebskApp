@@ -73,8 +73,8 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _isInternetNotConnected = value;
-                OnPropertyChanged();
                 IsMainLayoutVisible = !IsInternetNotConnected;
+                OnPropertyChanged();
             }
         }
 

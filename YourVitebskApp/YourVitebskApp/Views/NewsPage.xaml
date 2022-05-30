@@ -15,8 +15,8 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout>
-            <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
-                <forms:AnimationView
+            <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
+                    <forms:AnimationView
                     Animation="resource://Resources.loading.json?assembly=YourVitebskApp"
                     AnimationSource="EmbeddedResource"
                     AutoPlay="True"
@@ -40,17 +40,17 @@
 
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
                 <ListView 
-                                IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
-                                ItemsSource="{Binding NewsList}"
-                                RefreshCommand="{Binding RefreshCommand}"
-                                SeparatorVisibility="None"
-                                HasUnevenRows="True"
-                                IsPullToRefreshEnabled="True">
+                    IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                    ItemsSource="{Binding NewsList}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    SeparatorVisibility="None"
+                    HasUnevenRows="True"
+                    IsPullToRefreshEnabled="True">
                     <ListView.Behaviors>
                         <xct:EventToCommandBehavior 
-                                    EventName="ItemTapped" 
-                                    Command="{Binding ItemTappedCommand}" 
-                                    EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                            EventName="ItemTapped" 
+                            Command="{Binding ItemTappedCommand}" 
+                            EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
                     </ListView.Behaviors>
                     <ListView.ItemTemplate>
                         <DataTemplate x:DataType="model:News">

@@ -12,7 +12,7 @@ namespace YourVitebskApp.Services
 {
     public class AuthService
     {
-        private const string _url = "http://yourvitebsk.somee.com/api/auth/";
+        private const string _url = AppSettings.BaseApiUrl + "auth/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 

@@ -10,7 +10,7 @@ namespace YourVitebskApp.Services
 {
     public class UserService
     {
-        private const string _url = "http://yourvitebsk.somee.com/api/users/all/";
+        private const string _url = AppSettings.BaseApiUrl + "users/all/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
         public UserService()

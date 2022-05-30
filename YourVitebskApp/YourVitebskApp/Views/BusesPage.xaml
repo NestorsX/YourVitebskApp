@@ -1,9 +1,17 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:BusesViewModel"
+             xmlns:model="clr-namespace:YourVitebskApp.Models"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
-             x:Class="YourVitebskApp.Views.TransportShedulePage"
-             Title="Транспорт">
+             x:Class="YourVitebskApp.Views.BusesPage"
+             Title="Автобусы">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
@@ -30,6 +38,31 @@
             </StackLayout>
 
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
+                <ListView 
+                    IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                    ItemsSource="{Binding BusesList}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    SeparatorVisibility="None"
+                    HasUnevenRows="True"
+                    IsPullToRefreshEnabled="True">
+                    <ListView.Behaviors>
+                        <xct:EventToCommandBehavior 
+                            EventName="ItemTapped" 
+                            Command="{Binding ItemTappedCommand}" 
+                            EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
+                    </ListView.Behaviors>
+                    <ListView.ItemTemplate>
+                        <DataTemplate x:DataType="model:Bus">
+                            <ViewCell>
+                                <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
+                                    <Frame CornerRadius="20">
+                                        <Label Text="{Binding Number}" FontSize="Medium" FontAttributes="Bold" />
+                                    </Frame>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>

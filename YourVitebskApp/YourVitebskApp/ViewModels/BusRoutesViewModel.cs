@@ -11,24 +11,25 @@ using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class NewsViewModel : INotifyPropertyChanged
+    public class BusRoutesViewModel : INotifyPropertyChanged, IQueryAttributable
     {
-        private IEnumerable<News> _newsList;
+        private IEnumerable<BusRoute> _busRoutesList;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
-        private readonly NewsService _newsService;
-        public AsyncCommand<News> ItemTappedCommand { get; }
+        private readonly BusService _busService;
+        public AsyncCommand<BusStop> ItemTappedCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public int BusId { get; set; }
 
-        public IEnumerable<News> NewsList
+        public IEnumerable<BusRoute> BusRoutesList
         {
-            get { return _newsList; }
-            set 
+            get { return _busRoutesList; }
+            set
             {
-                _newsList = value;
+                _busRoutesList = value;
                 OnPropertyChanged();
             }
         }
@@ -76,15 +77,14 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public NewsViewModel()
-        { 
+        public BusRoutesViewModel()
+        {
             IsBusy = true;
-            _newsService = new NewsService();
-            ItemTappedCommand = new AsyncCommand<News>(ItemTapped);
+            _busService = new BusService();
+            ItemTappedCommand = new AsyncCommand<BusStop>(ItemTapped);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
             IsBusy = false;
         }
 
@@ -95,11 +95,11 @@ namespace YourVitebskApp.ViewModels
                 IsBusy = true;
                 try
                 {
-                    NewsList = await _newsService.Get();
+                    BusRoutesList = await _busService.Get(BusId);
                 }
                 catch
                 {
-                    
+
                 }
 
                 IsBusy = false;
@@ -116,10 +116,10 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async Task ItemTapped(News news)
+        private async Task ItemTapped(BusStop busStop)
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(SpecificNewsPage)}?NewsId={news.NewsId}");
+            await Shell.Current.GoToAsync($"{nameof(BusShedulePage)}?BusId={BusId}&BusStopId={busStop.BusStopId}");
             IsBusy = false;
         }
 
@@ -128,6 +128,16 @@ namespace YourVitebskApp.ViewModels
             IsRefreshing = true;
             AddData();
             IsRefreshing = false;
+        }
+
+        public async void ApplyQueryAttributes(IDictionary<string, string> query)
+        {
+            if (query.TryGetValue("BusId", out string param))
+            {
+                int.TryParse(param, out int id);
+                BusId = id;
+                AddData();
+            }
         }
     }
 }

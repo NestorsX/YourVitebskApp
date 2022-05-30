@@ -11,7 +11,7 @@ namespace YourVitebskApp.Services
 {
     public class PosterService
     {
-        private const string _url = "http://yourvitebsk.somee.com/api/posters/";
+        private const string _url = AppSettings.BaseApiUrl + "posters/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 

@@ -11,7 +11,7 @@ namespace YourVitebskApp.Services
 {
     public class VacancyService
     {
-        private const string _url = "http://yourvitebsk.somee.com/api/vacancies/";
+        private const string _url = AppSettings.BaseApiUrl + "vacancies/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 

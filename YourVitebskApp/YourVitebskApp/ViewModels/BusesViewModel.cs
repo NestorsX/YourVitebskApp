@@ -11,24 +11,24 @@ using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class NewsViewModel : INotifyPropertyChanged
+    public class BusesViewModel : INotifyPropertyChanged
     {
-        private IEnumerable<News> _newsList;
+        private IEnumerable<Bus> _busesList;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
-        private readonly NewsService _newsService;
-        public AsyncCommand<News> ItemTappedCommand { get; }
+        private readonly BusService _busService;
+        public AsyncCommand<Bus> ItemTappedCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
-        public IEnumerable<News> NewsList
+        public IEnumerable<Bus> BusesList
         {
-            get { return _newsList; }
-            set 
+            get { return _busesList; }
+            set
             {
-                _newsList = value;
+                _busesList = value;
                 OnPropertyChanged();
             }
         }
@@ -76,11 +76,11 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public NewsViewModel()
-        { 
+        public BusesViewModel()
+        {
             IsBusy = true;
-            _newsService = new NewsService();
-            ItemTappedCommand = new AsyncCommand<News>(ItemTapped);
+            _busService = new BusService();
+            ItemTappedCommand = new AsyncCommand<Bus>(ItemTapped);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
@@ -95,11 +95,11 @@ namespace YourVitebskApp.ViewModels
                 IsBusy = true;
                 try
                 {
-                    NewsList = await _newsService.Get();
+                    BusesList = await _busService.Get();
                 }
                 catch
                 {
-                    
+
                 }
 
                 IsBusy = false;
@@ -116,10 +116,10 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async Task ItemTapped(News news)
+        private async Task ItemTapped(Bus bus)
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(SpecificNewsPage)}?NewsId={news.NewsId}");
+            await Shell.Current.GoToAsync($"{nameof(BusRoutesPage)}?BusId={bus.BusId}");
             IsBusy = false;
         }
 

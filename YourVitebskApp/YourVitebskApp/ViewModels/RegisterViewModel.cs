@@ -165,9 +165,7 @@ namespace YourVitebskApp.ViewModels
                         Email = Email,
                         Password = Password,
                         FirstName = FirstName,
-                        SecondName = null,
-                        LastName = LastName,
-                        PhoneNumber = null
+                        LastName = LastName
                     };
 
                     string token = await _authService.Register(user);

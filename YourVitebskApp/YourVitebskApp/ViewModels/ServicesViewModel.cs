@@ -82,7 +82,7 @@ namespace YourVitebskApp.ViewModels
         private async Task GoToTransportShedule()
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(ServicesPage)}/{nameof(TransportShedulePage)}");
+            await Shell.Current.GoToAsync($"{nameof(ServicesPage)}/{nameof(BusesPage)}");
             IsBusy = false;
         }
 
