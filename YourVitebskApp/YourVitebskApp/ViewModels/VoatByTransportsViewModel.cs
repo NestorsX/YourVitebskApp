@@ -1,35 +1,30 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
-using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
 using YourVitebskApp.Services;
-using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class BusRoutesViewModel : INotifyPropertyChanged, IQueryAttributable
+    public class VoatByTransportsViewModel : INotifyPropertyChanged
     {
-        private IEnumerable<BusRoute> _busRoutesList;
+        private IEnumerable<VoatByTransport> _transportList;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
-        private readonly BusService _busService;
-        public AsyncCommand<BusStop> ItemTappedCommand { get; }
+        private readonly TransportSheduleService _transportSheduleService;
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public int BusId { get; set; }
 
-        public IEnumerable<BusRoute> BusRoutesList
+        public IEnumerable<VoatByTransport> TransportList
         {
-            get { return _busRoutesList; }
+            get { return _transportList; }
             set
             {
-                _busRoutesList = value;
+                _transportList = value;
                 OnPropertyChanged();
             }
         }
@@ -77,14 +72,14 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public BusRoutesViewModel()
+        public VoatByTransportsViewModel()
         {
             IsBusy = true;
-            _busService = new BusService();
-            ItemTappedCommand = new AsyncCommand<BusStop>(ItemTapped);
+            _transportSheduleService = new TransportSheduleService();
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
+            AddData();
             IsBusy = false;
         }
 
@@ -95,7 +90,7 @@ namespace YourVitebskApp.ViewModels
                 IsBusy = true;
                 try
                 {
-                    BusRoutesList = await _busService.Get(BusId);
+                    TransportList = (await _transportSheduleService.GetTransportsInfo()).data;
                 }
                 catch
                 {
@@ -116,28 +111,11 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async Task ItemTapped(BusStop busStop)
-        {
-            IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(BusShedulePage)}?BusId={BusId}&BusStopId={busStop.BusStopId}");
-            IsBusy = false;
-        }
-
         private void Refresh()
         {
             IsRefreshing = true;
             AddData();
             IsRefreshing = false;
-        }
-
-        public async void ApplyQueryAttributes(IDictionary<string, string> query)
-        {
-            if (query.TryGetValue("BusId", out string param))
-            {
-                int.TryParse(param, out int id);
-                BusId = id;
-                AddData();
-            }
         }
     }
 }

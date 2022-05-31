@@ -10,9 +10,9 @@ using Xamarin.Forms.Xaml;
 namespace YourVitebskApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class BusShedulePage : ContentPage
+    public partial class VoatByTransportRoutesPage : ContentPage
     {
-        public BusShedulePage()
+        public VoatByTransportRoutesPage()
         {
             InitializeComponent();
         }
