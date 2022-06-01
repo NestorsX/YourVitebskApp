@@ -1,6 +1,6 @@
 ﻿namespace YourVitebskApp.Models
 {
-    public class VoatByTransport
+    public class VoatByTransportData
     {
         public string id { get; set; }
         public string type { get; set; }

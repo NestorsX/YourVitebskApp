@@ -1,8 +1,4 @@
-﻿using Xamarin.Forms;
-using System.Windows.Input;
-using YourVitebskApp.Views;
-
-namespace YourVitebskApp.Models
+﻿namespace YourVitebskApp.Models
 {
     public class VoatByTransportItem
     {
@@ -12,24 +8,6 @@ namespace YourVitebskApp.Models
         public string ost_id { get; set; }
         public string napr_id { get; set; }
         public string info_marsh { get; set; }
-
-        private Command itemTappedCommand;
-
-        public ICommand ItemTappedCommand
-        {
-            get
-            {
-                if (itemTappedCommand == null)
-                {
-                    itemTappedCommand = new Command<string>(async (key) =>
-                    {
-                        await App.Current.MainPage.DisplayAlert("", key, "ok");
-                        await Shell.Current.GoToAsync($"{nameof(VoatByTransportRoutesPage)}");
-                    });
-                }
-
-                return itemTappedCommand;
-            }
-        }
+        public string vid_tr { get; set; }
     }
 }

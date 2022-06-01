@@ -5,12 +5,12 @@ using YourVitebskApp.ViewModels;
 namespace YourVitebskApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class VoatByTransportRoutesPage : ContentPage
+    public partial class VoatByTransportShedulePage : ContentPage
     {
-        public VoatByTransportRoutesPage()
+        public VoatByTransportShedulePage()
         {
             InitializeComponent();
-            BindingContext = new VoatByTransportRoutesViewModel();
+            BindingContext = new VoatByTransportSheduleViewModel();
         }
     }
 }

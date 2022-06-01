@@ -42,7 +42,7 @@
                     <ScrollView>
                         <StackLayout x:Name="SourceList" BindableLayout.ItemsSource="{Binding TransportList}">
                             <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="model:VoatByTransport">
+                                <DataTemplate x:DataType="model:VoatByTransportData">
                                     <xct:Expander>
                                         <xct:Expander.Header>
                                             <Frame CornerRadius="10">
@@ -58,7 +58,7 @@
                                                                 <Frame CornerRadius="10">
                                                                     <Label Text="{Binding tr_n}" FontSize="Medium" />
                                                                     <Frame.GestureRecognizers>
-                                                                        <TapGestureRecognizer CommandParameter="{Binding mar_id}" Command="{Binding ItemTappedCommand}" />
+                                                                        <TapGestureRecognizer Command="{Binding BindingContext.ItemTappedCommand, Source={x:Reference SourceList}}" CommandParameter="{Binding .}" />
                                                                     </Frame.GestureRecognizers>
                                                                 </Frame>
                                                             </StackLayout>

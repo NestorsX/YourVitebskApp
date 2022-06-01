@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -11,24 +12,37 @@ using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class VoatByTransportsViewModel : INotifyPropertyChanged
+    internal class VoatByTransportRoutesViewModel : INotifyPropertyChanged, IQueryAttributable
     {
-        private IEnumerable<VoatByTransportData> _transportList;
+        private IEnumerable<VoatByRoutesData> _routesList;
+        private string _transportName;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
         private readonly TransportSheduleService _transportSheduleService;
-        public AsyncCommand<VoatByTransportItem> ItemTappedCommand { get; }
+        public AsyncCommand<VoatByTransportStop> ItemTappedCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+        public string TransportId { get; set; }
+        public string TransportType { get; set; }
 
-        public IEnumerable<VoatByTransportData> TransportList
+        public IEnumerable<VoatByRoutesData> RoutesList
         {
-            get { return _transportList; }
+            get { return _routesList; }
             set
             {
-                _transportList = value;
+                _routesList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string TransportName
+        {
+            get { return _transportName; }
+            set
+            {
+                _transportName = value;
                 OnPropertyChanged();
             }
         }
@@ -76,15 +90,14 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public VoatByTransportsViewModel()
+        public VoatByTransportRoutesViewModel()
         {
             IsBusy = true;
             _transportSheduleService = new TransportSheduleService();
-            ItemTappedCommand = new AsyncCommand<VoatByTransportItem>(ItemTapped);
+            ItemTappedCommand = new AsyncCommand<VoatByTransportStop>(ItemTapped);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            LoadData();
             IsBusy = false;
         }
 
@@ -95,7 +108,8 @@ namespace YourVitebskApp.ViewModels
                 IsBusy = true;
                 try
                 {
-                    TransportList = await _transportSheduleService.GetTransportsInfo();
+                    RoutesList = await _transportSheduleService.GetTransportRoutes(TransportId);
+                    TransportName = RoutesList.First().attributes.tr_n;
                 }
                 catch
                 {
@@ -104,6 +118,13 @@ namespace YourVitebskApp.ViewModels
 
                 IsBusy = false;
             }
+        }
+
+        private void Refresh()
+        {
+            IsRefreshing = true;
+            LoadData();
+            IsRefreshing = false;
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -116,17 +137,29 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private void Refresh()
+        public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
-            IsRefreshing = true;
+            if (query.TryGetValue("TransportType", out string param))
+            {
+                TransportType = param;
+            }
+
+            if (query.TryGetValue("TransportId", out param))
+            {
+                TransportId = param;
+            }
+
             LoadData();
-            IsRefreshing = false;
         }
 
-        private async Task ItemTapped(VoatByTransportItem sender)
+        private async Task ItemTapped(VoatByTransportStop sender)
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(VoatByTransportRoutesPage)}?TransportType={sender.vid_tr}&TransportId={sender.mar_id}");
+            await Shell.Current.GoToAsync($"{nameof(VoatByTransportShedulePage)}?" +
+                            $"TransportId={sender.vid_mar_n}&" +
+                            $"DirectionId={sender.napr_id}&" +
+                            $"StopId={sender.ost_id}&" +
+                            $"TransportType={TransportType}");
             IsBusy = false;
         }
     }
