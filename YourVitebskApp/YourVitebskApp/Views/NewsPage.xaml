@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:YourVitebskApp.Controls"
+             xmlns:searchingData="clr-namespace:YourVitebskApp.SearchingData"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:NewsViewModel"
              xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -8,6 +10,31 @@
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="YourVitebskApp.Views.NewsPage"
              Title="Новости">
+    <Shell.SearchHandler>
+        <controls:NewsSearchHandler News="{x:Static searchingData:NewsData.News}"
+            BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
+            Placeholder="Поиск по названию новости" 
+            ShowsResults="true" 
+            DisplayMemberName="Title" 
+            SearchBoxVisibility="Collapsible" >
+            <controls:NewsSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="model:News">
+                    <Grid Padding="5" BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2" />
+                            <ColumnDefinition  />
+                            <ColumnDefinition Width="2" />
+                        </Grid.ColumnDefinitions>
+                        <BoxView Grid.Column="0" Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" VerticalOptions="Fill" />
+                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand">
+                            <Label Text="{Binding Title}" />
+                        </StackLayout>
+                        <BoxView Grid.Column="2" Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" VerticalOptions="Fill" />
+                    </Grid>
+                </DataTemplate>
+            </controls:NewsSearchHandler.ItemTemplate>
+        </controls:NewsSearchHandler>
+    </Shell.SearchHandler>
     <ContentPage.Resources>
         <ResourceDictionary>
             <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />

@@ -84,11 +84,11 @@ namespace YourVitebskApp.ViewModels
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
+            LoadData();
             IsBusy = false;
         }
 
-        private async void AddData()
+        private async void LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -126,7 +126,7 @@ namespace YourVitebskApp.ViewModels
         private void Refresh()
         {
             IsRefreshing = true;
-            AddData();
+            LoadData();
             IsRefreshing = false;
         }
     }
