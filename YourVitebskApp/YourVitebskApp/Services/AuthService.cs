@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
+using YourVitebskApp.Helpers;
 using YourVitebskApp.Models;
 
 namespace YourVitebskApp.Services
@@ -38,6 +39,7 @@ namespace YourVitebskApp.Services
             await SecureStorage.SetAsync("LastName", jwtSecurityToken.Claims.First(x => x.Type == "LastName").Value);
             await SecureStorage.SetAsync("PhoneNumber", jwtSecurityToken.Claims.First(x => x.Type == "PhoneNumber").Value);
             await SecureStorage.SetAsync("IsVisible", jwtSecurityToken.Claims.First(x => x.Type == "IsVisible").Value);
+            await SecureStorage.SetAsync("Image", jwtSecurityToken.Claims.First(x => x.Type == "Image").Value);
             await SecureStorage.SetAsync("Expires", jwtSecurityToken.Claims.First(x => x.Type == "exp").Value);
         }
 
