@@ -12,6 +12,7 @@
             <Color x:Key="ButtonTextColorLight">#ffffff</Color>
             <Color x:Key="ButtonBackgroundColorLight">#DF212C</Color>
             <Color x:Key="ButtonBackgroundDisabledColorLight">gray</Color>
+            <Color x:Key="ControlUnselectedColorLight">#404040</Color>
             <Color x:Key="AccentColorLight">#DF212C</Color>
             <Color x:Key="PlaceholderColorLight">gray</Color>
             <Color x:Key="FrameBackgroudColorLight">#eeeff1</Color>
@@ -24,9 +25,50 @@
             <Color x:Key="ButtonTextColorDark">#ffffff</Color>
             <Color x:Key="ButtonBackgroundColorDark">#DF212C</Color>
             <Color x:Key="ButtonBackgroundDisabledColorDark">gray</Color>
+            <Color x:Key="ControlUnselectedColorDark">#eeeff1</Color>
             <Color x:Key="AccentColorDark">#DF212C</Color>
             <Color x:Key="PlaceholderColorDark">gray</Color>
             <Color x:Key="FrameBackgroudColorDark">#404040</Color>
+
+            
+            <ControlTemplate x:Key="RadioButtonTemplate">
+                <Frame HorizontalOptions="Start" VerticalOptions="Start" CornerRadius="10" WidthRequest="100" HeightRequest="100">
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroupList>
+                            <VisualStateGroup x:Name="CheckedStates">
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter Property="BorderColor" Value="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                                        <Setter TargetName="check" Property="Opacity" Value="1" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <VisualState.Setters>
+                                        <Setter Property="BorderColor" Value="Transparent" />
+                                        <Setter TargetName="check" Property="Opacity" Value="0" />
+                                    </VisualState.Setters>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateGroupList>
+                    </VisualStateManager.VisualStateGroups>
+                    <Grid>
+                        <Grid WidthRequest="16" HeightRequest="16" HorizontalOptions="End" VerticalOptions="Start">
+                            <Ellipse Stroke="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+                                 WidthRequest="16"
+                                 HeightRequest="16"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center" />
+                            <Ellipse x:Name="check"
+                                 Fill="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+                                 WidthRequest="8"
+                                 HeightRequest="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center" />
+                        </Grid>
+                        <ContentPresenter HorizontalOptions="Center" VerticalOptions="End" />
+                    </Grid>
+                </Frame>
+            </ControlTemplate>
         </ResourceDictionary>
 
         <Style TargetType="Button">
@@ -77,6 +119,8 @@
 
         <Style TargetType="RadioButton">
             <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" />
+            <Setter Property="FontSize" Value="Medium" />
+            <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}" />
         </Style>
 
     </Application.Resources>

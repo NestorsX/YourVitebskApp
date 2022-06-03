@@ -1,6 +1,7 @@
 ﻿using System;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using YourVitebskApp.Helpers;
 
 namespace YourVitebskApp
 {
@@ -9,22 +10,6 @@ namespace YourVitebskApp
         public App()
         {
             InitializeComponent();
-            switch (Preferences.Get("CurrentAppTheme", "Default"))
-            {
-                case "Default":
-                    App.Current.UserAppTheme = OSAppTheme.Unspecified;
-                    break;
-                case "Dark":
-                    App.Current.UserAppTheme = OSAppTheme.Dark;
-                    break;
-                case "Light":
-                    App.Current.UserAppTheme = OSAppTheme.Light;
-                    break;
-                default:
-                    App.Current.UserAppTheme = OSAppTheme.Unspecified;
-                    break;
-            }
-
             MainPage = new AppShell();
             Authorize();
         }
@@ -39,14 +24,27 @@ namespace YourVitebskApp
 
         protected override void OnStart()
         {
+            OnResume();
         }
 
         protected override void OnSleep()
         {
+            ThemeSwitcher.SetTheme();
+            RequestedThemeChanged -= App_RequestedThemeChanged;
         }
 
         protected override void OnResume()
         {
+            ThemeSwitcher.SetTheme();
+            RequestedThemeChanged += App_RequestedThemeChanged;
+        }
+
+        private void App_RequestedThemeChanged(object sender, AppThemeChangedEventArgs e)
+        {
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                ThemeSwitcher.SetTheme();
+            });
         }
     }
 }

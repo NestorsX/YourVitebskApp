@@ -1,6 +1,6 @@
-﻿using Xamarin.Essentials;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
+using YourVitebskApp.Helpers;
 
 namespace YourVitebskApp.Views
 {
@@ -10,20 +10,16 @@ namespace YourVitebskApp.Views
         public SettingsPage()
         {
             InitializeComponent();
-
-            switch (Preferences.Get("CurrentAppTheme", "Default"))
+            switch (Settings.Theme)
             {
-                case "Default":
+                case 0:
                     UseDeviceThemeSettings = true;
                     break;
-                case "Dark":
-                    UseDarkMode = true;
-                    break;
-                case "Light":
+                case 1:
                     UseLightMode = true;
                     break;
-                default:
-                    UseDeviceThemeSettings = true;
+                case 2:
+                    UseDarkMode = true;
                     break;
             }
 
@@ -34,59 +30,49 @@ namespace YourVitebskApp.Views
         private bool _useLightMode;
         private bool _useDeviceThemeSettings;
 
-        public bool UseDarkMode
+        public bool UseDeviceThemeSettings
         {
-            get
-            {
-                return _useDarkMode;
-            }
+            get { return _useDeviceThemeSettings; }
             set
             {
-                _useDarkMode = value;
-                if (_useDarkMode)
+                _useDeviceThemeSettings = value;
+                if (_useDeviceThemeSettings)
                 {
-                    UseLightMode = UseDeviceThemeSettings = false;
-                    App.Current.UserAppTheme = OSAppTheme.Dark;
-                    Preferences.Set("CurrentAppTheme", "Dark");
+                    UseDarkMode = UseLightMode = false;
+                    Settings.Theme = 0;
+                    ThemeSwitcher.SetTheme();
                 }
-
             }
         }
 
         public bool UseLightMode
         {
-            get
-            {
-                return _useLightMode;
-            }
+            get { return _useLightMode; }
             set
             {
                 _useLightMode = value;
                 if (_useLightMode)
                 {
                     UseDarkMode = UseDeviceThemeSettings = false;
-                    App.Current.UserAppTheme = OSAppTheme.Light;
-                    Preferences.Set("CurrentAppTheme", "Light");
+                    Settings.Theme = 1;
+                    ThemeSwitcher.SetTheme();
                 }
             }
         }
 
-        public bool UseDeviceThemeSettings
+        public bool UseDarkMode
         {
-            get
-            {
-                return _useDeviceThemeSettings;
-            }
+            get { return _useDarkMode; }
             set
             {
-                _useDeviceThemeSettings =  value;
-                if (_useDeviceThemeSettings)
+                _useDarkMode = value;
+                if (_useDarkMode)
                 {
-                    App.Current.UserAppTheme = OSAppTheme.Unspecified;
-                    Preferences.Set("CurrentAppTheme", "Default");
+                    UseLightMode = UseDeviceThemeSettings = false;
+                    Settings.Theme = 2;
+                    ThemeSwitcher.SetTheme();
                 }
             }
-
         }
     }
 }

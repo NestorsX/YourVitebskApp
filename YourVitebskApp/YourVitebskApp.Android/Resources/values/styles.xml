@@ -3,10 +3,6 @@
 
   <style name="MainTheme" parent="MainTheme.Base">
     <item name="colorPrimaryDark">@android:color/transparent</item>
-    <!-- Пересмотреть colorPrimaryDark - это цвет satatus bar
-          возможно стоит здесь сделать 2 темы (темную и светлую и не будет 
-          проблем с цветом текста в status bar
-     -->
     <item name ="colorAccent">#DF212C</item>
 
     <item name="android:colorPressedHighlight">@android:color/transparent</item>

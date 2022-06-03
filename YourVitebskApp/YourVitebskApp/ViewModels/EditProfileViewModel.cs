@@ -1,22 +1,28 @@
-﻿using System;
+﻿using Plugin.Media;
+using Plugin.Media.Abstractions;
+using System;
 using System.ComponentModel;
+using System.IO;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
+using Xamarin.Forms;
 using YourVitebskApp.Services;
 
 namespace YourVitebskApp.ViewModels
 {
     public class EditProfileViewModel : INotifyPropertyChanged
     {
+        private ImageSource _imageSource;
         private string _email;
         private string _oldPassword;
         private string _newPassword;
         private string _firstName;
         private string _lastName;
         private string _phoneNumber;
+        private byte[] _imageBytes;
         private string _error;
         private string _isVisible;
         private bool _isBusy;
@@ -26,7 +32,18 @@ namespace YourVitebskApp.ViewModels
         private bool _isSuccess;
         private AuthService _authService;
         public AsyncCommand UpdateCommand { get; }
+        public Command PickImageCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ImageSource ImageSource
+        {
+            get { return _imageSource; }
+            set
+            {
+                _imageSource = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string Email
         {
@@ -103,6 +120,16 @@ namespace YourVitebskApp.ViewModels
                     }
                 }
 
+                OnPropertyChanged();
+            }
+        }
+
+        public byte[] ImageBytes
+        {
+            get { return _imageBytes; }
+            set
+            {
+                _imageBytes = value;
                 OnPropertyChanged();
             }
         }
@@ -195,6 +222,7 @@ namespace YourVitebskApp.ViewModels
             IsBusy = true;
             _authService = new AuthService();
             UpdateCommand = new AsyncCommand(Update);
+            PickImageCommand = new Command(PickImage);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             AddData();
@@ -210,6 +238,16 @@ namespace YourVitebskApp.ViewModels
                 FirstName = await SecureStorage.GetAsync("FirstName");
                 LastName = await SecureStorage.GetAsync("LastName");
                 PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
+                if (string.IsNullOrWhiteSpace(await SecureStorage.GetAsync("Image")))
+                {
+                    ImageSource = "icon_noavatar.png";
+                }
+                else
+                {
+                    ImageBytes = Convert.FromBase64String(await SecureStorage.GetAsync("Image"));
+                    ImageSource = ImageSource.FromStream(() => new MemoryStream(ImageBytes));
+                }
+
                 IsVisible = Convert.ToBoolean(Task.Run(async () => await SecureStorage.GetAsync("IsVisible")).Result) == true ? "Да" : "Нет";
                 IsBusy = false;
             }
@@ -239,7 +277,8 @@ namespace YourVitebskApp.ViewModels
                     FirstName = FirstName,
                     LastName = LastName,
                     PhoneNumber = PhoneNumber,
-                    IsVisible = IsVisible == "Да"
+                    IsVisible = string.Equals(IsVisible, "Да"),
+                    Image = ImageBytes
                 });
 
                 _authService.SaveUserCreds(token);
@@ -251,6 +290,50 @@ namespace YourVitebskApp.ViewModels
             }
 
             IsBusy = false;
+        }
+
+        private async void PickImage()
+        {
+            await CrossMedia.Current.Initialize();
+            string action = await Application.Current.MainPage.DisplayActionSheet("", "Отмена", null, "Камера", "Проводник");
+            MediaFile image = null;
+            switch (action)
+            {
+                case "Камера":
+                    if (!CrossMedia.Current.IsCameraAvailable || !CrossMedia.Current.IsTakePhotoSupported)
+                    {
+                        await Application.Current.MainPage.DisplayAlert("Ошибка", "Камера недоступна :(", "OK");
+                        return;
+                    }
+
+                    image = await CrossMedia.Current.TakePhotoAsync(new StoreCameraMediaOptions
+                    {
+                        AllowCropping = true,
+                        CompressionQuality = 92
+                    });
+
+                    break;
+                case "Проводник":
+                    image = await CrossMedia.Current.PickPhotoAsync();
+                    break;
+                default:
+                    break;
+            }
+
+            if (image != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    image.GetStream().CopyTo(memoryStream);
+                    ImageBytes = memoryStream.ToArray();
+                    ImageSource = ImageSource.FromStream(() => new MemoryStream(ImageBytes));
+                    await Application.Current.MainPage.DisplayAlert("", image.Path, "OK");
+                }
+            }
+            else
+            {
+                ImageSource = "icon_noavatar.png";
+            }
         }
     }
 }
