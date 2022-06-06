@@ -11,7 +11,7 @@ namespace YourVitebskApp.Services
 {
     public class UserService
     {
-        private const string _url = AppSettings.BaseApiUrl + "users/all/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/users/all/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
         public UserService()

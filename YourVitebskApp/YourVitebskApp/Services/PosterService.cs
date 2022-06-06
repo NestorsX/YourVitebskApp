@@ -12,7 +12,7 @@ namespace YourVitebskApp.Services
 {
     public class PosterService
     {
-        private const string _url = AppSettings.BaseApiUrl + "posters/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/posters/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 

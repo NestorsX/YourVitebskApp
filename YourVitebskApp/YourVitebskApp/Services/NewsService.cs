@@ -12,7 +12,7 @@ namespace YourVitebskApp.Services
 {
     public class NewsService
     {
-        private const string _url = AppSettings.BaseApiUrl + "news/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/news/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 

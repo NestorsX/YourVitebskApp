@@ -13,7 +13,7 @@ namespace YourVitebskApp.Services
 {
     public class AuthService
     {
-        private const string _url = AppSettings.BaseApiUrl + "auth/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/auth/";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 

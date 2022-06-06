@@ -30,7 +30,7 @@
     <TabBar Route="Main">
         <ShellContent Title="Новости" Route="NewsPage" Icon="icon_news.png" ContentTemplate="{DataTemplate local:NewsPage}" />
         <ShellContent Title="Сервисы" Icon="icon_services.png" ContentTemplate="{DataTemplate local:ServicesPage}" />
-        <ShellContent Title="Закладки" Icon="icon_bookmarks.png" ContentTemplate="{DataTemplate local:BookmarksPage}" />
+        <ShellContent Title="Люди" Icon="icon_people.png" ContentTemplate="{DataTemplate local:PeoplePage}" />
         <ShellContent Title="Профиль" Icon="icon_profile.png" ContentTemplate="{DataTemplate local:ProfilePage}" />
     </TabBar>
 </Shell>

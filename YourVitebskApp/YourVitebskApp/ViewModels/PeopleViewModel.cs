@@ -13,21 +13,15 @@ using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class ProfileViewModel : INotifyPropertyChanged
+    public class PeopleViewModel : INotifyPropertyChanged
     {
         private IEnumerable<UsersListItem> _usersList;
-        private ImageSource _imageSource;
-        private string _firstName;
-        private string _lastName;
-        private string _phoneNumber;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
-        private UserService _userService;
-        public AsyncCommand UpdateCommand { get; }
-        public AsyncCommand SettingsCommand { get; }
-        public AsyncCommand ExitCommand { get; }
+        private readonly UserService _userService;
+        public AsyncCommand<UsersListItem> ItemTappedCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,46 +32,6 @@ namespace YourVitebskApp.ViewModels
             {
                 _usersList = value;
                 OnPropertyChanged();
-            }
-        }
-
-        public ImageSource ImageSource
-        {
-            get { return _imageSource; }
-            set
-            {
-                _imageSource = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string FirstName
-        {
-            get { return _firstName; }
-            set 
-            { 
-                _firstName = value; 
-                OnPropertyChanged(); 
-            }
-        }
-
-        public string LastName
-        {
-            get { return _lastName; }
-            set
-            {
-                _lastName = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public string PhoneNumber
-        {
-            get { return _phoneNumber; }
-            set 
-            { 
-                _phoneNumber = value; 
-                OnPropertyChanged(); 
             }
         }
 
@@ -123,13 +77,11 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public ProfileViewModel()
+        public PeopleViewModel()
         {
             IsBusy = true;
             _userService = new UserService();
-            UpdateCommand = new AsyncCommand(Update);
-            SettingsCommand = new AsyncCommand(Settings);
-            ExitCommand = new AsyncCommand(Exit);
+            ItemTappedCommand = new AsyncCommand<UsersListItem>(DialNumber);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
@@ -142,19 +94,23 @@ namespace YourVitebskApp.ViewModels
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 IsBusy = true;
-                FirstName = await SecureStorage.GetAsync("FirstName");
-                LastName = await SecureStorage.GetAsync("LastName");
-                PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
-                if (string.IsNullOrWhiteSpace(await SecureStorage.GetAsync("Image")))
+                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
+                foreach (var item in UsersList)
                 {
-                    ImageSource = "icon_noavatar.png";
-                }
-                else
-                {
-                    ImageSource = $"{AppSettings.BaseApiUrl}/images/Users/{await SecureStorage.GetAsync("UserId")}/{await SecureStorage.GetAsync("Image")}";
+                    if (string.IsNullOrWhiteSpace(item.Image))
+                    {
+                        item.Image = "icon_noavatar.png";
+                        continue;
+                    }
+
+                    item.Image = $"{AppSettings.BaseApiUrl}/images/Users/{item.UserId}/{item.Image}";
+
+                    if (string.IsNullOrEmpty(item.PhoneNumber))
+                    {
+                        item.PhoneNumber = "Номер телефона не указан";
+                    }
                 }
 
-                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
                 IsBusy = false;
             }
         }
@@ -169,26 +125,14 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async Task Update()
+        public async Task DialNumber(UsersListItem sender)
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(EditProfilePage)}");
-            IsBusy = false;
-        }
+            if (!string.IsNullOrWhiteSpace(sender.PhoneNumber))
+            {
+                await Task.Run(() => PhoneDialer.Open(sender.PhoneNumber));
+            }
 
-        private async Task Settings()
-        {
-            IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
-            IsBusy = false;
-        }
-
-        private async Task Exit()
-        {
-            IsBusy = true;
-            SecureStorage.RemoveAll();
-            Application.Current.MainPage = new AppShell();
-            await Shell.Current.GoToAsync("//Login");
             IsBusy = false;
         }
 

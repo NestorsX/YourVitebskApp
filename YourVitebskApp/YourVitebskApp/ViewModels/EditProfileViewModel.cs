@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
+using YourVitebskApp.Helpers;
 using YourVitebskApp.Services;
 
 namespace YourVitebskApp.ViewModels
@@ -244,8 +245,7 @@ namespace YourVitebskApp.ViewModels
                 }
                 else
                 {
-                    ImageBytes = Convert.FromBase64String(await SecureStorage.GetAsync("Image"));
-                    ImageSource = ImageSource.FromStream(() => new MemoryStream(ImageBytes));
+                    ImageSource = $"{AppSettings.BaseApiUrl}/images/Users/{await SecureStorage.GetAsync("UserId")}/{await SecureStorage.GetAsync("Image")}";
                 }
 
                 IsVisible = Convert.ToBoolean(Task.Run(async () => await SecureStorage.GetAsync("IsVisible")).Result) == true ? "Да" : "Нет";
@@ -327,7 +327,6 @@ namespace YourVitebskApp.ViewModels
                     image.GetStream().CopyTo(memoryStream);
                     ImageBytes = memoryStream.ToArray();
                     ImageSource = ImageSource.FromStream(() => new MemoryStream(ImageBytes));
-                    await Application.Current.MainPage.DisplayAlert("", image.Path, "OK");
                 }
             }
             else
