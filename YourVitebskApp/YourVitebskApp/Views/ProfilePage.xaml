@@ -36,7 +36,7 @@
             </StackLayout>
 
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
-                <Frame CornerRadius="20">
+                <Frame CornerRadius="20" Margin="5">
                     <StackLayout BackgroundColor="Transparent" Padding="0">
                         <Grid>
                             <Grid.RowDefinitions>
