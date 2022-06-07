@@ -15,6 +15,7 @@ namespace YourVitebskApp.ViewModels
     internal class VoatByTransportRoutesViewModel : INotifyPropertyChanged, IQueryAttributable
     {
         private IEnumerable<VoatByRoutesData> _routesList;
+        private IEnumerable<TransportStopSearchingModel> _searchingList;
         private string _transportName;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
@@ -33,6 +34,16 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _routesList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<TransportStopSearchingModel> SearchingList
+        {
+            get { return _searchingList; }
+            set
+            {
+                _searchingList = value;
                 OnPropertyChanged();
             }
         }
@@ -110,6 +121,23 @@ namespace YourVitebskApp.ViewModels
                 {
                     RoutesList = await _transportSheduleService.GetTransportRoutes(TransportId);
                     TransportName = RoutesList.First().attributes.tr_n;
+                    SearchingList = new List<TransportStopSearchingModel>();
+                    foreach (var item in RoutesList)
+                    {
+                        string direction = item.attributes.napr_name;
+                        foreach (var stop in item.attributes.ost)
+                        {
+                            SearchingList = SearchingList.Append(new TransportStopSearchingModel
+                            {
+                                TransportId = stop.vid_mar_n,
+                                DirectionId = stop.napr_id,
+                                TransportStopId = stop.ost_id,
+                                TransportType = TransportType,
+                                DirectionName = direction,
+                                StopName = stop.ost_n
+                            });
+                        }
+                    }
                 }
                 catch
                 {

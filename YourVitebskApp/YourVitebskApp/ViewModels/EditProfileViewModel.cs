@@ -239,16 +239,8 @@ namespace YourVitebskApp.ViewModels
                 FirstName = await SecureStorage.GetAsync("FirstName");
                 LastName = await SecureStorage.GetAsync("LastName");
                 PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
-                if (string.IsNullOrWhiteSpace(await SecureStorage.GetAsync("Image")))
-                {
-                    ImageSource = "icon_noavatar.png";
-                }
-                else
-                {
-                    ImageSource = $"{AppSettings.BaseApiUrl}/images/Users/{await SecureStorage.GetAsync("UserId")}/{await SecureStorage.GetAsync("Image")}";
-                }
-
-                IsVisible = Convert.ToBoolean(Task.Run(async () => await SecureStorage.GetAsync("IsVisible")).Result) == true ? "Да" : "Нет";
+                ImageSource = await SecureStorage.GetAsync("Image");
+                IsVisible = Convert.ToBoolean(await SecureStorage.GetAsync("IsVisible")) ? "Да" : "Нет";
                 IsBusy = false;
             }
         }
@@ -281,6 +273,7 @@ namespace YourVitebskApp.ViewModels
                     Image = ImageBytes
                 });
 
+                SecureStorage.RemoveAll();
                 _authService.SaveUserCreds(token);
                 AddData();
             }

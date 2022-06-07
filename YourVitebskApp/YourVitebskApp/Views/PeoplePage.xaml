@@ -2,12 +2,41 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:controls="clr-namespace:YourVitebskApp.Controls"
              xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:PeopleViewModel"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              x:Class="YourVitebskApp.Views.PeoplePage"
              Title="Люди">
+    <Shell.SearchHandler>
+        <controls:PeopleSearchHandler BindingContext="{Binding UsersList}"
+            TextColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
+            BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
+            Placeholder="Имя, фамилия, номер" 
+            SearchBoxVisibility="Collapsible" >
+            <controls:PeopleSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="model:UsersListItem">
+                    <Grid Padding="5" BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <Frame Grid.Column="0" Padding="0" CornerRadius="100" WidthRequest="100" HeightRequest="100">
+                            <ffimageloading:CachedImage Source="{Binding Image}" Aspect="AspectFill" />
+                        </Frame>
+                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <StackLayout Orientation="Horizontal" Padding="0">
+                                <Label Text="{Binding FirstName}" />
+                                <Label Text="{Binding LastName}" />
+                            </StackLayout>
+                            <Label Text="{Binding PhoneNumber}" />
+                        </StackLayout>
+                    </Grid>
+                </DataTemplate>
+            </controls:PeopleSearchHandler.ItemTemplate>
+        </controls:PeopleSearchHandler>
+    </Shell.SearchHandler>
     <ContentPage.Resources>
         <ResourceDictionary>
             <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />

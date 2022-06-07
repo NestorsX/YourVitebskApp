@@ -1,12 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
 using YourVitebskApp.Views;
 
 namespace YourVitebskApp.Controls
 {
-    public class NewsSearchHandler : SearchHandler
+    internal class PeopleSearchHandler : SearchHandler
     {
         protected override void OnQueryChanged(string oldValue, string newValue)
         {
@@ -18,14 +20,20 @@ namespace YourVitebskApp.Controls
             }
             else
             {
-                ItemsSource = (BindingContext as IEnumerable<News>).Where(x => x.Title.ToLower().Contains(newValue.ToLower())).ToList();
+                ItemsSource = (BindingContext as IEnumerable<UsersListItem>).Where(x =>
+                    x.FirstName.ToLower().Contains(newValue.ToLower()) ||
+                    x.LastName.ToLower().Contains(newValue.ToLower()) ||
+                    x.PhoneNumber.ToLower().Contains(newValue.ToLower())).ToList();
             }
         }
 
         protected override async void OnItemSelected(object item)
         {
             base.OnItemSelected(item);
-            await Shell.Current.GoToAsync($"{nameof(SpecificNewsPage)}?NewsId={((News)item).NewsId}");
+            if (!(item as UsersListItem).PhoneNumber.Equals("Номер телефона не указан"))
+            {
+                await Task.Run(() => PhoneDialer.Open((item as UsersListItem).PhoneNumber));
+            }
         }
 
         protected override void OnUnfocus()

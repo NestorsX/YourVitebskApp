@@ -1,13 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <Application xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:YourVitebskApp.Controls"
              x:Class="YourVitebskApp.App">
     <Application.Resources>
         <ResourceDictionary>
             <!-- Light theme colors -->
-            <Color x:Key="BackgroundColorLight">#fafafa</Color>
+            <Color x:Key="BackgroundColorLight">#ffffff</Color>
             <Color x:Key="TextColorLight">#000000</Color>
-            <Color x:Key="TabBarBackgroundColorLight">#fafafa</Color>
+            <Color x:Key="TabBarBackgroundColorLight">#ffffff</Color>
             <Color x:Key="HeaderTextColorLight">#DF212C</Color>
             <Color x:Key="ButtonTextColorLight">#ffffff</Color>
             <Color x:Key="ButtonBackgroundColorLight">#DF212C</Color>
@@ -15,12 +16,12 @@
             <Color x:Key="ControlUnselectedColorLight">#404040</Color>
             <Color x:Key="AccentColorLight">#DF212C</Color>
             <Color x:Key="PlaceholderColorLight">gray</Color>
-            <Color x:Key="FrameBackgroudColorLight">#eeeff1</Color>
+            <Color x:Key="FrameBackgroudColorLight">#f5f5f7</Color>
 
             <!-- Dark theme colors -->
-            <Color x:Key="BackgroundColorDark">#373737</Color>
+            <Color x:Key="BackgroundColorDark">#0a1214</Color>
             <Color x:Key="TextColorDark">#ffffff</Color>
-            <Color x:Key="TabBarBackgroundColorDark">#373737</Color>
+            <Color x:Key="TabBarBackgroundColorDark">#0a1214</Color>
             <Color x:Key="HeaderTextColorDark">#DF212C</Color>
             <Color x:Key="ButtonTextColorDark">#ffffff</Color>
             <Color x:Key="ButtonBackgroundColorDark">#DF212C</Color>
@@ -28,7 +29,7 @@
             <Color x:Key="ControlUnselectedColorDark">#eeeff1</Color>
             <Color x:Key="AccentColorDark">#DF212C</Color>
             <Color x:Key="PlaceholderColorDark">gray</Color>
-            <Color x:Key="FrameBackgroudColorDark">#404040</Color>
+            <Color x:Key="FrameBackgroudColorDark">#2b3033</Color>
 
             
             <ControlTemplate x:Key="RadioButtonTemplate">

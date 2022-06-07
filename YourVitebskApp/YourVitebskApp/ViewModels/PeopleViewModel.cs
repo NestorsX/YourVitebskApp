@@ -97,14 +97,6 @@ namespace YourVitebskApp.ViewModels
                 UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
                 foreach (var item in UsersList)
                 {
-                    if (string.IsNullOrWhiteSpace(item.Image))
-                    {
-                        item.Image = "icon_noavatar.png";
-                        continue;
-                    }
-
-                    item.Image = $"{AppSettings.BaseApiUrl}/images/Users/{item.UserId}/{item.Image}";
-
                     if (string.IsNullOrEmpty(item.PhoneNumber))
                     {
                         item.PhoneNumber = "Номер телефона не указан";
@@ -128,7 +120,7 @@ namespace YourVitebskApp.ViewModels
         public async Task DialNumber(UsersListItem sender)
         {
             IsBusy = true;
-            if (!string.IsNullOrWhiteSpace(sender.PhoneNumber))
+            if (!sender.PhoneNumber.Equals("Номер телефона не указан"))
             {
                 await Task.Run(() => PhoneDialer.Open(sender.PhoneNumber));
             }

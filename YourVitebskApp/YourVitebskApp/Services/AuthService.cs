@@ -39,7 +39,17 @@ namespace YourVitebskApp.Services
             await SecureStorage.SetAsync("LastName", jwtSecurityToken.Claims.First(x => x.Type == "LastName").Value);
             await SecureStorage.SetAsync("PhoneNumber", jwtSecurityToken.Claims.First(x => x.Type == "PhoneNumber").Value);
             await SecureStorage.SetAsync("IsVisible", jwtSecurityToken.Claims.First(x => x.Type == "IsVisible").Value);
-            await SecureStorage.SetAsync("Image", jwtSecurityToken.Claims.First(x => x.Type == "Image").Value);
+            string image = jwtSecurityToken.Claims.First(x => x.Type == "Image").Value;
+            if (string.IsNullOrEmpty(image))
+            {
+                image = "icon_noavatar.png";
+            }
+            else
+            {
+                image = $"{AppSettings.BaseApiUrl}/images/Users/{await SecureStorage.GetAsync("UserId")}/{image}";
+            }
+
+            await SecureStorage.SetAsync("Image", image);
             await SecureStorage.SetAsync("Expires", jwtSecurityToken.Claims.First(x => x.Type == "exp").Value);
         }
 

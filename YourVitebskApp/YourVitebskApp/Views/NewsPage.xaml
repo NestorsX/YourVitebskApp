@@ -2,7 +2,6 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="clr-namespace:YourVitebskApp.Controls"
-             xmlns:searchingData="clr-namespace:YourVitebskApp.SearchingData"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:NewsViewModel"
              xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -11,25 +10,24 @@
              x:Class="YourVitebskApp.Views.NewsPage"
              Title="Новости">
     <Shell.SearchHandler>
-        <controls:NewsSearchHandler News="{x:Static searchingData:NewsData.News}"
+        <controls:NewsSearchHandler BindingContext="{Binding NewsList}"
+            CancelButtonColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+            TextColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
             BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
-            Placeholder="Поиск по названию новости" 
-            ShowsResults="true" 
-            DisplayMemberName="Title" 
+            PlaceholderColor="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}"
+            Placeholder="Заголовок новости" 
             SearchBoxVisibility="Collapsible" >
             <controls:NewsSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="model:News">
-                    <Grid Padding="5" BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}">
+                    <Grid Padding="5" BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="2" />
-                            <ColumnDefinition  />
-                            <ColumnDefinition Width="2" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <BoxView Grid.Column="0" Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" VerticalOptions="Fill" />
-                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand">
+                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit"  />
+                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
                             <Label Text="{Binding Title}" />
                         </StackLayout>
-                        <BoxView Grid.Column="2" Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" VerticalOptions="Fill" />
                     </Grid>
                 </DataTemplate>
             </controls:NewsSearchHandler.ItemTemplate>
@@ -43,7 +41,7 @@
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
-                    <forms:AnimationView
+                <forms:AnimationView
                     Animation="resource://Resources.loading.json?assembly=YourVitebskApp"
                     AnimationSource="EmbeddedResource"
                     AutoPlay="True"

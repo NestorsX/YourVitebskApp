@@ -6,7 +6,7 @@ using YourVitebskApp.Views;
 
 namespace YourVitebskApp.Controls
 {
-    public class NewsSearchHandler : SearchHandler
+    public class TransportSearchHandler : SearchHandler
     {
         protected override void OnQueryChanged(string oldValue, string newValue)
         {
@@ -18,14 +18,15 @@ namespace YourVitebskApp.Controls
             }
             else
             {
-                ItemsSource = (BindingContext as IEnumerable<News>).Where(x => x.Title.ToLower().Contains(newValue.ToLower())).ToList();
+                ItemsSource = (BindingContext as IEnumerable<TransportSearchingModel>).Where(x =>
+                x.TransportName.ToLower().Contains(newValue.ToLower())).ToList();
             }
         }
 
         protected override async void OnItemSelected(object item)
         {
             base.OnItemSelected(item);
-            await Shell.Current.GoToAsync($"{nameof(SpecificNewsPage)}?NewsId={((News)item).NewsId}");
+            await Shell.Current.GoToAsync($"{nameof(VoatByTransportRoutesPage)}?TransportType={(item as TransportSearchingModel).TransportType}&TransportId={(item as TransportSearchingModel).TransportId}");
         }
 
         protected override void OnUnfocus()

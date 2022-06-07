@@ -102,10 +102,10 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async Task ItemTapped(Vacancy cafe)
+        private async Task ItemTapped(Vacancy obj)
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(VacanciesPage)}/{nameof(SpecificVacancyPage)}?VacancyId={cafe.VacancyId}");
+            await Shell.Current.GoToAsync($"{nameof(VacanciesPage)}/{nameof(SpecificVacancyPage)}?VacancyId={obj.VacancyId}");
             IsBusy = false;
         }
 

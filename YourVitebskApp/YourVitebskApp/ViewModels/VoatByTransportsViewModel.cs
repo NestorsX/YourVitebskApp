@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -14,6 +15,7 @@ namespace YourVitebskApp.ViewModels
     public class VoatByTransportsViewModel : INotifyPropertyChanged
     {
         private IEnumerable<VoatByTransportData> _transportList;
+        private IEnumerable<TransportSearchingModel> _searchingList;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
@@ -29,6 +31,16 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _transportList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public IEnumerable<TransportSearchingModel> SearchingList
+        {
+            get { return _searchingList; }
+            set
+            {
+                _searchingList = value;
                 OnPropertyChanged();
             }
         }
@@ -96,6 +108,20 @@ namespace YourVitebskApp.ViewModels
                 try
                 {
                     TransportList = await _transportSheduleService.GetTransportsInfo();
+                    SearchingList = new List<TransportSearchingModel>();
+                    foreach(var transportType in TransportList)
+                    {
+                        string type = transportType.attributes.vid_tr;
+                        foreach (var transport in transportType.attributes.transpes)
+                        {
+                            SearchingList = SearchingList.Append(new TransportSearchingModel
+                            {
+                                TransportId = transport.mar_id,
+                                TransportType = type,
+                                TransportName = transport.tr_n
+                            });
+                        }
+                    }
                 }
                 catch
                 {

@@ -22,11 +22,11 @@ namespace YourVitebskApp.Helpers
             var e = DependencyService.Get<IEnvironment>();
             if (Application.Current.RequestedTheme == OSAppTheme.Dark)
             {
-                e?.SetStatusBarColorAsync(Color.FromHex("#373737"), false);
+                e?.SetStatusBarColorAsync(Color.FromHex("#0a1214"), false);
             }
             else
             {
-                e?.SetStatusBarColorAsync(Color.FromHex("#fafafa"), true);
+                e?.SetStatusBarColorAsync(Color.FromHex("#ffffff"), true);
             }
         }
     }

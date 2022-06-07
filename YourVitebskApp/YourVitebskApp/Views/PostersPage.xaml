@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:YourVitebskApp.Controls"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:PostersViewModel"
              xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
@@ -8,6 +9,31 @@
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="YourVitebskApp.Views.PostersPage"
              Title="Афиша">
+    <Shell.SearchHandler>
+        <controls:PostersSearchHandler BindingContext="{Binding PostersList}"
+            BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
+            Placeholder="Название, тип или адрес" 
+            ShowsResults="true" 
+            DisplayMemberName="Title" 
+            SearchBoxVisibility="Collapsible" >
+            <controls:PostersSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="model:Poster">
+                    <Grid Padding="5" BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit"  />
+                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label Text="{Binding PosterType}" />
+                            <Label Text="{Binding Title}" />
+                            <Label Text="{Binding Address}" />
+                        </StackLayout>
+                    </Grid>
+                </DataTemplate>
+            </controls:PostersSearchHandler.ItemTemplate>
+        </controls:PostersSearchHandler>
+    </Shell.SearchHandler>
     <ContentPage.Resources>
         <ResourceDictionary>
             <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />

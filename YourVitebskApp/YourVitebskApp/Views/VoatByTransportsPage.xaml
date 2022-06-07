@@ -1,12 +1,32 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:controls="clr-namespace:YourVitebskApp.Controls"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:VoatByTransportsViewModel"
              xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="YourVitebskApp.Views.VoatByTransportsPage"
              Title="Транспорт">
+    <Shell.SearchHandler>
+        <controls:TransportSearchHandler BindingContext="{Binding SearchingList}"
+            BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
+            Placeholder="Тип, номер транспорта" 
+            SearchBoxVisibility="Collapsible" >
+            <controls:TransportSearchHandler.ItemTemplate>
+                <DataTemplate x:DataType="model:TransportSearchingModel">
+                    <Grid Padding="5" BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                            <Label Text="{Binding TransportName}" />
+                        </StackLayout>
+                    </Grid>
+                </DataTemplate>
+            </controls:TransportSearchHandler.ItemTemplate>
+        </controls:TransportSearchHandler>
+    </Shell.SearchHandler>
     <ContentPage.Resources>
         <ResourceDictionary>
             <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />

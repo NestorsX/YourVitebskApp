@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -33,7 +34,13 @@ namespace YourVitebskApp.Services
         public async Task<IEnumerable<Poster>> Get()
         {
             string response = await _client.GetStringAsync(_url + "all");
-            return JsonSerializer.Deserialize<IEnumerable<Poster>>(response, _options);
+            var result = JsonSerializer.Deserialize<IEnumerable<Poster>>(response, _options);
+            foreach (var item in result)
+            {
+                item.TitleImage = $"{AppSettings.BaseApiUrl}/images/Posters/{item.PosterId}/{item.TitleImage}";
+            }
+
+            return result;
         }
 
         // Получаем афишу по id
@@ -42,11 +49,12 @@ namespace YourVitebskApp.Services
             var response = await _client.GetAsync(_url + id);
             if (response.IsSuccessStatusCode)
             {
-                return JsonSerializer.Deserialize<Poster>(
+                var result = JsonSerializer.Deserialize<Poster>(
                     JsonSerializer.Deserialize<ResponseModel>(
-                        await response.Content.ReadAsStringAsync(),
-                        _options).Content.ToString(),
-                    _options);
+                        await response.Content.ReadAsStringAsync(), _options
+                    ).Content.ToString(), _options);
+                result.Images = result.Images.Select(x => $"{AppSettings.BaseApiUrl}/images/Posters/{result.PosterId}/{x}");
+                return result;
             }
             else
             {

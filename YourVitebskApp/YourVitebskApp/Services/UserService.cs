@@ -30,8 +30,14 @@ namespace YourVitebskApp.Services
         // Получаем список пользователей за исключением указанного id
         public async Task<IEnumerable<UsersListItem>> Get(int id)
         {
-            string result = await _client.GetStringAsync(_url + id);
-            return JsonSerializer.Deserialize<IEnumerable<UsersListItem>>(result, _options);
+            string response = await _client.GetStringAsync(_url + id);
+            var result = JsonSerializer.Deserialize<IEnumerable<UsersListItem>>(response, _options);
+            foreach (var item in result)
+            {
+                item.Image = $"{AppSettings.BaseApiUrl}/images/Users/{item.UserId}/{item.Image}";
+            }
+
+            return result;
         }
     }
 }

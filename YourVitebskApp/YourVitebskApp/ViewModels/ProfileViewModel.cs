@@ -25,6 +25,8 @@ namespace YourVitebskApp.ViewModels
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
         private UserService _userService;
+        public AsyncCommand PageAppearingCommand { get; set; }
+        public AsyncCommand PageDisappearingCommand { get; set; }
         public AsyncCommand UpdateCommand { get; }
         public AsyncCommand SettingsCommand { get; }
         public AsyncCommand ExitCommand { get; }
@@ -127,14 +129,25 @@ namespace YourVitebskApp.ViewModels
         {
             IsBusy = true;
             _userService = new UserService();
+            PageAppearingCommand = new AsyncCommand(OnAppearing);
+            PageDisappearingCommand = new AsyncCommand(OnDisappearing);
             UpdateCommand = new AsyncCommand(Update);
             SettingsCommand = new AsyncCommand(Settings);
             ExitCommand = new AsyncCommand(Exit);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
             IsBusy = false;
+        }
+
+        private async Task OnAppearing()
+        {
+            AddData();
+        }
+
+        private async Task OnDisappearing()
+        {
+            
         }
 
         private async void AddData()
@@ -145,15 +158,7 @@ namespace YourVitebskApp.ViewModels
                 FirstName = await SecureStorage.GetAsync("FirstName");
                 LastName = await SecureStorage.GetAsync("LastName");
                 PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
-                if (string.IsNullOrWhiteSpace(await SecureStorage.GetAsync("Image")))
-                {
-                    ImageSource = "icon_noavatar.png";
-                }
-                else
-                {
-                    ImageSource = $"{AppSettings.BaseApiUrl}/images/Users/{await SecureStorage.GetAsync("UserId")}/{await SecureStorage.GetAsync("Image")}";
-                }
-
+                ImageSource = await SecureStorage.GetAsync("Image");
                 UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
                 IsBusy = false;
             }
