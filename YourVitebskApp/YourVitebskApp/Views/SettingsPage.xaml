@@ -11,7 +11,7 @@
                 <RadioButton IsChecked="{Binding UseDeviceThemeSettings}">
                     <RadioButton.Content>
                         <StackLayout>
-                            <Image Source="icon_system.png" xct:IconTintColorEffect.TintColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                            <Image Source="icon_system.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
                             <Label Text="Система" HorizontalOptions="Center" VerticalOptions="End" />
                         </StackLayout>
                     </RadioButton.Content>
@@ -19,7 +19,7 @@
                 <RadioButton IsChecked="{Binding UseDarkMode}" VerticalOptions="Center">
                     <RadioButton.Content>
                         <StackLayout>
-                            <Image Source="icon_night.png" xct:IconTintColorEffect.TintColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                            <Image Source="icon_moon.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
                             <Label Text="Тёмная" HorizontalOptions="Center" VerticalOptions="End" />
                         </StackLayout>
                     </RadioButton.Content>
@@ -27,7 +27,7 @@
                 <RadioButton IsChecked="{Binding UseLightMode}" VerticalOptions="Center">
                     <RadioButton.Content>
                         <StackLayout>
-                            <Image Source="icon_light.png" xct:IconTintColorEffect.TintColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                            <Image Source="icon_sun.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
                             <Label Text="Светлая" HorizontalOptions="Center" VerticalOptions="End" />
                         </StackLayout>
                     </RadioButton.Content>

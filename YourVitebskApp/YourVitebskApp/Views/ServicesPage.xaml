@@ -29,42 +29,48 @@
                 <Label Text="Нет интернета" VerticalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="Large" />
                 <Label Text="Проверьте интернет-соединение или перезапустите приложение." FontSize="Medium"  VerticalOptions="Center" HorizontalTextAlignment="Center" />
             </StackLayout>
-
+            
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
-                <FlexLayout Wrap="Wrap" Direction="Row" JustifyContent="Start" AlignContent="Start" AlignItems="Start">
-                    <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
-                        <StackLayout BackgroundColor="Transparent">
-                            <Label Text="Транспорт" />
-                        </StackLayout>
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToTransportSheduleCommand}" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                    <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
-                        <StackLayout BackgroundColor="Transparent">
-                            <Label Text="Афиша" />
-                        </StackLayout>
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToPostersCommand}" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                    <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
-                        <StackLayout BackgroundColor="Transparent">
-                            <Label Text="Кафе" />
-                        </StackLayout>
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToCafesCommand}" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                    <Frame Padding="0" WidthRequest="120" HeightRequest="120" CornerRadius="20" Margin="10" FlexLayout.Basis="50%" >
-                        <StackLayout BackgroundColor="Transparent">
-                            <Label Text="Вакансии" />
-                        </StackLayout>
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer Command="{Binding GoToVacanciesCommand}" />
-                        </Frame.GestureRecognizers>
-                    </Frame>
-                </FlexLayout>
+                <ScrollView>
+                    <StackLayout>
+                        <Frame Padding="5" CornerRadius="20" Margin="5" >
+                            <StackLayout BackgroundColor="Transparent">
+                                <Image Source="icon_shedule.png" WidthRequest="120" HeightRequest="120" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                                <Label Text="Транспорт" HorizontalOptions="Center" />
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToTransportSheduleCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame Padding="5" CornerRadius="20" Margin="5" >
+                            <StackLayout BackgroundColor="Transparent">
+                                <Image Source="icon_cafe.png" WidthRequest="120" HeightRequest="120" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                                <Label Text="Кафе" HorizontalOptions="Center" />
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToCafesCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame Padding="5" CornerRadius="20" Margin="5" >
+                            <StackLayout BackgroundColor="Transparent">
+                                <Image Source="icon_poster.png" WidthRequest="120" HeightRequest="120" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                                <Label Text="Афиша" HorizontalOptions="Center" />
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToPostersCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                        <Frame Padding="5" CornerRadius="20" Margin="5" >
+                            <StackLayout BackgroundColor="Transparent">
+                                <Image Source="icon_vacancy.png" WidthRequest="120" HeightRequest="120" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                                <Label Text="Вакансии" HorizontalOptions="Center" />
+                            </StackLayout>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding GoToVacanciesCommand}" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </StackLayout>
+                </ScrollView>
             </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>
