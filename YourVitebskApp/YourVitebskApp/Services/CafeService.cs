@@ -13,7 +13,7 @@ namespace YourVitebskApp.Services
 {
     public class CafeService
     {
-        private const string _url = AppSettings.BaseApiUrl + "/api/cafes/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/cafes";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 
@@ -31,9 +31,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список заведений
-        public async Task<IEnumerable<Cafe>> Get()
+        public async Task<IEnumerable<Cafe>> Get(int offset, int count)
         {
-            string response = await _client.GetStringAsync(_url + "all");
+            string response = await _client.GetStringAsync($"{_url}/all?offset={offset}&count={count}");
             var result = JsonSerializer.Deserialize<IEnumerable<Cafe>>(response, _options);
             foreach (var item in result)
             {
@@ -46,7 +46,7 @@ namespace YourVitebskApp.Services
         // Получаем заведение по id
         public async Task<Cafe> Get(int id)
         {
-            var response = await _client.GetAsync(_url + id);
+            var response = await _client.GetAsync($"{_url}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonSerializer.Deserialize<Cafe>(

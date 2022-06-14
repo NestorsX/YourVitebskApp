@@ -1,44 +1,55 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using YourVitebskApp.Models;
 using YourVitebskApp.Services;
-using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
-    public class SpecificCafeViewModel : INotifyPropertyChanged, IQueryAttributable
+    public class AddCommentViewModel : INotifyPropertyChanged, IQueryAttributable
     {
-        private IEnumerable<Comment> _commentsList;
-        private Cafe _cafe;
+        private bool _isRecommend;
+        private bool _isUnrecommend;
+        private string _message;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
-        private readonly CafeService _cafeService;
+        private bool _isRefreshing;
         private readonly CommentService _commentService;
+        public Command SendCommentCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command TapCommand { get; set; }
-        public Command AddCommentCommand { get; set; }
+        public int ServiceId { get; set; }
         public int CafeId { get; set; }
 
-        public IEnumerable<Comment> CommentsList
+        public bool IsRecommend
         {
-            get { return _commentsList; }
+            get { return _isRecommend; }
             set
             {
-                _commentsList = value;
+                _isRecommend = value;
                 OnPropertyChanged();
             }
         }
 
-        public Cafe Cafe
+        public bool IsUnrecommend
         {
-            get { return _cafe; }
+            get { return _isUnrecommend; }
             set
             {
-                _cafe = value;
+                _isUnrecommend = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string Message
+        {
+            get { return _message; }
+            set
+            {
+                _message = value;
                 OnPropertyChanged();
             }
         }
@@ -75,22 +86,24 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public SpecificCafeViewModel()
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public AddCommentViewModel()
         {
             IsBusy = true;
-            _cafeService = new CafeService();
             _commentService = new CommentService();
-            TapCommand = new Command<string>(async (url) => await Launcher.OpenAsync(url));
-            AddCommentCommand = new Command(AddComment);
+            SendCommentCommand = new Command(SendComment);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             IsBusy = false;
-        }
-
-        private async void LoadData()
-        {
-            Cafe = await _cafeService.Get(CafeId);
-            CommentsList = await _commentService.Get(1, CafeId, 0, 10);
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -105,19 +118,37 @@ namespace YourVitebskApp.ViewModels
 
         public void ApplyQueryAttributes(IDictionary<string, string> query)
         {
-            if (query.TryGetValue("CafeId", out string param))
+            if (query.TryGetValue("ServiceId", out string param))
+            {
+                int.TryParse(param, out int id);
+                ServiceId = id;
+            }
+
+            if (query.TryGetValue("CafeId", out param))
             {
                 int.TryParse(param, out int id);
                 CafeId = id;
-                LoadData();
             }
         }
 
-        public async void AddComment()
+        private async void SendComment()
         {
-            IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(SpecificCafePage)}/{nameof(AddCommentPage)}?ServiceId={1}&CafeId={CafeId}");
-            IsBusy = false;
+            IsRefreshing = true;
+            await App.Current.MainPage.DisplayAlert("recommend", IsRecommend.ToString(), "OK");
+            await App.Current.MainPage.DisplayAlert("unrecommend", $"{IsUnrecommend}", "OK");
+            await App.Current.MainPage.DisplayAlert("", $"{ServiceId}", "OK");
+            await App.Current.MainPage.DisplayAlert("", $"{CafeId}", "OK");
+            await _commentService.AddComment(new Models.CommentDTO
+            {
+                UserId = Convert.ToInt32(await SecureStorage.GetAsync("UserId")),
+                ServiceId = ServiceId,
+                ItemId = CafeId,
+                IsRecommend = IsRecommend,
+                Message = Message,
+                PublishDate = DateTime.Now
+            });
+            //
+            IsRefreshing = false;
         }
     }
 }

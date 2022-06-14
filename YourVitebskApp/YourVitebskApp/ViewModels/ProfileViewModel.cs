@@ -159,7 +159,7 @@ namespace YourVitebskApp.ViewModels
                 LastName = await SecureStorage.GetAsync("LastName");
                 PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
                 ImageSource = await SecureStorage.GetAsync("Image");
-                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
+                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")), 0, 5);
                 IsBusy = false;
             }
         }

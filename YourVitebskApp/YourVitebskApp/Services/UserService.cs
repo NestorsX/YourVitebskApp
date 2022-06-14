@@ -11,7 +11,7 @@ namespace YourVitebskApp.Services
 {
     public class UserService
     {
-        private const string _url = AppSettings.BaseApiUrl + "/api/users/all/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/users";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
         public UserService()
@@ -28,9 +28,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список пользователей за исключением указанного id
-        public async Task<IEnumerable<UsersListItem>> Get(int id)
+        public async Task<IEnumerable<UsersListItem>> Get(int id, int offset, int count)
         {
-            string response = await _client.GetStringAsync(_url + id);
+            string response = await _client.GetStringAsync($"{_url}/all/{id}?offset={offset}&count={count}");
             var result = JsonSerializer.Deserialize<IEnumerable<UsersListItem>>(response, _options);
             foreach (var item in result)
             {

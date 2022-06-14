@@ -94,7 +94,7 @@ namespace YourVitebskApp.ViewModels
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
                 IsBusy = true;
-                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
+                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")), 0, 5);
                 foreach (var item in UsersList)
                 {
                     if (string.IsNullOrEmpty(item.PhoneNumber))

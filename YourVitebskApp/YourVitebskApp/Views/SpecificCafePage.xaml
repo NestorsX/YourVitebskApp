@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:model="clr-namespace:YourVitebskApp.Models"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:SpecificCafeViewModel"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
@@ -61,6 +62,34 @@
                             </Label.GestureRecognizers>
                         </Label>
                         <BoxView Margin="0,0,0,50" />
+                        <Button Text="Оставить комментарий" Command="{Binding AddCommentCommand}" />
+                        <Label Text="Комментарии:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                        <StackLayout BindableLayout.ItemsSource="{Binding CommentsList}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="model:Comment">
+                                    <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
+                                        <Frame CornerRadius="20">
+                                            <StackLayout Padding="0" BackgroundColor="Transparent">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="Auto"/>
+                                                        <RowDefinition Height="Auto"/>
+                                                    </Grid.RowDefinitions>
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <Label Text="{Binding PublishDate}" Grid.Column="1" Grid.Row="0" FontSize="Small" FontAttributes="Bold" />
+                                                    <Label Text="{Binding IsRecommend}" Grid.Column="0" Grid.Row="1" FontSize="Medium" FontAttributes="Bold" />
+                                                    <Label Text="{Binding UserFirstName}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="Medium" FontAttributes="Bold" />
+                                                </Grid>
+                                                <Label Text="{Binding Message}" FontSize="Medium" />
+                                            </StackLayout>
+                                        </Frame>
+                                    </StackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </StackLayout>
                     </StackLayout>
                 </ScrollView>
             </StackLayout>

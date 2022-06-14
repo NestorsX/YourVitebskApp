@@ -21,6 +21,8 @@ namespace YourVitebskApp
             Routing.RegisterRoute($"{nameof(PostersPage)}/{nameof(SpecificPosterPage)}", typeof(SpecificPosterPage));
             Routing.RegisterRoute($"{nameof(CafesPage)}/{nameof(SpecificCafePage)}", typeof(SpecificCafePage));
             Routing.RegisterRoute($"{nameof(VacanciesPage)}/{nameof(SpecificVacancyPage)}", typeof(SpecificVacancyPage));
+            Routing.RegisterRoute($"{nameof(SpecificCafePage)}/{nameof(AddCommentPage)}", typeof(AddCommentPage));
+            Routing.RegisterRoute($"{nameof(SpecificPosterPage)}/{nameof(AddCommentPage)}", typeof(AddCommentPage));
         }
     }
 }

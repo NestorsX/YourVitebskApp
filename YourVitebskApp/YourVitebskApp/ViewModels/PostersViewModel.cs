@@ -89,7 +89,7 @@ namespace YourVitebskApp.ViewModels
 
         private async void AddData()
         {
-            PostersList = await _postersService.Get();
+            PostersList = await _postersService.Get(0, 5);
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")

@@ -21,8 +21,8 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit"  />
-                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="150" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit"  />
+                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="Fill" VerticalOptions="Center">
                             <Label Text="{Binding CafeType}" />
                             <Label Text="{Binding Title}" />
                             <Label Text="{Binding Address}" />
@@ -64,12 +64,12 @@
 
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
                 <ListView 
-                IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
-                ItemsSource="{Binding CafesList}"
-                RefreshCommand="{Binding RefreshCommand}"
-                SeparatorVisibility="None"
-                HasUnevenRows="True"
-                IsPullToRefreshEnabled="True">
+                    IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
+                    ItemsSource="{Binding CafesList}"
+                    RefreshCommand="{Binding RefreshCommand}"
+                    SeparatorVisibility="None"
+                    HasUnevenRows="True"
+                    IsPullToRefreshEnabled="True">
                     <ListView.Behaviors>
                         <xct:EventToCommandBehavior 
                         EventName="ItemTapped" 
@@ -93,7 +93,12 @@
                                                     <ColumnDefinition Width="*" />
                                                 </Grid.ColumnDefinitions>
                                                 <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" WidthRequest="130" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit" />
-                                                <Label Text="{Binding CafeType}" Grid.Column="1" Grid.Row="0" FontSize="Medium" FontAttributes="Bold" />
+                                                <StackLayout Grid.Column="1" Grid.Row="0" Orientation="Horizontal" >
+                                                    <Label Text="{Binding CafeType}" FontSize="Medium" FontAttributes="Bold" />
+                                                    <Label Text="{Binding RecommendCount}" TextColor="#01CD42" HorizontalTextAlignment="End" />
+                                                    <Label Text="/" HorizontalTextAlignment="End" />
+                                                    <Label Text="{Binding UnrecommendCount}" TextColor="red" HorizontalTextAlignment="End" />
+                                                </StackLayout>
                                                 <Label Text="{Binding Title}" Grid.Column="1" Grid.Row="1" FontSize="Medium" FontAttributes="Bold" />
                                                 <Label Text="{Binding Address}" Grid.Column="1" Grid.Row="2" FontSize="Medium" />
                                             </Grid>

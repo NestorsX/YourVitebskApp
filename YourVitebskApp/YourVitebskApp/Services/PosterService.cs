@@ -31,9 +31,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список афиш
-        public async Task<IEnumerable<Poster>> Get()
+        public async Task<IEnumerable<Poster>> Get(int offset, int count)
         {
-            string response = await _client.GetStringAsync(_url + "all");
+            string response = await _client.GetStringAsync($"{_url}/all?offset={offset}&count={count}");
             var result = JsonSerializer.Deserialize<IEnumerable<Poster>>(response, _options);
             foreach (var item in result)
             {
@@ -46,7 +46,7 @@ namespace YourVitebskApp.Services
         // Получаем афишу по id
         public async Task<Poster> Get(int id)
         {
-            var response = await _client.GetAsync(_url + id);
+            var response = await _client.GetAsync($"{_url}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonSerializer.Deserialize<Poster>(

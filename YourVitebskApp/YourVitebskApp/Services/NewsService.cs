@@ -13,7 +13,7 @@ namespace YourVitebskApp.Services
 {
     public class NewsService
     {
-        private const string _url = AppSettings.BaseApiUrl + "/api/news/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/news";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 
@@ -31,9 +31,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список новостей
-        public async Task<IEnumerable<News>> Get()
+        public async Task<IEnumerable<News>> Get(int offset, int count)
         {
-            string response = await _client.GetStringAsync(_url + "all");
+            string response = await _client.GetStringAsync($"{_url}/all?offset={offset}&count={count}");
             var result = JsonSerializer.Deserialize<IEnumerable<News>>(response, _options);
             foreach (var item in result)
             {
@@ -46,7 +46,7 @@ namespace YourVitebskApp.Services
         // Получаем новость по id
         public async Task<News> Get(int id)
         {
-            var response = await _client.GetAsync(_url + id);
+            var response = await _client.GetAsync($"{_url}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 var result = JsonSerializer.Deserialize<News>(

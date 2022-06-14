@@ -89,7 +89,7 @@ namespace YourVitebskApp.ViewModels
 
         private async void AddData()
         {
-            CafesList = await _cafesService.Get();
+            CafesList = await _cafesService.Get(0,5);
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")

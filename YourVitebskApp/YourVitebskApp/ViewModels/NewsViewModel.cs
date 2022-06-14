@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -20,6 +22,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isRefreshing;
         private readonly NewsService _newsService;
         public AsyncCommand<News> ItemTappedCommand { get; }
+        public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -77,10 +80,11 @@ namespace YourVitebskApp.ViewModels
         }
 
         public NewsViewModel()
-        { 
+        {
             IsBusy = true;
             _newsService = new NewsService();
             ItemTappedCommand = new AsyncCommand<News>(ItemTapped);
+            LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
@@ -95,7 +99,7 @@ namespace YourVitebskApp.ViewModels
                 IsBusy = true;
                 try
                 {
-                    NewsList = await _newsService.Get();
+                    NewsList = await _newsService.Get(0, 3);
                 }
                 catch
                 {
@@ -106,6 +110,24 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        private async void LoadMoreData()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                IsBusy = true;
+                try
+                {
+                    //NewsList.AddRange(await _newsService.Get(NewsList.Count(), 3));
+                }
+                catch
+                {
+
+                }
+
+                IsBusy = false;
+            }
+
+        }
         private void OnPropertyChanged([CallerMemberName] string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));
