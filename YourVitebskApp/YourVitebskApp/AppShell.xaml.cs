@@ -9,6 +9,7 @@ namespace YourVitebskApp
         {
             InitializeComponent();
             Routing.RegisterRoute(nameof(RegisterPage), typeof(RegisterPage));
+            Routing.RegisterRoute(nameof(RestorePasswordPage), typeof(RestorePasswordPage));
             Routing.RegisterRoute(nameof(EditProfilePage), typeof(EditProfilePage));
             Routing.RegisterRoute(nameof(SettingsPage), typeof(SettingsPage));
             Routing.RegisterRoute(nameof(SpecificNewsPage), typeof(SpecificNewsPage));

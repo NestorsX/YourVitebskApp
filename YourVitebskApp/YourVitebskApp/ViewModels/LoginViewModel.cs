@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
@@ -20,8 +21,9 @@ namespace YourVitebskApp.ViewModels
         private bool _isInternetNotConnected;
         private bool _isError;
         private readonly AuthService _authService;
-        public Command LogInCommand { get; }
-        public Command RegisterCommand { get; }
+        public AsyncCommand LogInCommand { get; }
+        public AsyncCommand RegisterCommand { get; }
+        public AsyncCommand RestorePasswordCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         public string Email
@@ -112,8 +114,9 @@ namespace YourVitebskApp.ViewModels
         {
             IsBusy = true;
             _authService = new AuthService();
-            LogInCommand = new Command(async () => await LogIn());
-            RegisterCommand = new Command(async () => await Register());
+            LogInCommand = new AsyncCommand(LogIn);
+            RegisterCommand = new AsyncCommand(Register);
+            RestorePasswordCommand = new AsyncCommand(RestorePassword);
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsBusy = false;
@@ -133,6 +136,13 @@ namespace YourVitebskApp.ViewModels
         {
             IsBusy = true;
             await Shell.Current.GoToAsync($"{nameof(RegisterPage)}");
+            IsBusy = false;
+        }
+
+        private async Task RestorePassword()
+        {
+            IsBusy = true;
+            await Shell.Current.GoToAsync($"{nameof(RestorePasswordPage)}");
             IsBusy = false;
         }
 
