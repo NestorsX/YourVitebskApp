@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -15,16 +14,29 @@ namespace YourVitebskApp.ViewModels
 {
     public class NewsViewModel : INotifyPropertyChanged
     {
+        private ObservableRangeCollection<News> _newsCollection;
         private IEnumerable<News> _newsList;
+        private int _currentOffset;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
+        private bool _isLoadingMore;
         private readonly NewsService _newsService;
         public AsyncCommand<News> ItemTappedCommand { get; }
         public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableRangeCollection<News> NewsCollection
+        {
+            get { return _newsCollection; }
+            set
+            {
+                _newsCollection = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IEnumerable<News> NewsList
         {
@@ -79,9 +91,19 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public bool IsLoadingMore
+        {
+            get { return _isLoadingMore; }
+            set
+            {
+                _isLoadingMore = value;
+                OnPropertyChanged();
+            }
+        }
+
         public NewsViewModel()
         {
-            IsBusy = true;
+            NewsCollection = new ObservableRangeCollection<News>();
             _newsService = new NewsService();
             ItemTappedCommand = new AsyncCommand<News>(ItemTapped);
             LoadMoreCommand = new Command(LoadMoreData);
@@ -96,38 +118,41 @@ namespace YourVitebskApp.ViewModels
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                IsBusy = true;
                 try
                 {
-                    NewsList = await _newsService.Get(0, 3);
+                    NewsCollection.Clear();
+                    NewsList = await _newsService.GetAll();
+                    NewsCollection.AddRange(NewsList.Take(5));
+                    _currentOffset = 5;
                 }
                 catch
                 {
                     
                 }
-
-                IsBusy = false;
             }
         }
 
-        private async void LoadMoreData()
+        private void LoadMoreData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                IsBusy = true;
+                IsLoadingMore = true;
                 try
                 {
-                    //NewsList.AddRange(await _newsService.Get(NewsList.Count(), 3));
+                    NewsCollection.AddRange(NewsList.Skip(_currentOffset).Take(5));
+                    OnPropertyChanged(nameof(NewsCollection));
+                    _currentOffset += 5;
                 }
                 catch
                 {
 
                 }
 
-                IsBusy = false;
+                IsLoadingMore = false;
             }
 
         }
+
         private void OnPropertyChanged([CallerMemberName] string property = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(property));

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -30,16 +31,21 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список комментариев по объекту сервиса
-        public async Task<IEnumerable<Comment>> Get(int serviceId, int itemId, int offset, int count)
+        public async Task<IEnumerable<Comment>> GetAll(int serviceId, int itemId)
         {
-            string response = await _client.GetStringAsync($"{_url}/all?serviceId={serviceId}&itemId={itemId}&offset={offset}&count={count}");
+            string response = await _client.GetStringAsync($"{_url}/all?serviceId={serviceId}&itemId={itemId}");
             return JsonSerializer.Deserialize<IEnumerable<Comment>>(response, _options);
         }
 
         // добавление нового комментария
         public async Task AddComment(CommentDTO newComment)
         {
-            await _client.PostAsync($"{_url}/", new StringContent(JsonSerializer.Serialize(newComment), Encoding.UTF8, "application/json"));
+            var response = await _client.PostAsync(_url + "/", new StringContent(JsonSerializer.Serialize(newComment), Encoding.UTF8, "application/json"));
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new ArgumentException(JsonSerializer.Deserialize<ResponseModel>(await response.Content.ReadAsStringAsync(), _options).ErrorMessage);
+            }
+
         }
     }
 }

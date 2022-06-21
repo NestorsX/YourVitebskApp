@@ -33,10 +33,11 @@
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
                 <ScrollView>
                     <StackLayout Padding="0">
-                        <RadioButton Content="Рекомендую" IsChecked="{Binding IsRecommend}" HorizontalOptions="FillAndExpand" />
-                        <RadioButton Content="Не рекомендую" IsChecked="{Binding IsUnrecommend}" HorizontalOptions="FillAndExpand" />
+                        <RadioButton Content="Рекомендую" IsChecked="{Binding IsRecommend}" HorizontalOptions="Fill" />
+                        <RadioButton Content="Не рекомендую" HorizontalOptions="Fill" />
                         <Label Text="Сообщение:" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
                         <Editor Text="{Binding Message}" AutoSize="TextChanges" />
+                        <Label Text="{Binding DisplayMessage}" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="{Binding IsError}" />
                         <Button Text="Оставить комментарий" Command="{Binding SendCommentCommand}" />
                     </StackLayout>
                 </ScrollView>

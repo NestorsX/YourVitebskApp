@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -13,15 +14,29 @@ namespace YourVitebskApp.ViewModels
 {
     public class VacanciesViewModel : INotifyPropertyChanged
     {
+        private ObservableRangeCollection<Vacancy> _vacanciesCollection;
         private IEnumerable<Vacancy> _vacanciesList;
+        private int _currentOffset;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
+        private bool _isLoadingMore;
         private readonly VacancyService _vacancyService;
         public AsyncCommand<Vacancy> ItemTappedCommand { get; }
+        public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableRangeCollection<Vacancy> VacanciesCollection
+        {
+            get { return _vacanciesCollection; }
+            set
+            {
+                _vacanciesCollection = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IEnumerable<Vacancy> VacanciesList
         {
@@ -75,21 +90,65 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public bool IsLoadingMore
+        {
+            get { return _isLoadingMore; }
+            set
+            {
+                _isLoadingMore = value;
+                OnPropertyChanged();
+            }
+        }
+
         public VacanciesViewModel()
         {
-            IsBusy = true;
+            VacanciesCollection = new ObservableRangeCollection<Vacancy>();
             _vacancyService = new VacancyService();
             ItemTappedCommand = new AsyncCommand<Vacancy>(ItemTapped);
+            LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
-            IsBusy = false;
+            LoadData();
         }
 
-        private async void AddData()
+        private async void LoadData()
         {
-            VacanciesList = await _vacancyService.Get();
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                try
+                {
+                    VacanciesCollection.Clear();
+                    VacanciesList = await _vacancyService.GetAll();
+                    VacanciesCollection.AddRange(VacanciesList.Take(5));
+                    _currentOffset = 5;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void LoadMoreData()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                IsLoadingMore = true;
+                try
+                {
+                    VacanciesCollection.AddRange(VacanciesList.Skip(_currentOffset).Take(5));
+                    OnPropertyChanged(nameof(VacanciesCollection));
+                    _currentOffset += 5;
+                }
+                catch
+                {
+
+                }
+
+                IsLoadingMore = false;
+            }
+
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -112,7 +171,7 @@ namespace YourVitebskApp.ViewModels
         private void Refresh()
         {
             IsRefreshing = true;
-            AddData();
+            LoadData();
             IsRefreshing = false;
         }
     }

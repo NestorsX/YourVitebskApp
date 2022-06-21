@@ -4,7 +4,6 @@
              xmlns:controls="clr-namespace:YourVitebskApp.Controls"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:CafesViewModel"
              xmlns:model="clr-namespace:YourVitebskApp.Models"
-             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="YourVitebskApp.Views.CafesPage"
@@ -32,11 +31,6 @@
             </controls:CafesSearchHandler.ItemTemplate>
         </controls:CafesSearchHandler>
     </Shell.SearchHandler>
-    <ContentPage.Resources>
-        <ResourceDictionary>
-            <xct:ItemTappedEventArgsConverter x:Key="ItemTappedEventArgsConverter" />
-        </ResourceDictionary>
-    </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
@@ -63,22 +57,14 @@
             </StackLayout>
 
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
-                <ListView 
-                    IsRefreshing="{Binding IsRefreshing, Mode=OneWay}"
-                    ItemsSource="{Binding CafesList}"
-                    RefreshCommand="{Binding RefreshCommand}"
-                    SeparatorVisibility="None"
-                    HasUnevenRows="True"
-                    IsPullToRefreshEnabled="True">
-                    <ListView.Behaviors>
-                        <xct:EventToCommandBehavior 
-                        EventName="ItemTapped" 
-                        Command="{Binding ItemTappedCommand}" 
-                        EventArgsConverter="{StaticResource ItemTappedEventArgsConverter}"/>
-                    </ListView.Behaviors>
-                    <ListView.ItemTemplate>
-                        <DataTemplate x:DataType="model:Cafe">
-                            <ViewCell>
+                <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+                    <CollectionView 
+                        x:Name="Items" 
+                        ItemsSource="{Binding CafesCollection}"
+                        RemainingItemsThreshold="5"
+                        RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate x:DataType="model:Cafe">
                                 <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
                                     <Frame CornerRadius="20">
                                         <StackLayout Padding="0" BackgroundColor="Transparent">
@@ -104,11 +90,14 @@
                                             </Grid>
                                         </StackLayout>
                                     </Frame>
+                                    <StackLayout.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding BindingContext.ItemTappedCommand, Source={x:Reference Items}}" CommandParameter="{Binding .}" />
+                                    </StackLayout.GestureRecognizers>
                                 </StackLayout>
-                            </ViewCell>
-                        </DataTemplate>
-                    </ListView.ItemTemplate>
-                </ListView>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+                </RefreshView>
             </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>

@@ -15,7 +15,6 @@ namespace YourVitebskApp.ViewModels
 {
     public class ProfileViewModel : INotifyPropertyChanged
     {
-        private IEnumerable<UsersListItem> _usersList;
         private ImageSource _imageSource;
         private string _firstName;
         private string _lastName;
@@ -23,25 +22,13 @@ namespace YourVitebskApp.ViewModels
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
-        private bool _isRefreshing;
         private UserService _userService;
         public AsyncCommand PageAppearingCommand { get; set; }
         public AsyncCommand PageDisappearingCommand { get; set; }
         public AsyncCommand UpdateCommand { get; }
         public AsyncCommand SettingsCommand { get; }
         public AsyncCommand ExitCommand { get; }
-        public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
-
-        public IEnumerable<UsersListItem> UsersList
-        {
-            get { return _usersList; }
-            set
-            {
-                _usersList = value;
-                OnPropertyChanged();
-            }
-        }
 
         public ImageSource ImageSource
         {
@@ -115,16 +102,6 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public bool IsRefreshing
-        {
-            get { return _isRefreshing; }
-            set
-            {
-                _isRefreshing = value;
-                OnPropertyChanged();
-            }
-        }
-
         public ProfileViewModel()
         {
             IsBusy = true;
@@ -134,7 +111,6 @@ namespace YourVitebskApp.ViewModels
             UpdateCommand = new AsyncCommand(Update);
             SettingsCommand = new AsyncCommand(Settings);
             ExitCommand = new AsyncCommand(Exit);
-            RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             IsBusy = false;
@@ -159,7 +135,6 @@ namespace YourVitebskApp.ViewModels
                 LastName = await SecureStorage.GetAsync("LastName");
                 PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
                 ImageSource = await SecureStorage.GetAsync("Image");
-                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")), 0, 5);
                 IsBusy = false;
             }
         }
@@ -195,13 +170,6 @@ namespace YourVitebskApp.ViewModels
             Application.Current.MainPage = new AppShell();
             await Shell.Current.GoToAsync("//Login");
             IsBusy = false;
-        }
-
-        private void Refresh()
-        {
-            IsRefreshing = true;
-            AddData();
-            IsRefreshing = false;
         }
     }
 }

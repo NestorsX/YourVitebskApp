@@ -1,29 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using YourVitebskApp.Helpers;
 using YourVitebskApp.Models;
 using YourVitebskApp.Services;
-using YourVitebskApp.Views;
 
 namespace YourVitebskApp.ViewModels
 {
     public class PeopleViewModel : INotifyPropertyChanged
     {
+        private ObservableRangeCollection<UsersListItem> _usersCollection;
         private IEnumerable<UsersListItem> _usersList;
+        private int _currentOffset;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
+        private bool _isLoadingMore;
         private readonly UserService _userService;
         public AsyncCommand<UsersListItem> ItemTappedCommand { get; }
+        public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableRangeCollection<UsersListItem> UsersCollection
+        {
+            get { return _usersCollection; }
+            set
+            {
+                _usersCollection = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IEnumerable<UsersListItem> UsersList
         {
@@ -77,34 +90,73 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public bool IsLoadingMore
+        {
+            get { return _isLoadingMore; }
+            set
+            {
+                _isLoadingMore = value;
+                OnPropertyChanged();
+            }
+        }
+
         public PeopleViewModel()
         {
-            IsBusy = true;
+            UsersCollection = new ObservableRangeCollection<UsersListItem>();
             _userService = new UserService();
             ItemTappedCommand = new AsyncCommand<UsersListItem>(DialNumber);
+            LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
-            IsBusy = false;
+            LoadData();
         }
 
-        private async void AddData()
+        private async void LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                IsBusy = true;
-                UsersList = await _userService.Get(Convert.ToInt32(await SecureStorage.GetAsync("UserId")), 0, 5);
-                foreach (var item in UsersList)
+                try
                 {
-                    if (string.IsNullOrEmpty(item.PhoneNumber))
+                    UsersCollection.Clear();
+                    UsersList = await _userService.GetAll(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
+                    foreach (var item in UsersList)
                     {
-                        item.PhoneNumber = "Номер телефона не указан";
+                        if (string.IsNullOrEmpty(item.PhoneNumber))
+                        {
+                            item.PhoneNumber = "Номер телефона не указан";
+                        }
                     }
+
+                    UsersCollection.AddRange(UsersList.Take(5));
+                    _currentOffset = 5;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void LoadMoreData()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                IsLoadingMore = true;
+                try
+                {
+                    UsersCollection.AddRange(UsersList.Skip(_currentOffset).Take(5));
+                    OnPropertyChanged(nameof(UsersCollection));
+                    _currentOffset += 5;
+                }
+                catch
+                {
+
                 }
 
-                IsBusy = false;
+                IsLoadingMore = false;
             }
+
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -131,7 +183,7 @@ namespace YourVitebskApp.ViewModels
         private void Refresh()
         {
             IsRefreshing = true;
-            AddData();
+            LoadData();
             IsRefreshing = false;
         }
     }

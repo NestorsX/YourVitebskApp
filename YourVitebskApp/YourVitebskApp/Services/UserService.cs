@@ -28,9 +28,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список пользователей за исключением указанного id
-        public async Task<IEnumerable<UsersListItem>> Get(int id, int offset, int count)
+        public async Task<IEnumerable<UsersListItem>> GetAll(int id)
         {
-            string response = await _client.GetStringAsync($"{_url}/all/{id}?offset={offset}&count={count}");
+            string response = await _client.GetStringAsync($"{_url}/all/{id}");
             var result = JsonSerializer.Deserialize<IEnumerable<UsersListItem>>(response, _options);
             foreach (var item in result)
             {

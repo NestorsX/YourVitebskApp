@@ -31,9 +31,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список заведений
-        public async Task<IEnumerable<Cafe>> Get(int offset, int count)
+        public async Task<IEnumerable<Cafe>> GetAll()
         {
-            string response = await _client.GetStringAsync($"{_url}/all?offset={offset}&count={count}");
+            string response = await _client.GetStringAsync($"{_url}/all");
             var result = JsonSerializer.Deserialize<IEnumerable<Cafe>>(response, _options);
             foreach (var item in result)
             {

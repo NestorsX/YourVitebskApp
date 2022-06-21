@@ -12,7 +12,7 @@ namespace YourVitebskApp.Services
 {
     public class VacancyService
     {
-        private const string _url = AppSettings.BaseApiUrl + "/api/vacancies/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/vacancies";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 
@@ -30,16 +30,16 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список вакансий
-        public async Task<IEnumerable<Vacancy>> Get()
+        public async Task<IEnumerable<Vacancy>> GetAll()
         {
-            string response = await _client.GetStringAsync(_url + "all");
+            string response = await _client.GetStringAsync($"{_url}/all");
             return JsonSerializer.Deserialize<IEnumerable<Vacancy>>(response, _options);
         }
 
         // Получаем вакансию по id
         public async Task<Vacancy> Get(int id)
         {
-            var response = await _client.GetAsync(_url + id);
+            var response = await _client.GetAsync($"{_url}/{id}");
             if (response.IsSuccessStatusCode)
             {
                 return JsonSerializer.Deserialize<Vacancy>(

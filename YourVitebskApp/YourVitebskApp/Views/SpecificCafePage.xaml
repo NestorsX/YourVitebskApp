@@ -33,65 +33,72 @@
             </StackLayout>
 
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
-                <ScrollView>
-                    <StackLayout Padding="0">
-                        <Label Text="{Binding Cafe.CafeType}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-                        <Label Text="{Binding Cafe.Title}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-                        <CarouselView ItemsSource="{Binding Cafe.Images}" HeightRequest="350" IndicatorView="indicatorview" >
-                            <CarouselView.ItemTemplate>
-                                <DataTemplate x:DataType="x:String">
-                                    <ffimageloading:CachedImage x:Name="Image" Source="{Binding .}" HorizontalOptions="Center" VerticalOptions="Center" />
-                                </DataTemplate>
-                            </CarouselView.ItemTemplate>
-                        </CarouselView>
-                        <IndicatorView x:Name="indicatorview" IndicatorColor="Gray" IndicatorSize="10" SelectedIndicatorColor="Black" />
-                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
-                        <Label Text="Время работы:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
-                        <Label Text="{Binding Cafe.WorkingTime}" />
-                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
-                        <Label Text="О заведении:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
-                        <Label Text="{Binding Cafe.Description}" />
-                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
-                        <Label Text="Адрес:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
-                        <Label Text="{Binding Cafe.Address}" />
-                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
-                        <Label Text="Подробнее:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
-                        <Label Text="Источник" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline" >
-                            <Label.GestureRecognizers>
-                                <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="{Binding Cafe.ExternalLink}" />
-                            </Label.GestureRecognizers>
-                        </Label>
-                        <BoxView Margin="0,0,0,50" />
-                        <Button Text="Оставить комментарий" Command="{Binding AddCommentCommand}" />
-                        <Label Text="Комментарии:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
-                        <StackLayout BindableLayout.ItemsSource="{Binding CommentsList}">
-                            <BindableLayout.ItemTemplate>
-                                <DataTemplate x:DataType="model:Comment">
-                                    <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
-                                        <Frame CornerRadius="20">
-                                            <StackLayout Padding="0" BackgroundColor="Transparent">
-                                                <Grid>
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="Auto"/>
-                                                        <RowDefinition Height="Auto"/>
-                                                    </Grid.RowDefinitions>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="Auto" />
-                                                        <ColumnDefinition Width="Auto" />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Label Text="{Binding PublishDate}" Grid.Column="1" Grid.Row="0" FontSize="Small" FontAttributes="Bold" />
-                                                    <Label Text="{Binding IsRecommend}" Grid.Column="0" Grid.Row="1" FontSize="Medium" FontAttributes="Bold" />
-                                                    <Label Text="{Binding UserFirstName}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="Medium" FontAttributes="Bold" />
-                                                </Grid>
-                                                <Label Text="{Binding Message}" FontSize="Medium" />
-                                            </StackLayout>
-                                        </Frame>
-                                    </StackLayout>
-                                </DataTemplate>
-                            </BindableLayout.ItemTemplate>
+                <RefreshView IsRefreshing="{Binding IsRefreshing}" Command="{Binding RefreshCommand}">
+                    <ScrollView>
+                        <StackLayout Padding="0">
+                            <Label Text="{Binding Cafe.CafeType}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            <Label Text="{Binding Cafe.Title}" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                            <CarouselView ItemsSource="{Binding Cafe.Images}" HeightRequest="350" IndicatorView="indicatorview" >
+                                <CarouselView.ItemTemplate>
+                                    <DataTemplate x:DataType="x:String">
+                                        <ffimageloading:CachedImage x:Name="Image" Source="{Binding .}" HorizontalOptions="Center" VerticalOptions="Center" />
+                                    </DataTemplate>
+                                </CarouselView.ItemTemplate>
+                            </CarouselView>
+                            <IndicatorView x:Name="indicatorview" IndicatorColor="Gray" IndicatorSize="10" SelectedIndicatorColor="Black" />
+                            <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                            <Label Text="Время работы:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                            <Label Text="{Binding Cafe.WorkingTime}" />
+                            <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                            <Label Text="О заведении:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
+                            <Label Text="{Binding Cafe.Description}" />
+                            <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                            <Label Text="Адрес:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title"/>
+                            <Label Text="{Binding Cafe.Address}" />
+                            <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
+                            <Label Text="Подробнее:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+                            <Label Text="Источник" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline" >
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="{Binding Cafe.ExternalLink}" />
+                                </Label.GestureRecognizers>
+                            </Label>
+                            <BoxView Margin="0,0,0,50" />
+                            <Button Text="Оставить комментарий" Command="{Binding AddCommentCommand}" />
+                            <Label Text="Комментарии:" TextColor="{AppThemeBinding Dark={StaticResource HeaderTextColorDark}, Light={StaticResource HeaderTextColorLight}}" FontSize="Title" />
+
+                            <CollectionView 
+                                x:Name="Items" 
+                                ItemsSource="{Binding CommentsCollection}"
+                                RemainingItemsThreshold="5"
+                                RemainingItemsThresholdReachedCommand="{Binding LoadMoreCommand}">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="model:Comment">
+                                        <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
+                                            <Frame CornerRadius="20">
+                                                <StackLayout Padding="0" BackgroundColor="Transparent">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto"/>
+                                                            <RowDefinition Height="Auto"/>
+                                                        </Grid.RowDefinitions>
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="Auto" />
+                                                        </Grid.ColumnDefinitions>
+                                                        <Label Text="{Binding PublishDate}" Grid.Column="1" Grid.Row="0" FontSize="Small" FontAttributes="Bold" />
+                                                        <Label Text="{Binding IsRecommend}" Grid.Column="0" Grid.Row="1" FontSize="Medium" FontAttributes="Bold" />
+                                                        <Label Text="{Binding UserFirstName}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="Medium" FontAttributes="Bold" />
+                                                    </Grid>
+                                                    <Label Text="{Binding Message}" FontSize="Medium" />
+                                                </StackLayout>
+                                            </Frame>
+                                        </StackLayout>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
                         </StackLayout>
-                    </StackLayout>
-                </ScrollView>
+                    </ScrollView>
+                </RefreshView>
             </StackLayout>
         </AbsoluteLayout>
     </ContentPage.Content>

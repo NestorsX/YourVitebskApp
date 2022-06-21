@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
@@ -13,15 +14,29 @@ namespace YourVitebskApp.ViewModels
 {
     public class CafesViewModel : INotifyPropertyChanged
     {
+        private ObservableRangeCollection<Cafe> _cafesCollection;
         private IEnumerable<Cafe> _cafesList;
+        private int _currentOffset;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
+        private bool _isLoadingMore;
         private readonly CafeService _cafesService;
         public AsyncCommand<Cafe> ItemTappedCommand { get; }
+        public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
+
+        public ObservableRangeCollection<Cafe> CafesCollection
+        {
+            get { return _cafesCollection; }
+            set
+            {
+                _cafesCollection = value;
+                OnPropertyChanged();
+            }
+        }
 
         public IEnumerable<Cafe> CafesList
         {
@@ -75,21 +90,65 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public bool IsLoadingMore
+        {
+            get { return _isLoadingMore; }
+            set
+            {
+                _isLoadingMore = value;
+                OnPropertyChanged();
+            }
+        }
+
         public CafesViewModel()
         {
-            IsBusy = true;
+            CafesCollection = new ObservableRangeCollection<Cafe>();
             _cafesService = new CafeService();
             ItemTappedCommand = new AsyncCommand<Cafe>(ItemTapped);
+            LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
-            IsBusy = false;
+            LoadData();
         }
 
-        private async void AddData()
+        private async void LoadData()
         {
-            CafesList = await _cafesService.Get(0,5);
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                try
+                {
+                    CafesCollection.Clear();
+                    CafesList = await _cafesService.GetAll();
+                    CafesCollection.AddRange(CafesList.Take(5));
+                    _currentOffset = 5;
+                }
+                catch
+                {
+
+                }
+            }
+        }
+
+        private void LoadMoreData()
+        {
+            if (Connectivity.NetworkAccess == NetworkAccess.Internet)
+            {
+                IsLoadingMore = true;
+                try
+                {
+                    CafesCollection.AddRange(CafesList.Skip(_currentOffset).Take(5));
+                    OnPropertyChanged(nameof(CafesCollection));
+                    _currentOffset += 5;
+                }
+                catch
+                {
+
+                }
+
+                IsLoadingMore = false;
+            }
+
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")
@@ -112,7 +171,7 @@ namespace YourVitebskApp.ViewModels
         private void Refresh()
         {
             IsRefreshing = true;
-            AddData();
+            LoadData();
             IsRefreshing = false;
         }
     }

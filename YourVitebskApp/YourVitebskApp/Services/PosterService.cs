@@ -13,7 +13,7 @@ namespace YourVitebskApp.Services
 {
     public class PosterService
     {
-        private const string _url = AppSettings.BaseApiUrl + "/api/posters/";
+        private const string _url = AppSettings.BaseApiUrl + "/api/posters";
         private readonly JsonSerializerOptions _options;
         private readonly HttpClient _client;
 
@@ -31,9 +31,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список афиш
-        public async Task<IEnumerable<Poster>> Get(int offset, int count)
+        public async Task<IEnumerable<Poster>> GetAll()
         {
-            string response = await _client.GetStringAsync($"{_url}/all?offset={offset}&count={count}");
+            string response = await _client.GetStringAsync($"{_url}/all");
             var result = JsonSerializer.Deserialize<IEnumerable<Poster>>(response, _options);
             foreach (var item in result)
             {

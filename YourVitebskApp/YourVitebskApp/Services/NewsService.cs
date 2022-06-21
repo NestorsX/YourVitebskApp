@@ -31,9 +31,9 @@ namespace YourVitebskApp.Services
         }
 
         // Получаем список новостей
-        public async Task<IEnumerable<News>> Get(int offset, int count)
+        public async Task<IEnumerable<News>> GetAll()
         {
-            string response = await _client.GetStringAsync($"{_url}/all?offset={offset}&count={count}");
+            string response = await _client.GetStringAsync($"{_url}/all");
             var result = JsonSerializer.Deserialize<IEnumerable<News>>(response, _options);
             foreach (var item in result)
             {
