@@ -68,22 +68,36 @@
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="model:Poster">
                                 <StackLayout Padding="0" BackgroundColor="Transparent" Margin="5">
-                                    <Frame CornerRadius="20">
+                                    <Frame CornerRadius="20" Padding="0">
                                         <StackLayout Padding="0" BackgroundColor="Transparent">
                                             <Grid>
                                                 <Grid.RowDefinitions>
                                                     <RowDefinition Height="Auto"/>
                                                     <RowDefinition Height="Auto"/>
-                                                    <RowDefinition Height="Auto"/>
                                                 </Grid.RowDefinitions>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
-                                                <ffimageloading:CachedImage x:Name="Image" Source="{Binding TitleImage}" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" WidthRequest="130" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit" />
-                                                <Label Text="{Binding Title}" Grid.Column="1" Grid.Row="0" FontSize="Medium" FontAttributes="Bold" />
-                                                <Label Text="{Binding PosterType}" Grid.Column="1" Grid.Row="1" FontSize="Medium" />
-                                                <Label Text="{Binding Address}" Grid.Column="1" Grid.Row="2" FontSize="Medium" />
+                                                <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Padding="0">
+                                                    <ffimageloading:CachedImage x:Name="Image" Source="{Binding TitleImage}" WidthRequest="200" HorizontalOptions="Center" Aspect="AspectFill" />
+                                                </StackLayout>
+                                                <Grid Grid.Column="0" Grid.Row="0" HorizontalOptions="Start">
+                                                    <Grid.ColumnDefinitions>
+                                                        <ColumnDefinition Width="Auto" />
+                                                    </Grid.ColumnDefinitions>
+                                                    <BoxView Grid.Column="0" BackgroundColor="Black" Opacity="0.8" />
+                                                    <StackLayout Grid.Column="0" Orientation="Horizontal" BackgroundColor="Black">
+                                                        <Label Text="{Binding RecommendCount}" TextColor="#01CD42" />
+                                                        <Label Text="/" />
+                                                        <Label Text="{Binding UnrecommendCount}" TextColor="red" />
+                                                    </StackLayout>
+                                                </Grid>
+                                                <StackLayout Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" Padding="0">
+                                                    <Label Text="{Binding Title}" FontSize="Medium" FontAttributes="Bold" />
+                                                    <Label Text="{Binding PosterType}" FontSize="Medium" />
+                                                    <Label Text="{Binding Address}" FontSize="Medium" />
+                                                </StackLayout>
                                             </Grid>
                                         </StackLayout>
                                     </Frame>

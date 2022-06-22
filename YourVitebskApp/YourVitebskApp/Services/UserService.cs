@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -30,7 +31,7 @@ namespace YourVitebskApp.Services
         // Получаем список пользователей за исключением указанного id
         public async Task<IEnumerable<UsersListItem>> GetAll(int id)
         {
-            string response = await _client.GetStringAsync($"{_url}/all/{id}");
+            var response = await _client.GetStringAsync($"{_url}/all/{id}");
             var result = JsonSerializer.Deserialize<IEnumerable<UsersListItem>>(response, _options);
             foreach (var item in result)
             {
@@ -44,6 +45,20 @@ namespace YourVitebskApp.Services
             }
 
             return result;
+        }
+
+        // Получаем кол-во комментариев пользователя по id
+        public async Task<string> GetCommentsCount(int id)
+        {
+            var response = await _client.GetAsync($"{_url}/commentscount/{id}");
+            if(response.IsSuccessStatusCode)
+            {
+                return JsonSerializer.Deserialize<ResponseModel>(await response.Content.ReadAsStringAsync(), _options).Content.ToString();
+            }
+            else
+            {
+                throw new ArgumentException(JsonSerializer.Deserialize<ResponseModel>(await response.Content.ReadAsStringAsync(), _options).ErrorMessage);
+            }
         }
     }
 }

@@ -18,7 +18,9 @@ namespace YourVitebskApp.ViewModels
         private ImageSource _imageSource;
         private string _firstName;
         private string _lastName;
+        private string _email;
         private string _phoneNumber;
+        private string _commentsCount;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
@@ -60,6 +62,16 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public string Email
+        {
+            get { return _email; }
+            set
+            {
+                _email = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string PhoneNumber
         {
             get { return _phoneNumber; }
@@ -67,6 +79,16 @@ namespace YourVitebskApp.ViewModels
             { 
                 _phoneNumber = value; 
                 OnPropertyChanged(); 
+            }
+        }
+
+        public string CommentsCount
+        {
+            get { return _commentsCount; }
+            set
+            {
+                _commentsCount = value;
+                OnPropertyChanged();
             }
         }
 
@@ -104,7 +126,6 @@ namespace YourVitebskApp.ViewModels
 
         public ProfileViewModel()
         {
-            IsBusy = true;
             _userService = new UserService();
             PageAppearingCommand = new AsyncCommand(OnAppearing);
             PageDisappearingCommand = new AsyncCommand(OnDisappearing);
@@ -113,7 +134,6 @@ namespace YourVitebskApp.ViewModels
             ExitCommand = new AsyncCommand(Exit);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            IsBusy = false;
         }
 
         private async Task OnAppearing()
@@ -133,8 +153,15 @@ namespace YourVitebskApp.ViewModels
                 IsBusy = true;
                 FirstName = await SecureStorage.GetAsync("FirstName");
                 LastName = await SecureStorage.GetAsync("LastName");
+                Email = await SecureStorage.GetAsync("Email");
                 PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
+                if (string.IsNullOrEmpty(PhoneNumber))
+                {
+                    PhoneNumber = "Номер телефона не указан";
+                }
+
                 ImageSource = await SecureStorage.GetAsync("Image");
+                CommentsCount = await _userService.GetCommentsCount(Convert.ToInt32(await SecureStorage.GetAsync("UserId")));
                 IsBusy = false;
             }
         }

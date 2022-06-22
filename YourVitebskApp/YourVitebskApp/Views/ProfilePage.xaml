@@ -53,16 +53,30 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <Frame Grid.Row="0" Padding="0" CornerRadius="100" WidthRequest="130" HeightRequest="130" HorizontalOptions="Center">
+                            <Frame Grid.Row="0" Padding="0" CornerRadius="100" WidthRequest="150" HeightRequest="150" HorizontalOptions="Center">
                                 <ffimageloading:CachedImage Source="{Binding ImageSource}" Aspect="AspectFill" />
                             </Frame>
                             <StackLayout Orientation="Horizontal" HorizontalOptions="Center" Padding="0" Grid.Row="1">
-                                <Label Text="{Binding FirstName}" HorizontalOptions="Center" />
-                                <Label Text="{Binding LastName}" HorizontalOptions="Center" />
+                                <Label Text="{Binding FirstName}" HorizontalOptions="Center" FontSize="Medium" />
+                                <Label Text="{Binding LastName}" HorizontalOptions="Center" FontSize="Medium" />
                             </StackLayout>
-                            <Label Text="{Binding PhoneNumber}" Grid.Row="2" HorizontalOptions="Center" />
-                            <Button Text="Изменить" Grid.Row="3" BackgroundColor="Gray" Command="{Binding UpdateCommand}"/>
+                            <Label Text="{Binding Email}" Grid.Row="2" HorizontalOptions="Center" FontSize="Medium" />
+                            <Label Text="{Binding PhoneNumber}" Grid.Row="3" HorizontalOptions="Center" FontSize="Medium" />
+                            <Button Text="Изменить" Grid.Row="4" BackgroundColor="Gray" Command="{Binding UpdateCommand}"/>
+                        </Grid>
+                    </StackLayout>
+                </Frame>
+                <Frame CornerRadius="20" Margin="5">
+                    <StackLayout BackgroundColor="Transparent" Padding="0">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Label Grid.Row="0" Text="Количество написанных вами комментариев:" HorizontalTextAlignment="Center" FontSize="Medium" />
+                            <Label Grid.Row="1" Text="{Binding CommentsCount}" HorizontalOptions="Center" FontSize="Title" FontAttributes="Bold" />
                         </Grid>
                     </StackLayout>
                 </Frame>
