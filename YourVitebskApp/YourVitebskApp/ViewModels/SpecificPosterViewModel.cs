@@ -20,6 +20,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
+        private bool _isRefreshing;
         private bool _isLoadingMore;
         private readonly PosterService _posterService;
         private readonly CommentService _commentService;
@@ -27,6 +28,7 @@ namespace YourVitebskApp.ViewModels
         public Command TapCommand { get; set; }
         public Command LoadMoreCommand { get; }
         public Command AddCommentCommand { get; set; }
+        public Command RefreshCommand { get; }
         public int PosterId { get; set; }
 
         public ObservableRangeCollection<Comment> CommentsCollection
@@ -91,6 +93,16 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
+        public bool IsRefreshing
+        {
+            get { return _isRefreshing; }
+            set
+            {
+                _isRefreshing = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool IsLoadingMore
         {
             get { return _isLoadingMore; }
@@ -109,6 +121,7 @@ namespace YourVitebskApp.ViewModels
             TapCommand = new Command<string>(async (url) => await Launcher.OpenAsync(url));
             LoadMoreCommand = new Command(LoadMoreData);
             AddCommentCommand = new Command(AddComment);
+            RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
         }
@@ -121,7 +134,7 @@ namespace YourVitebskApp.ViewModels
                 {
                     CommentsCollection.Clear();
                     Poster = await _posterService.Get(PosterId);
-                    CommentsList = await _commentService.GetAll(1, PosterId);
+                    CommentsList = await _commentService.GetAll(2, PosterId);
                     CommentsCollection.AddRange(CommentsList.Take(5));
                     _currentOffset = 5;
                 }
@@ -156,8 +169,15 @@ namespace YourVitebskApp.ViewModels
         public async void AddComment()
         {
             IsBusy = true;
-            await Shell.Current.GoToAsync($"{nameof(SpecificPosterPage)}/{nameof(AddCommentPage)}?ServiceId={2}&PosterId={PosterId}");
+            await Shell.Current.GoToAsync($"{nameof(SpecificPosterPage)}/{nameof(AddCommentPage)}?ServiceId={2}&ItemId={PosterId}");
             IsBusy = false;
+        }
+
+        private void Refresh()
+        {
+            IsRefreshing = true;
+            LoadData();
+            IsRefreshing = false;
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")

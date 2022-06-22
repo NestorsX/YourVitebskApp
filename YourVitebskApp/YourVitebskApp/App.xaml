@@ -33,7 +33,7 @@
 
             
             <ControlTemplate x:Key="RadioButtonTemplate">
-                <Frame HorizontalOptions="Start" VerticalOptions="Start" CornerRadius="10" WidthRequest="100" HeightRequest="100">
+                <Frame VerticalOptions="Start" CornerRadius="10" HorizontalOptions="Fill" HeightRequest="100">
                     <VisualStateManager.VisualStateGroups>
                         <VisualStateGroupList>
                             <VisualStateGroup x:Name="CheckedStates">
@@ -54,7 +54,7 @@
                     </VisualStateManager.VisualStateGroups>
                     <Grid>
                         <Grid WidthRequest="16" HeightRequest="16" HorizontalOptions="End" VerticalOptions="Start">
-                            <Ellipse Stroke="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+                            <Ellipse Stroke="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
                                  WidthRequest="16"
                                  HeightRequest="16"
                                  HorizontalOptions="Center"

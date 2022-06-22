@@ -5,6 +5,46 @@
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="YourVitebskApp.Views.AddCommentPage"
              Title="Ваш комментарий">
+    <ContentPage.Resources>
+        <ControlTemplate x:Key="SuccessRadioButtonTemplate">
+            <Frame VerticalOptions="Start" CornerRadius="10" HorizontalOptions="Fill" HeightRequest="100">
+                <VisualStateManager.VisualStateGroups>
+                    <VisualStateGroupList>
+                        <VisualStateGroup x:Name="CheckedStates">
+                            <VisualState x:Name="Checked">
+                                <VisualState.Setters>
+                                    <Setter Property="BorderColor" Value="Green" />
+                                    <Setter TargetName="check" Property="Opacity" Value="1" />
+                                </VisualState.Setters>
+                            </VisualState>
+                            <VisualState x:Name="Unchecked">
+                                <VisualState.Setters>
+                                    <Setter Property="BorderColor" Value="Transparent" />
+                                    <Setter TargetName="check" Property="Opacity" Value="0" />
+                                </VisualState.Setters>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateGroupList>
+                </VisualStateManager.VisualStateGroups>
+                <Grid>
+                    <Grid WidthRequest="16" HeightRequest="16" HorizontalOptions="End" VerticalOptions="Start">
+                        <Ellipse Stroke="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
+                                 WidthRequest="16"
+                                 HeightRequest="16"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center" />
+                        <Ellipse x:Name="check"
+                                 Fill="Green"
+                                 WidthRequest="8"
+                                 HeightRequest="8"
+                                 HorizontalOptions="Center"
+                                 VerticalOptions="Center" />
+                    </Grid>
+                    <ContentPresenter HorizontalOptions="Center" VerticalOptions="End" />
+                </Grid>
+            </Frame>
+        </ControlTemplate>
+    </ContentPage.Resources>
     <ContentPage.Content>
         <AbsoluteLayout>
             <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
@@ -33,10 +73,18 @@
             <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
                 <ScrollView>
                     <StackLayout Padding="0">
-                        <RadioButton Content="Рекомендую" IsChecked="{Binding IsRecommend}" HorizontalOptions="Fill" />
-                        <RadioButton Content="Не рекомендую" HorizontalOptions="Fill" />
+                        <Grid HeightRequest="70">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <RadioButton Content="Рекомендую" ControlTemplate="{x:StaticResource Key=SuccessRadioButtonTemplate}" IsChecked="{Binding IsRecommend}" Grid.Column="0" />
+                            <RadioButton Content="Не рекомендую" Grid.Column="1" />
+                        </Grid>
                         <Label Text="Сообщение:" FontSize="Title" FontAttributes="Bold" HorizontalTextAlignment="Center" />
-                        <Editor Text="{Binding Message}" AutoSize="TextChanges" />
+                        <Frame>
+                            <Editor Text="{Binding Message}" AutoSize="TextChanges" />
+                        </Frame>
                         <Label Text="{Binding DisplayMessage}" HorizontalTextAlignment="Center" TextColor="Red" IsVisible="{Binding IsError}" />
                         <Button Text="Оставить комментарий" Command="{Binding SendCommentCommand}" />
                     </StackLayout>

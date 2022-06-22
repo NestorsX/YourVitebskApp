@@ -34,7 +34,19 @@ namespace YourVitebskApp.Services
         public async Task<IEnumerable<Comment>> GetAll(int serviceId, int itemId)
         {
             string response = await _client.GetStringAsync($"{_url}/all?serviceId={serviceId}&itemId={itemId}");
-            return JsonSerializer.Deserialize<IEnumerable<Comment>>(response, _options);
+            var result = JsonSerializer.Deserialize<IEnumerable<Comment>>(response, _options);
+            foreach (var item in result)
+            {
+                if (!string.IsNullOrWhiteSpace(item.Image))
+                {
+                    item.Image = $"{AppSettings.BaseApiUrl}/images/Users/{item.UserId}/{item.Image}";
+                    continue;
+                }
+
+                item.Image = "icon_noavatar.png";
+            }
+
+            return result;
         }
 
         // добавление нового комментария

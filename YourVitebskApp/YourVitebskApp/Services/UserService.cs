@@ -34,7 +34,13 @@ namespace YourVitebskApp.Services
             var result = JsonSerializer.Deserialize<IEnumerable<UsersListItem>>(response, _options);
             foreach (var item in result)
             {
-                item.Image = $"{AppSettings.BaseApiUrl}/images/Users/{item.UserId}/{item.Image}";
+                if (!string.IsNullOrWhiteSpace(item.Image))
+                {
+                    item.Image = $"{AppSettings.BaseApiUrl}/images/Users/{item.UserId}/{item.Image}";
+                    continue;
+                }
+
+                item.Image = "icon_noavatar.png";
             }
 
             return result;

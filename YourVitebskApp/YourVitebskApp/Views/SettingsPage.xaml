@@ -7,8 +7,13 @@
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Тема приложения" />
-            <StackLayout Orientation="Horizontal" >
-                <RadioButton IsChecked="{Binding UseDeviceThemeSettings}">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <RadioButton IsChecked="{Binding UseDeviceThemeSettings}" Grid.Column="0">
                     <RadioButton.Content>
                         <StackLayout>
                             <Image Source="icon_system.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
@@ -16,7 +21,7 @@
                         </StackLayout>
                     </RadioButton.Content>
                 </RadioButton>
-                <RadioButton IsChecked="{Binding UseDarkMode}" VerticalOptions="Center">
+                <RadioButton IsChecked="{Binding UseDarkMode}" Grid.Column="1">
                     <RadioButton.Content>
                         <StackLayout>
                             <Image Source="icon_moon.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
@@ -24,7 +29,7 @@
                         </StackLayout>
                     </RadioButton.Content>
                 </RadioButton>
-                <RadioButton IsChecked="{Binding UseLightMode}" VerticalOptions="Center">
+                <RadioButton IsChecked="{Binding UseLightMode}" Grid.Column="2">
                     <RadioButton.Content>
                         <StackLayout>
                             <Image Source="icon_sun.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
@@ -32,7 +37,7 @@
                         </StackLayout>
                     </RadioButton.Content>
                 </RadioButton>
-            </StackLayout>
+            </Grid>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
