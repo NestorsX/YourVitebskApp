@@ -1,5 +1,6 @@
 ﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
              xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:SpecificNewsViewModel"
              xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
              xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
@@ -41,15 +42,16 @@
                                 </DataTemplate>
                             </CarouselView.ItemTemplate>
                         </CarouselView>
-                        <IndicatorView x:Name="indicatorview" IndicatorColor="Gray" IndicatorSize="10" SelectedIndicatorColor="Black" />
+                        <IndicatorView x:Name="indicatorview" IndicatorColor="Gray" IndicatorSize="10" SelectedIndicatorColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
                         <Label Text="{Binding News.Description}" />
-                        <BoxView Color="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" HeightRequest="1" HorizontalOptions="Fill" Margin="20" />
-                        <Label Text="Источник" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" TextDecorations="Underline">
-                            <Label.GestureRecognizers>
+                        <StackLayout Orientation="Horizontal" IsVisible="{Binding IsLinkAvailable}">
+                            <Image Source="icon_link.png" WidthRequest="20" Aspect="AspectFit" xct:IconTintColorEffect.TintColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <Label Text="Источник" FontSize="Title" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <StackLayout.GestureRecognizers>
                                 <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="{Binding News.ExternalLink}" />
-                            </Label.GestureRecognizers>
-                        </Label>
-                        <BoxView Margin="0,0,0,50" />
+                            </StackLayout.GestureRecognizers>
+                        </StackLayout>
+                        <BoxView Margin="0,0,0,20" />
                     </StackLayout>
                 </ScrollView>
             </StackLayout>

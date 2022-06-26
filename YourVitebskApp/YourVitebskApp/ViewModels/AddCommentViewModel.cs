@@ -150,7 +150,7 @@ namespace YourVitebskApp.ViewModels
                     ItemId = ItemId,
                     IsRecommend = IsRecommend,
                     Message = Message,
-                    PublishDate = DateTime.Now
+                    PublishDate = DateTime.UtcNow
                 });
 
                 await Shell.Current.GoToAsync("..");

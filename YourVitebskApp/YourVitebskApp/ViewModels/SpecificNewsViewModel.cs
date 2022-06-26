@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
@@ -11,12 +13,13 @@ namespace YourVitebskApp.ViewModels
     internal class SpecificNewsViewModel : INotifyPropertyChanged, IQueryAttributable
     {
         private News _news;
+        private bool _isLinkAvailable;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
         private readonly NewsService _newsService;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command TapCommand { get; set; }
+        public AsyncCommand<string> TapCommand { get; set; }
         public int NewsId { get; set; }
 
         public News News
@@ -25,6 +28,16 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _news = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLinkAvailable
+        {
+            get { return _isLinkAvailable; }
+            set
+            {
+                _isLinkAvailable = value;
                 OnPropertyChanged();
             }
         }
@@ -65,7 +78,7 @@ namespace YourVitebskApp.ViewModels
         {
             IsBusy = true;
             _newsService = new NewsService();
-            TapCommand = new Command<string>(async (url) => await Launcher.OpenAsync(url));
+            TapCommand = new AsyncCommand<string>(OpenURL);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
             IsBusy = false;
@@ -74,6 +87,16 @@ namespace YourVitebskApp.ViewModels
         private async void LoadData()
         {
             News = await _newsService.Get(NewsId);
+            IsLinkAvailable = News.ExternalLink != null;
+        }
+
+        private async Task OpenURL(string url)
+        {
+            await Browser.OpenAsync(url, new BrowserLaunchOptions
+            {
+                LaunchMode = BrowserLaunchMode.SystemPreferred,
+                TitleMode = BrowserTitleMode.Show
+            });
         }
 
         private void OnPropertyChanged([CallerMemberName] string property = "")

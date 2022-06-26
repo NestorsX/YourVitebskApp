@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -17,6 +18,7 @@ namespace YourVitebskApp.ViewModels
         private IEnumerable<Comment> _commentsList;
         private Poster _poster;
         private int _currentOffset;
+        private bool _isLinkAvailable;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
@@ -25,7 +27,7 @@ namespace YourVitebskApp.ViewModels
         private readonly PosterService _posterService;
         private readonly CommentService _commentService;
         public event PropertyChangedEventHandler PropertyChanged;
-        public Command TapCommand { get; set; }
+        public AsyncCommand<string> TapCommand { get; set; }
         public Command LoadMoreCommand { get; }
         public Command AddCommentCommand { get; set; }
         public Command RefreshCommand { get; }
@@ -57,6 +59,16 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _poster = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLinkAvailable
+        {
+            get { return _isLinkAvailable; }
+            set
+            {
+                _isLinkAvailable = value;
                 OnPropertyChanged();
             }
         }
@@ -118,7 +130,7 @@ namespace YourVitebskApp.ViewModels
             CommentsCollection = new ObservableRangeCollection<Comment>();
             _posterService = new PosterService();
             _commentService = new CommentService();
-            TapCommand = new Command<string>(async (url) => await Launcher.OpenAsync(url));
+            TapCommand = new AsyncCommand<string>(OpenURL);
             LoadMoreCommand = new Command(LoadMoreData);
             AddCommentCommand = new Command(AddComment);
             RefreshCommand = new Command(Refresh);
@@ -134,6 +146,7 @@ namespace YourVitebskApp.ViewModels
                 {
                     CommentsCollection.Clear();
                     Poster = await _posterService.Get(PosterId);
+                    IsLinkAvailable = Poster.ExternalLink != null;
                     CommentsList = await _commentService.GetAll(2, PosterId);
                     CommentsCollection.AddRange(CommentsList.Take(5));
                     _currentOffset = 5;
@@ -164,6 +177,15 @@ namespace YourVitebskApp.ViewModels
 
                 IsLoadingMore = false;
             }
+        }
+
+        private async Task OpenURL(string url)
+        {
+            await Browser.OpenAsync(url, new BrowserLaunchOptions
+            {
+                LaunchMode = BrowserLaunchMode.SystemPreferred,
+                TitleMode = BrowserTitleMode.Show
+            });
         }
 
         public async void AddComment()

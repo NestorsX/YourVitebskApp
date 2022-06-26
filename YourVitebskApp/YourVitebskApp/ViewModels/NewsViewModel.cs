@@ -23,6 +23,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isRefreshing;
         private bool _isLoadingMore;
         private readonly NewsService _newsService;
+        public AsyncCommand PageAppearingCommand { get; set; }
         public AsyncCommand<News> ItemTappedCommand { get; }
         public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
@@ -105,16 +106,22 @@ namespace YourVitebskApp.ViewModels
         {
             NewsCollection = new ObservableRangeCollection<News>();
             _newsService = new NewsService();
+            PageAppearingCommand = new AsyncCommand(OnAppearing);
             ItemTappedCommand = new AsyncCommand<News>(ItemTapped);
             LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            LoadData();
+        }
+
+        private async Task OnAppearing()
+        {
+            IsBusy = true;
+            await LoadData();
             IsBusy = false;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -165,9 +172,7 @@ namespace YourVitebskApp.ViewModels
 
         private async Task ItemTapped(News news)
         {
-            IsBusy = true;
             await Shell.Current.GoToAsync($"{nameof(SpecificNewsPage)}?NewsId={news.NewsId}");
-            IsBusy = false;
         }
 
         private void Refresh()

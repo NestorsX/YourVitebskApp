@@ -10,8 +10,11 @@
              Title="Транспорт">
     <Shell.SearchHandler>
         <controls:TransportSearchHandler BindingContext="{Binding SearchingList}"
+            CancelButtonColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+            TextColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
             BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
-            Placeholder="Тип, номер транспорта" 
+            PlaceholderColor="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}"
+            Placeholder="Тип, номер" 
             SearchBoxVisibility="Collapsible" >
             <controls:TransportSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="model:TransportSearchingModel">
@@ -19,7 +22,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                        <StackLayout Grid.Column="1" Padding="0">
                             <Label Text="{Binding TransportName}" />
                         </StackLayout>
                     </Grid>

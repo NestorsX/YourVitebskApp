@@ -9,8 +9,10 @@
              Title="Вакансии">
     <Shell.SearchHandler>
         <controls:VacanciesSearchHandler BindingContext="{Binding VacanciesList}"
+            CancelButtonColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
             TextColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
             BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
+            PlaceholderColor="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}"
             Placeholder="Должность, компания, з/п" 
             SearchBoxVisibility="Collapsible" >
             <controls:VacanciesSearchHandler.ItemTemplate>

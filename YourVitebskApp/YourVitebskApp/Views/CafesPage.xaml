@@ -10,8 +10,11 @@
              Title="Заведения">
     <Shell.SearchHandler>
         <controls:CafesSearchHandler BindingContext="{Binding CafesList}"
+            CancelButtonColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+            TextColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
             BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
-            Placeholder="Название, тип или адрес" 
+            PlaceholderColor="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}"
+            Placeholder="Название, тип, адрес" 
             SearchBoxVisibility="Collapsible" >
             <controls:CafesSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="model:Cafe">
@@ -20,11 +23,11 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="150" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit"  />
-                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="Fill" VerticalOptions="Center">
-                            <Label Text="{Binding CafeType}" />
-                            <Label Text="{Binding Title}" />
-                            <Label Text="{Binding Address}" />
+                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="100" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
+                        <StackLayout Grid.Column="1" Padding="0">
+                            <Label Text="{Binding CafeType}" FontSize="Small" />
+                            <Label Text="{Binding Title}" FontSize="Small" />
+                            <Label Text="{Binding Address}" FontSize="Small" />
                         </StackLayout>
                     </Grid>
                 </DataTemplate>
@@ -78,7 +81,7 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Padding="0">
-                                                    <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" WidthRequest="200" Aspect="AspectFill" />
+                                                    <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" WidthRequest="180" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
                                                 </StackLayout>
                                                 <Grid Grid.Column="0" Grid.Row="0" HorizontalOptions="Start">
                                                     <Grid.ColumnDefinitions>

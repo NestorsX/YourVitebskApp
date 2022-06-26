@@ -10,11 +10,12 @@
              Title="Афиша">
     <Shell.SearchHandler>
         <controls:PostersSearchHandler BindingContext="{Binding PostersList}"
+            CancelButtonColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+            TextColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
             BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
-            Placeholder="Название, тип или адрес" 
-            ShowsResults="true" 
-            DisplayMemberName="Title" 
-            SearchBoxVisibility="Collapsible" >
+            PlaceholderColor="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}"
+            Placeholder="Название, тип, адрес" 
+            SearchBoxVisibility="Collapsible">
             <controls:PostersSearchHandler.ItemTemplate>
                 <DataTemplate x:DataType="model:Poster">
                     <Grid Padding="5" BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
@@ -22,11 +23,11 @@
                             <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="100" HorizontalOptions="Center" VerticalOptions="FillAndExpand" Aspect="AspectFit"  />
-                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
-                            <Label Text="{Binding PosterType}" />
-                            <Label Text="{Binding Title}" />
-                            <Label Text="{Binding Address}" />
+                        <ffimageloading:CachedImage Source="{Binding TitleImage}" Grid.Column="0" WidthRequest="100" VerticalOptions="FillAndExpand" Aspect="AspectFill"  />
+                        <StackLayout Grid.Column="1" Padding="0">
+                            <Label Text="{Binding PosterType}" FontSize="Small" />
+                            <Label Text="{Binding Title}" FontSize="Small" />
+                            <Label Text="{Binding Address}" FontSize="Small" />
                         </StackLayout>
                     </Grid>
                 </DataTemplate>
@@ -80,7 +81,7 @@
                                                     <ColumnDefinition Width="Auto" />
                                                 </Grid.ColumnDefinitions>
                                                 <StackLayout Grid.Row="0" Grid.Column="0" Grid.RowSpan="2" Padding="0">
-                                                    <ffimageloading:CachedImage x:Name="Image" Source="{Binding TitleImage}" WidthRequest="200" HorizontalOptions="Center" Aspect="AspectFill" />
+                                                    <ffimageloading:CachedImage x:Name="Image" Source="{Binding TitleImage}" WidthRequest="180" VerticalOptions="FillAndExpand" Aspect="AspectFill" />
                                                 </StackLayout>
                                                 <Grid Grid.Column="0" Grid.Row="0" HorizontalOptions="Start">
                                                     <Grid.ColumnDefinitions>

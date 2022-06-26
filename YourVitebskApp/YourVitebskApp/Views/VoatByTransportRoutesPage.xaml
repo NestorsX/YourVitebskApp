@@ -10,7 +10,10 @@
              Title="{Binding TransportName}">
     <Shell.SearchHandler>
         <controls:TransportStopSearchHandler BindingContext="{Binding SearchingList}"
+            CancelButtonColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}"
+            TextColor="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}"
             BackgroundColor="{AppThemeBinding Dark={StaticResource FrameBackgroudColorDark}, Light={StaticResource FrameBackgroudColorLight}}"
+            PlaceholderColor="{AppThemeBinding Dark={StaticResource PlaceholderColorDark}, Light={StaticResource PlaceholderColorLight}}"
             Placeholder="Название остановки" 
             SearchBoxVisibility="Collapsible" >
             <controls:TransportStopSearchHandler.ItemTemplate>
@@ -19,7 +22,7 @@
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto" />
                         </Grid.ColumnDefinitions>
-                        <StackLayout Grid.Column="1" Padding="10" HorizontalOptions="FillAndExpand" VerticalOptions="Center">
+                        <StackLayout Grid.Column="1" Padding="0">
                             <Label Text="{Binding DirectionName}" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" FontSize="16" />
                             <Label Text="{Binding StopName}" />
                         </StackLayout>
