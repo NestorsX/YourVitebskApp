@@ -88,7 +88,7 @@
                                                 </Grid.ColumnDefinitions>
                                                 <Label Text="{Binding PublishDate}" Grid.Column="0" Grid.Row="0" Grid.ColumnSpan="2" FontSize="Small" HorizontalOptions="End" />
                                                 <Frame Padding="0" WidthRequest="70" HeightRequest="70" Grid.Row="1" Grid.Column="0"  CornerRadius="100" HorizontalOptions="Center" VerticalOptions="Start">
-                                                    <ffimageloading:CachedImage Source="{Binding Image}" LoadingPlaceholder="icon_cafe" Aspect="AspectFill"/>
+                                                    <ffimageloading:CachedImage Source="{Binding Image}" Aspect="AspectFill"/>
                                                 </Frame>
                                                 <Grid Grid.Row="1" Grid.Column="1">
                                                     <Grid.RowDefinitions>
