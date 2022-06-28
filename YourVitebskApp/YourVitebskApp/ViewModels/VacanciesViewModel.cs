@@ -23,6 +23,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isRefreshing;
         private bool _isLoadingMore;
         private readonly VacancyService _vacancyService;
+        public AsyncCommand PageAppearingCommand { get; set; }
         public AsyncCommand<Vacancy> ItemTappedCommand { get; }
         public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
@@ -104,15 +105,22 @@ namespace YourVitebskApp.ViewModels
         {
             VacanciesCollection = new ObservableRangeCollection<Vacancy>();
             _vacancyService = new VacancyService();
+            PageAppearingCommand = new AsyncCommand(OnAppearing);
             ItemTappedCommand = new AsyncCommand<Vacancy>(ItemTapped);
             LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            LoadData();
         }
 
-        private async void LoadData()
+        private async Task OnAppearing()
+        {
+            IsBusy = true;
+            await LoadData();
+            IsBusy = false;
+        }
+
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -168,10 +176,10 @@ namespace YourVitebskApp.ViewModels
             IsBusy = false;
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
             IsRefreshing = true;
-            LoadData();
+            await LoadData();
             IsRefreshing = false;
         }
     }

@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
@@ -62,14 +64,12 @@ namespace YourVitebskApp.ViewModels
 
         public SpecificVacancyViewModel()
         {
-            IsBusy = true;
             _vacancyService = new VacancyService();
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            IsBusy = false;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             Vacancy = await _vacancyService.Get(VacancyId);
         }
@@ -84,14 +84,17 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        public async void ApplyQueryAttributes(IDictionary<string, string> query)
         {
+            IsBusy = true;
             if (query.TryGetValue("VacancyId", out string param))
             {
                 int.TryParse(param, out int id);
                 VacancyId = id;
-                LoadData();
+                await LoadData();
             }
+
+            IsBusy = false;
         }
     }
 }

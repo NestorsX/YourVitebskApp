@@ -9,13 +9,13 @@ namespace YourVitebskApp.Helpers
             switch (Settings.Theme)
             {
                 case 0:
-                    App.Current.UserAppTheme = OSAppTheme.Unspecified;
+                    Application.Current.UserAppTheme = OSAppTheme.Unspecified;
                     break;
                 case 1:
-                    App.Current.UserAppTheme = OSAppTheme.Light;
+                    Application.Current.UserAppTheme = OSAppTheme.Light;
                     break;
                 case 2:
-                    App.Current.UserAppTheme = OSAppTheme.Dark;
+                    Application.Current.UserAppTheme = OSAppTheme.Dark;
                     break;
             }
 

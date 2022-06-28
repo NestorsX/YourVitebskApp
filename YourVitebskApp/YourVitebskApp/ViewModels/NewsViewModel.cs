@@ -175,10 +175,10 @@ namespace YourVitebskApp.ViewModels
             await Shell.Current.GoToAsync($"{nameof(SpecificNewsPage)}?NewsId={news.NewsId}");
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
             IsRefreshing = true;
-            LoadData();
+            await LoadData();
             IsRefreshing = false;
         }
     }

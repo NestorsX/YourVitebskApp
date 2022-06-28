@@ -1,44 +1,68 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
-using Xamarin.Forms;
-using YourVitebskApp.Models;
-using YourVitebskApp.Services;
+using YourVitebskApp.Helpers;
 
 namespace YourVitebskApp.ViewModels
 {
-    internal class SpecificNewsViewModel : INotifyPropertyChanged, IQueryAttributable
+    public class SettingsViewModel : INotifyPropertyChanged
     {
-        private News _news;
-        private bool _isLinkAvailable;
+        private bool _useDarkMode;
+        private bool _useLightMode;
+        private bool _useDeviceThemeSettings;
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
-        private readonly NewsService _newsService;
         public event PropertyChangedEventHandler PropertyChanged;
         public AsyncCommand<string> TapCommand { get; set; }
-        public int NewsId { get; set; }
 
-        public News News
+        public bool UseDeviceThemeSettings
         {
-            get { return _news; }
+            get { return _useDeviceThemeSettings; }
             set
             {
-                _news = value;
-                OnPropertyChanged();
+                _useDeviceThemeSettings = value;
+                if (_useDeviceThemeSettings)
+                {
+                    UseDarkMode = UseLightMode = false;
+                    Settings.Theme = 0;
+                    ThemeSwitcher.SetTheme();
+                    OnPropertyChanged();
+                }
             }
         }
 
-        public bool IsLinkAvailable
+        public bool UseLightMode
         {
-            get { return _isLinkAvailable; }
+            get { return _useLightMode; }
             set
             {
-                _isLinkAvailable = value;
-                OnPropertyChanged();
+                _useLightMode = value;
+                if (_useLightMode)
+                {
+                    UseDarkMode = UseDeviceThemeSettings = false;
+                    Settings.Theme = 1;
+                    ThemeSwitcher.SetTheme();
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool UseDarkMode
+        {
+            get { return _useDarkMode; }
+            set
+            {
+                _useDarkMode = value;
+                if (_useDarkMode)
+                {
+                    UseLightMode = UseDeviceThemeSettings = false;
+                    Settings.Theme = 2;
+                    ThemeSwitcher.SetTheme();
+                    OnPropertyChanged();
+                }
             }
         }
 
@@ -74,20 +98,24 @@ namespace YourVitebskApp.ViewModels
             }
         }
 
-        public SpecificNewsViewModel()
+        public SettingsViewModel()
         {
-            IsBusy = true;
-            _newsService = new NewsService();
+            switch (Settings.Theme)
+            {
+                case 0:
+                    _useDeviceThemeSettings = true;
+                    break;
+                case 1:
+                    _useLightMode = true;
+                    break;
+                case 2:
+                    _useDarkMode = true;
+                    break;
+            }
+
             TapCommand = new AsyncCommand<string>(OpenURL);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            IsBusy = false;
-        }
-
-        private async Task LoadData()
-        {
-            News = await _newsService.Get(NewsId);
-            IsLinkAvailable = News.ExternalLink != null;
         }
 
         private async Task OpenURL(string url)
@@ -107,19 +135,6 @@ namespace YourVitebskApp.ViewModels
         private void Connectivity_ConnectivityChanged(object sender, ConnectivityChangedEventArgs e)
         {
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
-        }
-
-        public async void ApplyQueryAttributes(IDictionary<string, string> query)
-        {
-            IsBusy = true;
-            if (query.TryGetValue("NewsId", out string param))
-            {
-                int.TryParse(param, out int id);
-                NewsId = id;
-                await LoadData();
-            }
-
-            IsBusy = false;
         }
     }
 }

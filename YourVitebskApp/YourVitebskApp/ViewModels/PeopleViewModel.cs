@@ -23,6 +23,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isRefreshing;
         private bool _isLoadingMore;
         private readonly UserService _userService;
+        public AsyncCommand PageAppearingCommand { get; set; }
         public AsyncCommand<UsersListItem> ItemTappedCommand { get; }
         public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
@@ -104,15 +105,22 @@ namespace YourVitebskApp.ViewModels
         {
             UsersCollection = new ObservableRangeCollection<UsersListItem>();
             _userService = new UserService();
+            PageAppearingCommand = new AsyncCommand(OnAppearing);
             ItemTappedCommand = new AsyncCommand<UsersListItem>(DialNumber);
             LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            LoadData();
         }
 
-        private async void LoadData()
+        private async Task OnAppearing()
+        {
+            IsBusy = true;
+            await LoadData();
+            IsBusy = false;
+        }
+
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -171,19 +179,16 @@ namespace YourVitebskApp.ViewModels
 
         public async Task DialNumber(UsersListItem sender)
         {
-            IsBusy = true;
             if (!sender.PhoneNumber.Equals("Номер телефона не указан"))
             {
                 await Task.Run(() => PhoneDialer.Open(sender.PhoneNumber));
             }
-
-            IsBusy = false;
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
             IsRefreshing = true;
-            LoadData();
+            await LoadData();
             IsRefreshing = false;
         }
     }

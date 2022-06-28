@@ -1,13 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using YourVitebskApp.Helpers;
-using YourVitebskApp.Models;
 using YourVitebskApp.Services;
 using YourVitebskApp.Views;
 
@@ -24,9 +21,8 @@ namespace YourVitebskApp.ViewModels
         private bool _isBusy;
         private bool _isMainLayoutVisible;
         private bool _isInternetNotConnected;
-        private UserService _userService;
+        private readonly UserService _userService;
         public AsyncCommand PageAppearingCommand { get; set; }
-        public AsyncCommand PageDisappearingCommand { get; set; }
         public AsyncCommand UpdateCommand { get; }
         public AsyncCommand SettingsCommand { get; }
         public AsyncCommand ExitCommand { get; }
@@ -128,7 +124,6 @@ namespace YourVitebskApp.ViewModels
         {
             _userService = new UserService();
             PageAppearingCommand = new AsyncCommand(OnAppearing);
-            PageDisappearingCommand = new AsyncCommand(OnDisappearing);
             UpdateCommand = new AsyncCommand(Update);
             SettingsCommand = new AsyncCommand(Settings);
             ExitCommand = new AsyncCommand(Exit);
@@ -138,15 +133,12 @@ namespace YourVitebskApp.ViewModels
 
         private async Task OnAppearing()
         {
-            AddData();
+            IsBusy = true;
+            await LoadData();
+            IsBusy = false;
         }
 
-        private async Task OnDisappearing()
-        {
-            
-        }
-
-        private async void AddData()
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -178,25 +170,19 @@ namespace YourVitebskApp.ViewModels
 
         private async Task Update()
         {
-            IsBusy = true;
             await Shell.Current.GoToAsync($"{nameof(EditProfilePage)}");
-            IsBusy = false;
         }
 
         private async Task Settings()
         {
-            IsBusy = true;
             await Shell.Current.GoToAsync($"{nameof(SettingsPage)}");
-            IsBusy = false;
         }
 
         private async Task Exit()
         {
-            IsBusy = true;
             SecureStorage.RemoveAll();
             Application.Current.MainPage = new AppShell();
             await Shell.Current.GoToAsync("//Login");
-            IsBusy = false;
         }
     }
 }

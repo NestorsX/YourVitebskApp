@@ -32,6 +32,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isError;
         private bool _isSuccess;
         private AuthService _authService;
+        public AsyncCommand PageAppearingCommand { get; set; }
         public AsyncCommand UpdateCommand { get; }
         public Command PickImageCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -52,6 +53,12 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _email = value;
+                IsError = false;
+                if (!Regex.IsMatch(Email, @"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*)+$"))
+                {
+                    Error = "Неверный формат email";
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -72,6 +79,15 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _newPassword = value;
+                IsError = false;
+                if (NewPassword.Length > 0)
+                {
+                    if (NewPassword.Length < 6)
+                    {
+                        Error = "Пароль должен быть не короче 6 символов";
+                    }
+                }
+
                 OnPropertyChanged();
             }
         }
@@ -82,6 +98,7 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _firstName = value;
+                IsError = false;
                 if (FirstName.Length == 0)
                 {
                     Error = "Заполните поле \"Имя\"";
@@ -97,6 +114,7 @@ namespace YourVitebskApp.ViewModels
             set
             {
                 _lastName = value;
+                IsError = false;
                 if (LastName.Length == 0)
                 {
                     Error = "Заполните поле \"Фамилия\"";
@@ -220,28 +238,31 @@ namespace YourVitebskApp.ViewModels
 
         public EditProfileViewModel()
         {
-            IsBusy = true;
             _authService = new AuthService();
+            PageAppearingCommand = new AsyncCommand(OnAppearing);
             UpdateCommand = new AsyncCommand(Update);
             PickImageCommand = new Command(PickImage);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            AddData();
+        }
+
+        private async Task OnAppearing()
+        {
+            IsBusy = true;
+            await LoadData();
             IsBusy = false;
         }
 
-        private async void AddData()
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                IsBusy = true;
                 Email = await SecureStorage.GetAsync("Email");
                 FirstName = await SecureStorage.GetAsync("FirstName");
                 LastName = await SecureStorage.GetAsync("LastName");
                 PhoneNumber = await SecureStorage.GetAsync("PhoneNumber");
                 ImageSource = await SecureStorage.GetAsync("Image");
                 IsVisible = Convert.ToBoolean(await SecureStorage.GetAsync("IsVisible")) ? "Да" : "Нет";
-                IsBusy = false;
             }
         }
 
@@ -275,7 +296,7 @@ namespace YourVitebskApp.ViewModels
 
                 SecureStorage.RemoveAll();
                 _authService.SaveUserCreds(token);
-                AddData();
+                await LoadData();
             }
             catch (ArgumentException e)
             {

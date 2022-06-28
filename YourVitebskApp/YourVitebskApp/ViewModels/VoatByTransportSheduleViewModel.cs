@@ -3,6 +3,8 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
 using YourVitebskApp.Models;
@@ -23,7 +25,6 @@ namespace YourVitebskApp.ViewModels
         private bool _isInternetNotConnected;
         private readonly TransportSheduleService _transportSheduleService;
         public event PropertyChangedEventHandler PropertyChanged;
-
         public string TransportId { get; set; }
         public string DirectionId { get; set; }
         public string StopId { get; set; }
@@ -111,11 +112,10 @@ namespace YourVitebskApp.ViewModels
             IsBusy = false;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                IsBusy = true;
                 try
                 {
                     _workingDaySheduleList = await _transportSheduleService.GetTransportShedule(TransportId, DirectionId, StopId, "1", TransportType);
@@ -161,8 +161,6 @@ namespace YourVitebskApp.ViewModels
 
                     DayOffTime = timeString.ToString();
                 }
-
-                IsBusy = false;
             }
         }
 
@@ -176,8 +174,9 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        public async void ApplyQueryAttributes(IDictionary<string, string> query)
         {
+            IsBusy = true;
             if (query.TryGetValue("TransportId", out string param))
             {
                 TransportId = param;
@@ -198,7 +197,8 @@ namespace YourVitebskApp.ViewModels
                 TransportType = param;
             }
 
-            LoadData();
+            await LoadData();
+            IsBusy = false;
         }
     }
 }

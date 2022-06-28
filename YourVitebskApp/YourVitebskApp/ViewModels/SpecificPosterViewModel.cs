@@ -138,7 +138,7 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -195,10 +195,10 @@ namespace YourVitebskApp.ViewModels
             IsBusy = false;
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
             IsRefreshing = true;
-            LoadData();
+            await LoadData();
             IsRefreshing = false;
         }
 
@@ -212,14 +212,17 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        public async void ApplyQueryAttributes(IDictionary<string, string> query)
         {
+            IsBusy = true;
             if (query.TryGetValue("PosterId", out string param))
             {
                 int.TryParse(param, out int id);
                 PosterId = id;
-                LoadData();
+                await LoadData();
             }
+
+            IsBusy = false;
         }
     }
 }

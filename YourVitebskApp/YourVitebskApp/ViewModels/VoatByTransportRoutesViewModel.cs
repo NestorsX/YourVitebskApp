@@ -112,11 +112,10 @@ namespace YourVitebskApp.ViewModels
             IsBusy = false;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                IsBusy = true;
                 try
                 {
                     RoutesList = await _transportSheduleService.GetTransportRoutes(TransportId);
@@ -143,15 +142,13 @@ namespace YourVitebskApp.ViewModels
                 {
 
                 }
-
-                IsBusy = false;
             }
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
             IsRefreshing = true;
-            LoadData();
+            await LoadData();
             IsRefreshing = false;
         }
 
@@ -165,8 +162,9 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        public void ApplyQueryAttributes(IDictionary<string, string> query)
+        public async void ApplyQueryAttributes(IDictionary<string, string> query)
         {
+            IsBusy = true;
             if (query.TryGetValue("TransportType", out string param))
             {
                 TransportType = param;
@@ -177,18 +175,17 @@ namespace YourVitebskApp.ViewModels
                 TransportId = param;
             }
 
-            LoadData();
+            await LoadData();
+            IsBusy = false;
         }
 
         private async Task ItemTapped(VoatByTransportStop sender)
         {
-            IsBusy = true;
             await Shell.Current.GoToAsync($"{nameof(VoatByTransportShedulePage)}?" +
                             $"TransportId={sender.vid_mar_n}&" +
                             $"DirectionId={sender.napr_id}&" +
                             $"StopId={sender.ost_id}&" +
                             $"TransportType={TransportType}");
-            IsBusy = false;
         }
     }
 }

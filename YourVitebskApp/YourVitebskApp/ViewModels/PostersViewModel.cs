@@ -23,6 +23,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isRefreshing;
         private bool _isLoadingMore;
         private readonly PosterService _postersService;
+        public AsyncCommand PageAppearingCommand { get; set; }
         public AsyncCommand<Poster> ItemTappedCommand { get; }
         public Command LoadMoreCommand { get; }
         public Command RefreshCommand { get; }
@@ -104,15 +105,22 @@ namespace YourVitebskApp.ViewModels
         {
             PostersCollection = new ObservableRangeCollection<Poster>();
             _postersService = new PosterService();
+            PageAppearingCommand = new AsyncCommand(OnAppearing);
             ItemTappedCommand = new AsyncCommand<Poster>(ItemTapped);
             LoadMoreCommand = new Command(LoadMoreData);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            LoadData();
         }
 
-        private async void LoadData()
+        private async Task OnAppearing()
+        {
+            IsBusy = true;
+            await LoadData();
+            IsBusy = false;
+        }
+
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
@@ -163,15 +171,13 @@ namespace YourVitebskApp.ViewModels
 
         private async Task ItemTapped(Poster poster)
         {
-            IsBusy = true;
             await Shell.Current.GoToAsync($"{nameof(PostersPage)}/{nameof(SpecificPosterPage)}?PosterId={poster.PosterId}");
-            IsBusy = false;
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
             IsRefreshing = true;
-            LoadData();
+            await LoadData();
             IsRefreshing = false;
         }
     }

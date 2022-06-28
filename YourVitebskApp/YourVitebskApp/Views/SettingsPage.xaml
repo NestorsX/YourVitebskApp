@@ -2,42 +2,99 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:xct="http://xamarin.com/schemas/2020/toolkit"
+             xmlns:viewmodels="clr-namespace:YourVitebskApp.ViewModels" x:DataType="viewmodels:SettingsViewModel"
+             xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms"
              x:Class="YourVitebskApp.Views.SettingsPage"
              Title="Настройки">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Тема приложения" />
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-                <RadioButton IsChecked="{Binding UseDeviceThemeSettings}" Grid.Column="0">
-                    <RadioButton.Content>
-                        <StackLayout>
-                            <Image Source="icon_system.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-                            <Label Text="Система" HorizontalOptions="Center" VerticalOptions="End" />
+        <AbsoluteLayout>
+            <StackLayout IsVisible="{Binding IsBusy}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <forms:AnimationView
+                    Animation="resource://Resources.loading.json?assembly=YourVitebskApp"
+                    AnimationSource="EmbeddedResource"
+                    AutoPlay="True"
+                    RepeatMode="Infinite"
+                    WidthRequest="150"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="CenterAndExpand"/>
+            </StackLayout>
+
+            <StackLayout Padding="0" IsVisible="{Binding IsInternetNotConnected}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <forms:AnimationView
+                    Animation="resource://Resources.disconnect.json?assembly=YourVitebskApp"
+                    AnimationSource="EmbeddedResource"
+                    AutoPlay="True"
+                    RepeatMode="Infinite"
+                    VerticalOptions="Center"
+                    HorizontalOptions="Center"/>
+                <Label Text="Нет интернета" VerticalOptions="Center" HorizontalTextAlignment="Center" FontAttributes="Bold" FontSize="Large" />
+                <Label Text="Проверьте интернет-соединение или перезапустите приложение." FontSize="Medium"  VerticalOptions="Center" HorizontalTextAlignment="Center" />
+            </StackLayout>
+
+            <ScrollView>
+                <StackLayout IsVisible="{Binding IsMainLayoutVisible}" AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All" VerticalOptions="Fill" HorizontalOptions="Fill">
+                    <Label Text="Тема приложения:" FontSize="Title" />
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+                        <RadioButton IsChecked="{Binding UseDeviceThemeSettings}" Grid.Column="0">
+                            <RadioButton.Content>
+                                <StackLayout>
+                                    <Image Source="icon_system.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                                    <Label Text="Система" HorizontalOptions="Center" VerticalOptions="End" />
+                                </StackLayout>
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton IsChecked="{Binding UseDarkMode}" Grid.Column="1">
+                            <RadioButton.Content>
+                                <StackLayout>
+                                    <Image Source="icon_moon.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                                    <Label Text="Тёмная" HorizontalOptions="Center" VerticalOptions="End" />
+                                </StackLayout>
+                            </RadioButton.Content>
+                        </RadioButton>
+                        <RadioButton IsChecked="{Binding UseLightMode}" Grid.Column="2">
+                            <RadioButton.Content>
+                                <StackLayout>
+                                    <Image Source="icon_sun.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
+                                    <Label Text="Светлая" HorizontalOptions="Center" VerticalOptions="End" />
+                                </StackLayout>
+                            </RadioButton.Content>
+                        </RadioButton>
+                    </Grid>
+                    <StackLayout Margin="0,20,0,0">
+                        <Label Text="О приложении:" FontSize="Title" />
+                        <Label Text="Приложение «Твой витебск» создано для упрощения повседневной жизни людей. В приложении вы можете почитать новости, посмотреть расписание интересующего вас общественного транспорта, выбрать место, где можно покушать, посмотреть актуальную афишу или найти новую работу." />
+                    </StackLayout>
+                    <StackLayout Margin="0,20,0,0">
+                        <Label Text="Разработчик:" FontSize="Title" />
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="icon_link.png" WidthRequest="20" Aspect="AspectFit" xct:IconTintColorEffect.TintColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <Label Text="Вконтакте" FontSize="Title" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="https://vk.com/nstrkrll" />
+                            </StackLayout.GestureRecognizers>
                         </StackLayout>
-                    </RadioButton.Content>
-                </RadioButton>
-                <RadioButton IsChecked="{Binding UseDarkMode}" Grid.Column="1">
-                    <RadioButton.Content>
-                        <StackLayout>
-                            <Image Source="icon_moon.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-                            <Label Text="Тёмная" HorizontalOptions="Center" VerticalOptions="End" />
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="icon_link.png" WidthRequest="20" Aspect="AspectFit" xct:IconTintColorEffect.TintColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <Label Text="Instagram" FontSize="Title" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="https://www.instagram.com/nstrkrll" />
+                            </StackLayout.GestureRecognizers>
                         </StackLayout>
-                    </RadioButton.Content>
-                </RadioButton>
-                <RadioButton IsChecked="{Binding UseLightMode}" Grid.Column="2">
-                    <RadioButton.Content>
-                        <StackLayout>
-                            <Image Source="icon_sun.png" WidthRequest="50" HeightRequest="50" HorizontalOptions="Center" VerticalOptions="CenterAndExpand" />
-                            <Label Text="Светлая" HorizontalOptions="Center" VerticalOptions="End" />
+                        <StackLayout Orientation="Horizontal">
+                            <Image Source="icon_link.png" WidthRequest="20" Aspect="AspectFit" xct:IconTintColorEffect.TintColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <Label Text="Telegram" FontSize="Title" TextColor="{AppThemeBinding Dark={StaticResource AccentColorDark}, Light={StaticResource AccentColorLight}}" />
+                            <StackLayout.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding TapCommand}" CommandParameter="https://t.me/nestorsx" />
+                            </StackLayout.GestureRecognizers>
                         </StackLayout>
-                    </RadioButton.Content>
-                </RadioButton>
-            </Grid>
-        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </AbsoluteLayout>
     </ContentPage.Content>
 </ContentPage>

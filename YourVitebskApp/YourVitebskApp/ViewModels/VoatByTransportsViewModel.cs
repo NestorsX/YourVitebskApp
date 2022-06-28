@@ -21,6 +21,7 @@ namespace YourVitebskApp.ViewModels
         private bool _isInternetNotConnected;
         private bool _isRefreshing;
         private readonly TransportSheduleService _transportSheduleService;
+        public AsyncCommand PageAppearingCommand { get; set; }
         public AsyncCommand<VoatByTransportItem> ItemTappedCommand { get; }
         public Command RefreshCommand { get; }
         public event PropertyChangedEventHandler PropertyChanged;
@@ -90,21 +91,25 @@ namespace YourVitebskApp.ViewModels
 
         public VoatByTransportsViewModel()
         {
-            IsBusy = true;
             _transportSheduleService = new TransportSheduleService();
+            PageAppearingCommand = new AsyncCommand(OnAppearing);
             ItemTappedCommand = new AsyncCommand<VoatByTransportItem>(ItemTapped);
             RefreshCommand = new Command(Refresh);
             Connectivity.ConnectivityChanged += Connectivity_ConnectivityChanged;
             IsInternetNotConnected = Connectivity.NetworkAccess != NetworkAccess.Internet;
-            LoadData();
+        }
+
+        private async Task OnAppearing()
+        {
+            IsBusy = true;
+            await LoadData();
             IsBusy = false;
         }
 
-        private async void LoadData()
+        private async Task LoadData()
         {
             if (Connectivity.NetworkAccess == NetworkAccess.Internet)
             {
-                IsBusy = true;
                 try
                 {
                     TransportList = await _transportSheduleService.GetTransportsInfo();
@@ -127,8 +132,6 @@ namespace YourVitebskApp.ViewModels
                 {
 
                 }
-
-                IsBusy = false;
             }
         }
 
@@ -142,18 +145,16 @@ namespace YourVitebskApp.ViewModels
             IsInternetNotConnected = e.NetworkAccess != NetworkAccess.Internet;
         }
 
-        private void Refresh()
+        private async void Refresh()
         {
             IsRefreshing = true;
-            LoadData();
+            await LoadData();
             IsRefreshing = false;
         }
 
         private async Task ItemTapped(VoatByTransportItem sender)
         {
-            IsBusy = true;
             await Shell.Current.GoToAsync($"{nameof(VoatByTransportRoutesPage)}?TransportType={sender.vid_tr}&TransportId={sender.mar_id}");
-            IsBusy = false;
         }
     }
 }

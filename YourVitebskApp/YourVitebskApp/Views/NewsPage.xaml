@@ -11,8 +11,8 @@
              Title="Новости">
     <ContentPage.Behaviors>
         <xct:EventToCommandBehavior
-                EventName="Appearing"
-                Command="{Binding PageAppearingCommand}" />
+            EventName="Appearing"
+            Command="{Binding PageAppearingCommand}" />
     </ContentPage.Behaviors>
     <Shell.SearchHandler>
         <controls:NewsSearchHandler BindingContext="{Binding NewsList}"

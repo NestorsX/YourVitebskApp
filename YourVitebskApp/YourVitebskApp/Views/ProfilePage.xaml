@@ -9,11 +9,8 @@
              Title="Профиль">
     <ContentPage.Behaviors>
         <xct:EventToCommandBehavior
-                EventName="Appearing"
-                Command="{Binding PageAppearingCommand}" />
-        <xct:EventToCommandBehavior
-                EventName="Disappearing"
-                Command="{Binding PageDisappearingCommand}" />
+            EventName="Appearing"
+            Command="{Binding PageAppearingCommand}" />
     </ContentPage.Behaviors>
     <ContentPage.ToolbarItems>
         <ToolbarItem Icon="icon_logout.png" Text="Выход" Command="{Binding ExitCommand}"/>
