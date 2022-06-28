@@ -124,6 +124,10 @@
             <Setter Property="ControlTemplate" Value="{StaticResource RadioButtonTemplate}" />
         </Style>
 
+        <Style TargetType="Picker">
+            <Setter Property="TextColor" Value="{AppThemeBinding Dark={StaticResource TextColorDark}, Light={StaticResource TextColorLight}}" />
+        </Style>
+
         <Style TargetType="ffimageloading:CachedImage">
             <Setter Property="LoadingPlaceholder" Value="icon_imageLoading.png" />
         </Style>
