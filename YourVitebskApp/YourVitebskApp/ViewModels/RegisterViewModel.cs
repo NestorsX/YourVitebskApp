@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Xamarin.Essentials;
 using Xamarin.Forms;
@@ -31,6 +32,11 @@ namespace YourVitebskApp.ViewModels
             {
                 _email = value;
                 IsError = false;
+                if (!Regex.IsMatch(Email, @"^((\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)\s*)+$"))
+                {
+                    Error = "Неверный формат email";
+                }
+
                 OnPropertyChanged();
             }
         }

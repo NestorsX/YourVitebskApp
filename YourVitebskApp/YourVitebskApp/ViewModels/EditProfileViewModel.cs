@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using YourVitebskApp.Helpers;
 using YourVitebskApp.Services;
 
 namespace YourVitebskApp.ViewModels
