@@ -17,6 +17,10 @@ namespace YourVitebskApp.Helpers
                 case 2:
                     Application.Current.UserAppTheme = OSAppTheme.Dark;
                     break;
+                default:
+                    Application.Current.UserAppTheme = OSAppTheme.Unspecified;
+                    break;
+
             }
 
             var e = DependencyService.Get<IEnvironment>();
